@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07090F">
+<title>Man Down — Legal</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,200;9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #07090F;
+  --gold: #C8943A;
+  --gold-l: #E0B060;
+  --text: #EEE9E0;
+  --text2: #7A8BA4;
+  --text3: #354458;
+  --border: rgba(255,255,255,0.08);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--bg); color: var(--text); font-family: "DM Sans", sans-serif; font-weight: 300; overflow-x: hidden; }
+.page { max-width: 680px; margin: 0 auto; padding: 60px 24px 100px; }
+.wordmark { font-size: 13px; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 48px; display: block; text-decoration: none; }
+.tabs { display: flex; gap: 8px; margin-bottom: 48px; flex-wrap: wrap; }
+.tab { padding: 10px 20px; border-radius: 100px; border: 1px solid var(--border); background: transparent; color: var(--text2); font-family: "DM Sans", sans-serif; font-size: 13px; font-weight: 400; cursor: pointer; transition: all 0.2s; }
+.tab.active { background: var(--gold); color: #07090F; border-color: var(--gold); font-weight: 600; }
+.tab:hover:not(.active) { border-color: var(--gold); color: var(--text); }
+.doc { display: none; }
+.doc.active { display: block; }
+.doc-title { font-size: 28px; font-weight: 200; letter-spacing: -0.03em; margin-bottom: 8px; }
+.doc-date { font-size: 12px; color: var(--text3); margin-bottom: 40px; letter-spacing: 0.05em; }
+h2 { font-size: 15px; font-weight: 500; color: var(--gold-l); margin: 32px 0 10px; letter-spacing: -0.01em; }
+p { font-size: 14px; line-height: 1.85; color: var(--text2); margin-bottom: 14px; }
+.contact { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 16px; padding: 20px 24px; margin-top: 36px; }
+.contact p { margin: 0; font-size: 13px; }
+a { color: var(--gold); text-decoration: none; }
+a:hover { text-decoration: underline; }
+.disclaimer-box { background: rgba(200,148,58,0.07); border: 1px solid rgba(200,148,58,0.25); border-radius: 16px; padding: 20px 24px; margin-bottom: 32px; }
+.disclaimer-box p { color: var(--text); margin: 0; font-size: 14px; line-height: 1.7; }
+strong { color: var(--text); font-weight: 500; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <a href="/" class="wordmark">Man Down</a>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showDoc('privacy', this)">Privacy Policy</button>
+    <button class="tab" onclick="showDoc('terms', this)">Terms of Service</button>
+    <button class="tab" onclick="showDoc('disclaimer', this)">Mental Health Disclaimer</button>
+  </div>
+
+  <!-- PRIVACY POLICY -->
+  <div class="doc active" id="privacy">
+    <h1 class="doc-title">Privacy Policy</h1>
+    <p class="doc-date">Last updated: April 15, 2025</p>
+
+    <div class="disclaimer-box">
+      <p>Your privacy matters deeply to us. Man Down is a space where men share things they don't share anywhere else. We take that responsibility seriously.</p>
+    </div>
+
+    <h2>Who We Are</h2>
+    <p>Man Down was built by someone who watched the men around him carry it alone. No one asked if they were okay. No one had the language for it. And at 2am when it got heavy, there was nowhere to go. Man Down exists for that moment. Not as therapy. Not as a hotline. Just as that one friend who actually listens, remembers what you told them last time, and is there when everyone else is asleep. We built this for men who are done carrying it in silence. You can reach us at <a href="mailto:hello@trymandown.com">hello@trymandown.com</a></p>
+
+    <h2>What We Collect</h2>
+    <p>When you use Man Down we collect your email address when you join the waitlist or create an account, the mood score you submit at the start of each session, messages exchanged with Jordan and Luna stored to enable session memory, session frequency and streak data, and basic device information like browser type and IP address for security purposes.</p>
+
+    <h2>Why We Collect It</h2>
+    <p>We collect this information to provide the Man Down service and enable your AI companions to remember your history, to send you important updates about the app, to improve the product based on how it's used, and to keep your account secure.</p>
+
+    <h2>How We Store It</h2>
+    <p>Your data is stored securely using Google Firebase. Conversation data is encrypted in transit and at rest. We do not sell your data to anyone. Ever.</p>
+
+    <h2>Mental Health Data</h2>
+    <p>Conversations on Man Down may be sensitive in nature. This data is never shared with third parties, never used for advertising, and never sold. It is used solely to power your experience with Jordan and Luna.</p>
+
+    <h2>Your Rights</h2>
+    <p>You have the right to access the data we hold about you, request correction of inaccurate data, request deletion of your data at any time, export your data in a readable format, and withdraw consent at any time. To exercise any of these rights email us at <a href="mailto:hello@trymandown.com">hello@trymandown.com</a> and we will respond within 30 days.</p>
+
+    <h2>Your Privacy Rights Worldwide</h2>
+    <p>Man Down complies with applicable data protection and privacy laws in the jurisdictions where we operate. By using Man Down, you consent to the collection and use of your information as described in this policy. If the laws of your country provide you with additional rights regarding your personal data, we will honor those rights upon request.</p>
+
+    <h2>Cookies</h2>
+    <p>Man Down uses only essential cookies required for authentication and session management. We do not use tracking or advertising cookies.</p>
+
+    <h2>Third Party Services</h2>
+    <p>We use Google Firebase for data storage and Anthropic to power AI conversations. Both services handle user data and have their own privacy policies which we encourage you to review.</p>
+
+    <h2>Data Retention</h2>
+    <p>We retain your data for as long as your account is active. If you delete your account we will delete your data within 30 days except where required by law.</p>
+
+    <h2>Children</h2>
+    <p>Man Down is intended for adult users. We do not knowingly collect data from minors. If you believe a minor has provided us with personal information please contact us immediately.</p>
+
+    <h2>Changes to This Policy</h2>
+    <p>We may update this policy from time to time and will notify you of significant changes by email.</p>
+
+    <div class="contact">
+      <p>Questions about your privacy? <a href="mailto:hello@trymandown.com">hello@trymandown.com</a></p>
+    </div>
+  </div>
+
+  <!-- TERMS OF SERVICE -->
+  <div class="doc" id="terms">
+    <h1 class="doc-title">Terms of Service</h1>
+    <p class="doc-date">Last updated: April 15, 2025</p>
+
+    <h2>Agreement</h2>
+    <p>By using Man Down you agree to these Terms of Service. If you do not agree please do not use the service.</p>
+
+    <h2>The Service</h2>
+    <p>Man Down provides AI-powered companionship for men's mental wellbeing. Our AI companions Jordan and Luna are designed to provide a safe, non-judgmental space for conversation and emotional support. Man Down is not a medical service, therapy service, or crisis service.</p>
+
+    <h2>Your Account</h2>
+    <p>You are responsible for maintaining the security of your account, providing accurate information when signing up, and all activity that occurs under your account. You may not share your account with others.</p>
+
+    <h2>Acceptable Use</h2>
+    <p>You agree not to use Man Down to harm yourself or others, harass or threaten anyone, attempt to extract harmful information from the AI, reverse engineer or redistribute the service, use it for commercial purposes without our written consent, or violate any applicable laws.</p>
+
+    <h2>Mental Health and Crisis</h2>
+    <p>Man Down is not a substitute for professional mental health care. If you are experiencing a mental health crisis or are in danger please contact emergency services or a crisis line immediately. Crisis resources are listed in our Mental Health Disclaimer.</p>
+
+    <h2>Limitation of Liability</h2>
+    <p>Man Down is provided as is without warranties of any kind. We shall not be liable for any direct, indirect, incidental, or consequential damages resulting from your use of the service. You agree to use Man Down at your own risk.</p>
+
+    <h2>Indemnification</h2>
+    <p>You agree to hold Man Down harmless from any claims arising from your use of the service or violation of these terms.</p>
+
+    <h2>Intellectual Property</h2>
+    <p>All content, design, and materials on Man Down are proprietary. You may not reproduce or distribute them without our express written permission.</p>
+
+    <h2>Termination</h2>
+    <p>We reserve the right to terminate or suspend your account at any time for conduct that violates these terms or harms other users.</p>
+
+    <h2>Governing Law</h2>
+    <p>These terms are governed by applicable law. For users in any jurisdiction, local mandatory consumer protection laws may apply and nothing in these terms limits your rights under those laws.</p>
+
+    <h2>Changes to Terms</h2>
+    <p>We may update these terms from time to time and will notify you of significant changes by email.</p>
+
+    <div class="contact">
+      <p>Questions about these terms? <a href="mailto:hello@trymandown.com">hello@trymandown.com</a></p>
+    </div>
+  </div>
+
+  <!-- MENTAL HEALTH DISCLAIMER -->
+  <div class="doc" id="disclaimer">
+    <h1 class="doc-title">Mental Health Disclaimer</h1>
+    <p class="doc-date">Last updated: April 15, 2025</p>
+
+    <div class="disclaimer-box">
+      <p>Please read this carefully. It matters.</p>
+    </div>
+
+    <h2>Man Down is Not Therapy</h2>
+    <p>Jordan and Luna are AI companions, not licensed therapists, psychologists, psychiatrists, or mental health professionals. Conversations with them do not constitute therapy, counselling, or any form of clinical mental health treatment.</p>
+
+    <h2>Not a Medical Service</h2>
+    <p>Man Down does not provide medical advice, diagnosis, or treatment. Always consult a qualified healthcare professional for medical concerns.</p>
+
+    <h2>Not a Crisis Service</h2>
+    <p>Man Down is not equipped to handle mental health crises. If you are experiencing suicidal thoughts, thoughts of self-harm, or any mental health emergency please stop using this app and reach out immediately. In Canada call 1-833-456-4566 available 24 hours a day. In the United States call or text 988. For international resources visit <a href="https://findahelpline.com" target="_blank">findahelpline.com</a>. In any emergency call your local emergency number.</p>
+
+    <h2>AI Limitations</h2>
+    <p>Jordan and Luna may sometimes provide inaccurate or incomplete responses. They do not have the training, judgment, or legal authority of a mental health professional and cannot diagnose conditions or prescribe treatment.</p>
+
+    <h2>Your Responsibility</h2>
+    <p>By using Man Down you acknowledge that the service is for general emotional support and companionship only, that you will seek professional help if your mental health requires it, that you will contact emergency services in any crisis situation, and that Man Down is a complement to and not a replacement for professional care.</p>
+
+    <h2>Who Man Down is For</h2>
+    <p>Man Down is designed for men who want a safe, non-judgmental space to talk about everyday struggles and life challenges. It is not designed for people experiencing acute mental health crises or severe psychiatric conditions. If you are unsure whether Man Down is right for you please consult a mental health professional first.</p>
+
+    <div class="contact">
+      <p>Questions or concerns? <a href="mailto:hello@trymandown.com">hello@trymandown.com</a></p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function showDoc(id, btn) {
+  document.querySelectorAll('.doc').forEach(d => d.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>

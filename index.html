@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#07090F">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>Man Down — You never have to carry it alone again.</title>
+<meta name="description" content="Man Down is coming. Built for men who carry it in silence.">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,200;9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #07090F;
+  --gold: #C8943A;
+  --gold-l: #E0B060;
+  --gold-s: rgba(200,148,58,0.15);
+  --text: #EEE9E0;
+  --text2: #7A8BA4;
+  --text3: #354458;
+  --border: rgba(255,255,255,0.08);
+  --border-g: rgba(200,148,58,0.3);
+  --danger: #f87171;
+  --safe: #4ade80;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { min-height: 100%; width: 100%; background: var(--bg); color: var(--text); font-family: "DM Sans", sans-serif; font-weight: 300; overflow-x: hidden; }
+
+body::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 999; opacity: 0.035; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); }
+
+#amb { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
+.orb { position: absolute; border-radius: 50%; filter: blur(120px); }
+#o1 { width: 700px; height: 700px; background: radial-gradient(circle, rgba(200,148,58,0.09), transparent 70%); top: -250px; right: -250px; animation: f1 20s ease-in-out infinite; }
+#o2 { width: 600px; height: 600px; background: radial-gradient(circle, rgba(10,30,80,0.7), transparent 70%); bottom: -200px; left: -200px; animation: f2 25s ease-in-out infinite; }
+#o3 { width: 400px; height: 400px; background: radial-gradient(circle, rgba(200,148,58,0.04), transparent 70%); top: 35%; left: 20%; animation: f3 30s ease-in-out infinite; }
+@keyframes f1 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-25px,18px) scale(1.06)} }
+@keyframes f2 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(18px,-25px) scale(1.04)} }
+@keyframes f3 { 0%,100%{transform:translate(0,0)} 33%{transform:translate(25px,-12px)} 66%{transform:translate(-18px,22px)} }
+
+.page { position: relative; z-index: 2; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 60px 24px 80px; }
+.inner { width: 100%; max-width: 480px; display: flex; flex-direction: column; align-items: center; }
+
+.wordmark {
+  font-size: clamp(32px, 8vw, 52px);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 44px;
+  opacity: 0;
+  animation: rise 0.8s cubic-bezier(.16,1,.3,1) 0.2s forwards;
+  text-shadow: 0 0 60px rgba(200,148,58,0.3);
+}
+
+.headline { font-size: clamp(28px, 6.5vw, 48px); font-weight: 200; line-height: 1.15; letter-spacing: -0.04em; text-align: center; margin-bottom: 48px; opacity: 0; transform: translateY(20px); animation: rise 1s cubic-bezier(.16,1,.3,1) 0.4s forwards; }
+.headline em { font-style: italic; color: var(--gold); font-weight: 300; }
+
+.form-wrap { width: 100%; display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; opacity: 0; transform: translateY(16px); animation: rise 1s cubic-bezier(.16,1,.3,1) 0.6s forwards; }
+.email-field { width: 100%; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 16px; padding: 16px 20px; display: flex; align-items: center; gap: 12px; transition: border-color 0.2s, box-shadow 0.2s; box-shadow: inset 0 1px 0 rgba(255,255,255,0.04); }
+.email-field:focus-within { border-color: var(--border-g); box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 0 0 3px rgba(200,148,58,0.08); }
+.email-icon { color: var(--text3); font-size: 15px; flex-shrink: 0; }
+.email-field input { flex: 1; background: transparent; border: none; outline: none; color: var(--text); font-family: "DM Sans", sans-serif; font-size: 15px; font-weight: 300; }
+.email-field input::placeholder { color: var(--text3); }
+
+.submit-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, var(--gold), var(--gold-l)); color: var(--bg); border: none; border-radius: 16px; font-family: "DM Sans", sans-serif; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 24px rgba(200,148,58,0.3); letter-spacing: -0.01em; }
+.submit-btn:hover { opacity: 0.92; transform: translateY(-1px); box-shadow: 0 6px 32px rgba(200,148,58,0.4); }
+.submit-btn:active { transform: translateY(0); }
+.submit-btn.loading { pointer-events: none; opacity: 0.7; }
+
+.no-spam { font-size: 11px; color: var(--text3); text-align: center; letter-spacing: 0.02em; opacity: 0; animation: rise 1s cubic-bezier(.16,1,.3,1) 0.75s forwards; }
+.err-msg { font-size: 12px; color: var(--danger); text-align: center; min-height: 16px; margin-top: -4px; }
+
+.success-wrap { display: none; flex-direction: column; align-items: center; gap: 12px; text-align: center; }
+.success-wrap.show { display: flex; animation: rise 0.6s cubic-bezier(.16,1,.3,1) forwards; opacity: 0; }
+.success-icon { width: 56px; height: 56px; border-radius: 50%; background: rgba(74,222,128,0.1); border: 1px solid rgba(74,222,128,0.25); display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 4px; }
+.success-title { font-size: 22px; font-weight: 300; letter-spacing: -0.03em; }
+.success-sub { font-size: 13px; color: var(--text2); line-height: 1.7; max-width: 300px; }
+
+.divider { width: 100%; height: 1px; background: var(--border); margin: 56px 0 44px; opacity: 0; animation: rise 1s cubic-bezier(.16,1,.3,1) 0.9s forwards; }
+
+.stories-label { font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text3); text-align: center; margin-bottom: 24px; font-weight: 500; opacity: 0; animation: rise 1s cubic-bezier(.16,1,.3,1) 1s forwards; }
+.stories { width: 100%; display: flex; flex-direction: column; gap: 10px; }
+.story { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 16px; padding: 18px 20px; font-size: 13px; line-height: 1.8; color: var(--text2); font-weight: 300; opacity: 0; transform: translateY(12px); }
+.story:nth-child(1){animation:rise 0.7s cubic-bezier(.16,1,.3,1) 1.1s forwards}
+.story:nth-child(2){animation:rise 0.7s cubic-bezier(.16,1,.3,1) 1.22s forwards}
+.story:nth-child(3){animation:rise 0.7s cubic-bezier(.16,1,.3,1) 1.34s forwards}
+.story:nth-child(4){animation:rise 0.7s cubic-bezier(.16,1,.3,1) 1.46s forwards}
+.story:nth-child(5){animation:rise 0.7s cubic-bezier(.16,1,.3,1) 1.58s forwards}
+.story:nth-child(6){animation:rise 0.7s cubic-bezier(.16,1,.3,1) 1.70s forwards}
+.story:nth-child(7){animation:rise 0.7s cubic-bezier(.16,1,.3,1) 1.82s forwards}
+.story-line { display: block; color: var(--text); font-weight: 400; margin-bottom: 3px; font-size: 13px; }
+
+.builder-note { margin-top: 52px; text-align: center; font-size: 12px; color: var(--text3); line-height: 1.9; max-width: 300px; font-style: italic; opacity: 0; animation: rise 1s cubic-bezier(.16,1,.3,1) 2s forwards; }
+.builder-note span { color: var(--gold); font-style: normal; }
+
+@keyframes rise { to { opacity: 1; transform: translateY(0); } }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--text3); border-radius: 2px; }
+</style>
+</head>
+<body>
+
+<div id="amb">
+  <div class="orb" id="o1"></div>
+  <div class="orb" id="o2"></div>
+  <div class="orb" id="o3"></div>
+</div>
+
+<div class="page">
+  <div class="inner">
+
+    <div class="wordmark">Man Down</div>
+
+    <h1 class="headline">You never have to<br><em>carry it alone</em> again.</h1>
+
+    <div class="form-wrap" id="form-wrap">
+      <div class="email-field">
+        <span class="email-icon">✉</span>
+        <input type="email" id="email-input" placeholder="your@email.com" autocomplete="email" />
+      </div>
+      <div class="err-msg" id="err-msg"></div>
+      <button class="submit-btn" id="submit-btn" onclick="handleSubmit()">I'm in</button>
+    </div>
+
+    <p class="no-spam" id="no-spam-txt">One email when we're ready. That's it.<br><span style="font-size:10px;color:#2a3a50;">Can't find our email? Check your spam folder.</span></p>
+
+    <div class="success-wrap" id="success-wrap">
+      <div class="success-icon">✓</div>
+      <p class="success-title">You're in.</p>
+      <p class="success-sub">You're in. You won't have to carry it alone much longer.</p>
+    </div>
+
+    <div class="divider"></div>
+
+    <p class="stories-label">Have you ever been in this situation?</p>
+
+    <div class="stories">
+      <div class="story">
+        <span class="story-line">You lost your job and your relationship in the same month.</span>
+        And you told everyone you were fine.
+      </div>
+      <div class="story">
+        <span class="story-line">You're lying awake at 2am with thoughts you can't turn off.</span>
+        But you don't want to burden anyone, so you just... wait for morning.
+      </div>
+      <div class="story">
+        <span class="story-line">You moved to a new city. Built a life. And still feel completely alone.</span>
+        You smile every time someone asks how you're doing.
+      </div>
+      <div class="story">
+        <span class="story-line">Something happened years ago that you've never told a single person.</span>
+        You've gotten good at carrying it.
+      </div>
+      <div class="story">
+        <span class="story-line">You feel like you're falling behind in your career, your relationships, your life.</span>
+        And the worst part is not knowing who you could even say that to.
+      </div>
+      <div class="story">
+        <span class="story-line">You've been the strong one for everyone around you.</span>
+        Nobody ever thought to ask if you were okay.
+      </div>
+      <div class="story">
+        <span class="story-line">You've thought about reaching out for help.</span>
+        But something stops you every time.
+      </div>
+    </div>
+
+    <p class="builder-note">Built by someone who watched the men around him disappear into silence.<br><span>This is for them.</span></p>
+
+  </div>
+</div>
+
+<script>
+// Firebase config — save every signup permanently
+var FIREBASE_URL = 'https://firestore.googleapis.com/v1/projects/mandown-414f2/databases/(default)/documents/waitlist';
+
+async function saveToFirebase(email) {
+  try {
+    await fetch(FIREBASE_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        fields: {
+          email: { stringValue: email },
+          timestamp: { stringValue: new Date().toISOString() },
+          source: { stringValue: 'waitlist' }
+        }
+      })
+    });
+  } catch(e) {
+    console.log('Firebase error:', e);
+  }
+}
+
+async function sendEmails(userEmail) {
+  await fetch('/.netlify/functions/send-email', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email: userEmail })
+  });
+}
+
+async function handleSubmit() {
+  var email = document.getElementById('email-input').value.trim();
+  var err = document.getElementById('err-msg');
+  err.textContent = '';
+
+  if (!email || !email.includes('@') || !email.includes('.')) {
+    err.textContent = 'Please enter a valid email address.';
+    return;
+  }
+
+  var btn = document.getElementById('submit-btn');
+  btn.textContent = '...';
+  btn.classList.add('loading');
+
+  try {
+    await saveToFirebase(email);
+    await sendEmails(email);
+  } catch(e) {
+    console.log('Error:', e);
+  }
+
+  document.getElementById('form-wrap').style.display = 'none';
+  document.getElementById('no-spam-txt').style.display = 'none';
+  var sw = document.getElementById('success-wrap');
+  sw.classList.add('show');
+}
+
+document.getElementById('email-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') handleSubmit();
+});
+</script>
+<footer style="position:fixed;bottom:0;left:0;right:0;padding:16px 24px;text-align:center;background:linear-gradient(transparent,#07090F);z-index:10;"><a href="/legal.html" style="font-size:11px;color:#354458;text-decoration:none;letter-spacing:0.1em;">Privacy · Terms · Disclaimer</a></footer></body>
+</html>
