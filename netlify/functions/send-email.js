@@ -1,4 +1,3 @@
-
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const FROM_EMAIL = 'hello@trymandown.com';
 const NOTIFY_EMAIL = 'hello@trymandown.com';
