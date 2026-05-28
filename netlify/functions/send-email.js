@@ -1,4 +1,4 @@
-const RESEND_API_KEY = process.env.RESEND_API_KEY;
+const RESEND_API_KEY = 're_5QL9Aniu_KtAvdeDVAgSKKWFxzfJmHCSf';
 const FROM_EMAIL = 'hello@trymandown.com';
 const NOTIFY_EMAIL = 'hello@trymandown.com';
 
