@@ -171,34 +171,7 @@ body::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-in
 </div>
 
 <script>
-// Firebase config — save every signup permanently
-var FIREBASE_URL = 'https://firestore.googleapis.com/v1/projects/mandown-414f2/databases/(default)/documents/waitlist';
-
-async function saveToFirebase(email) {
-  try {
-    await fetch(FIREBASE_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        fields: {
-          email: { stringValue: email },
-          timestamp: { stringValue: new Date().toISOString() },
-          source: { stringValue: 'waitlist' }
-        }
-      })
-    });
-  } catch(e) {
-    console.log('Firebase error:', e);
-  }
-}
-
-async function sendEmails(userEmail) {
-  await fetch('/.netlify/functions/send-email', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email: userEmail })
-  });
-}
+var FUNCTION_URL = 'https://us-central1-mandown-414f2.cloudfunctions.net/waitlistSignup';
 
 async function handleSubmit() {
   var email = document.getElementById('email-input').value.trim();
@@ -215,8 +188,18 @@ async function handleSubmit() {
   btn.classList.add('loading');
 
   try {
-    await saveToFirebase(email);
-    await sendEmails(email);
+    var response = await fetch(FUNCTION_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email })
+    });
+    var data = await response.json();
+    if (data.duplicate) {
+      err.textContent = "you're already on the list.";
+      btn.textContent = "I'm in";
+      btn.classList.remove('loading');
+      return;
+    }
   } catch(e) {
     console.log('Error:', e);
   }
