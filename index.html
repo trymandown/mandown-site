@@ -116,7 +116,7 @@ body::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-in
     <div class="form-wrap" id="form-wrap">
       <div class="email-field">
         <span class="email-icon">✉</span>
-        <input type="email" id="email-input" placeholder="you@email.com" autocomplete="email" />
+        <input type="email" id="email-input" placeholder="your@email.com" autocomplete="email" />
       </div>
       <div class="err-msg" id="err-msg"></div>
       <button class="submit-btn" id="submit-btn" onclick="handleSubmit()">I'm in</button>
@@ -171,14 +171,17 @@ body::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-in
 </div>
 
 <script>
-var FUNCTION_URL = 'https://us-central1-mandown-414f2.cloudfunctions.net/waitlistSignup';
+var SUPABASE_URL = 'https://tlnsetydewnmpdvsqqhn.supabase.co';
+var SUPABASE_KEY = 'sb_publishable_LeqSIE5pXadPDLcqZQAfug_MDygUrcR';
 
 async function handleSubmit() {
-  var email = document.getElementById('email-input').value.trim();
+  var email = document.getElementById('email-input').value.trim().toLowerCase();
   var err = document.getElementById('err-msg');
   err.textContent = '';
 
-  if (!email || !email.includes('@') || !email.includes('.')) {
+  // Validate email format
+  var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!email || !emailRegex.test(email)) {
     err.textContent = 'Please enter a valid email address.';
     return;
   }
@@ -188,18 +191,29 @@ async function handleSubmit() {
   btn.classList.add('loading');
 
   try {
-    var response = await fetch(FUNCTION_URL, {
+    // Insert into Supabase — duplicate handled by unique constraint
+    var response = await fetch(SUPABASE_URL + '/rest/v1/waitlist', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY,
+        'Prefer': 'return=minimal'
+      },
       body: JSON.stringify({ email: email })
     });
-    var data = await response.json();
-    if (data.duplicate) {
+
+    if (response.status === 409) {
       err.textContent = "you're already on the list.";
       btn.textContent = "I'm in";
       btn.classList.remove('loading');
       return;
     }
+
+    if (!response.ok) {
+      throw new Error('Signup failed');
+    }
+
   } catch(e) {
     console.log('Error:', e);
   }
