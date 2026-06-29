@@ -116,7 +116,7 @@ body::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-in
     <div class="form-wrap" id="form-wrap">
       <div class="email-field">
         <span class="email-icon">✉</span>
-        <input type="email" id="email-input" placeholder="you@email.com" autocomplete="email" />
+        <input type="email" id="email-input" placeholder="your@email.com" autocomplete="email" />
       </div>
       <div class="err-msg" id="err-msg"></div>
       <button class="submit-btn" id="submit-btn" onclick="handleSubmit()">I'm in</button>
@@ -166,6 +166,17 @@ body::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-in
     </div>
 
     <p class="builder-note">Built by someone who watched the men around him disappear into silence.<br><span>This is for them.</span></p>
+
+    <div id="access-wrap" style="width:100%;margin-top:40px;text-align:center">
+      <button onclick="document.getElementById('access-form').style.display='block';this.style.display='none'" style="background:none;border:none;color:var(--text3);font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;letter-spacing:0.05em;text-decoration:none;padding:8px;transition:color 0.2s" onmouseover="this.style.color='#7A8BA4'" onmouseout="this.style.color='#354458'">Have an early access code?</button>
+      <div id="access-form" style="display:none;margin-top:16px;display:none">
+        <div style="width:100%;background:rgba(255,255,255,0.03);border:1px solid rgba(200,148,58,0.2);border-radius:16px;padding:20px 24px;display:flex;flex-direction:column;gap:12px">
+          <input type="text" id="early-code-input" placeholder="Enter your code" autocomplete="off" style="width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:14px 16px;color:#EEE9E0;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:400;outline:none;text-transform:uppercase;letter-spacing:0.08em;text-align:center;-webkit-user-select:text;user-select:text"/>
+          <div id="access-err" style="color:#f87171;font-size:12px;text-align:center;min-height:16px"></div>
+          <button onclick="checkAccessCode()" style="width:100%;padding:14px;background:linear-gradient(135deg,#C8943A,#E0B060);color:#07090F;border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;letter-spacing:-0.01em">Unlock &rarr;</button>
+        </div>
+      </div>
+    </div>
 
   </div>
 </div>
@@ -226,6 +237,22 @@ async function handleSubmit() {
 
 document.getElementById('email-input').addEventListener('keydown', function(e) {
   if (e.key === 'Enter') handleSubmit();
+});
+
+function checkAccessCode() {
+  var code = document.getElementById('early-code-input').value.trim().toUpperCase();
+  var err = document.getElementById('access-err');
+  var validCodes = ['MANDOWN-ALPHA-001','MANDOWN-ALPHA-002','MANDOWN-ALPHA-003','MANDOWN-ALPHA-004','MANDOWN-ALPHA-005','MANDOWN-ALPHA-006','MANDOWN-ALPHA-007','MANDOWN-ALPHA-008','MANDOWN-ALPHA-009','MANDOWN-ALPHA-010','MANDOWN-FOUNDER-001'];
+  if (!code) { err.textContent = 'Please enter your code.'; return; }
+  if (!validCodes.includes(code)) { err.textContent = 'Invalid code. Try again.'; return; }
+  localStorage.setItem('md_auth_code', code);
+  window.location.href = '/mandown-v8.html';
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && document.getElementById('access-form').style.display !== 'none') {
+    checkAccessCode();
+  }
 });
 </script>
 <footer style="position:fixed;bottom:0;left:0;right:0;padding:16px 24px;text-align:center;background:linear-gradient(transparent,#07090F);z-index:10;"><a href="/legal.html" style="font-size:11px;color:#354458;text-decoration:none;letter-spacing:0.1em;">Privacy · Terms · Disclaimer</a></footer></body>
