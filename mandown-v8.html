@@ -415,9 +415,7 @@ async function loadMemory() {
       if (snap.exists()) MEMORY = snap.data();
     } catch(e) {}
   }
-  var keys = loadKeys();
-  if (!keys) { show("setup"); }
-  else { KEY = keys.k; ELKEY = keys.el; JORDAN_VID = keys.jv; LUNA_VID = keys.lv; goToLanding(); }
+  goToLanding();
 }
 
 function loadKeys() {
