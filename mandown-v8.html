@@ -17,6 +17,7 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 input, textarea { -webkit-user-select:text; user-select:text; }
 html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-family:"DM Sans",sans-serif;overflow:hidden;font-weight:300}
+input,textarea{-webkit-user-select:text!important;user-select:text!important;-webkit-tap-highlight-color:initial!important;touch-action:auto!important;pointer-events:all!important;position:relative;z-index:100}
 .screen{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.6s ease;overflow-y:auto;overflow-x:hidden}
 .screen.active{opacity:1;pointer-events:all}
 #amb{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
@@ -201,15 +202,14 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
 
 <!-- AUTH CODE -->
 <div class="screen" id="codescreen">
-  <div class="setup-wrap">
-    <div class="setup-title">Early <b>Access</b></div>
-    <div class="setup-sub">Enter your access code to continue</div>
-    <div class="gfield">
-      <span class="fl">Access Code</span>
-      <input class="fi" type="text" id="access-code-input" placeholder="" autocomplete="off" style="text-transform:uppercase;letter-spacing:0.05em"/>
+  <div class="auth-wrap">
+    <div class="wt">Man <b>Down</b></div>
+    <div class="auth-sub">Early access. Enter your code to continue.</div>
+    <div class="gfield" style="width:100%;margin-top:8px">
+      <input class="fi" type="text" id="access-code-input" placeholder="Your access code" autocomplete="off" style="text-transform:uppercase;letter-spacing:0.08em;text-align:center;font-size:15px"/>
     </div>
-    <div id="code-err" style="color:var(--danger);font-size:12px;text-align:center;margin-top:-8px;min-height:16px"></div>
-    <button class="btn" id="code-submit-btn">Unlock &rarr;</button>
+    <div id="code-err" style="color:var(--danger);font-size:12px;text-align:center;min-height:16px"></div>
+    <button class="gbtn" id="code-submit-btn" style="width:100%;justify-content:center;background:linear-gradient(135deg,var(--gold),var(--gold-l));color:#07090F;border:none">Unlock &rarr;</button>
   </div>
 </div>
 
@@ -244,10 +244,6 @@ html,body{height:100%;width:100%;background:var(--bg);color:var(--text);font-fam
         <div class="varr">&#8250;</div>
       </div>
     </div>
-    <div class="guest-notice" id="upgrade-notice" style="display:none">
-      You are in guest mode. Create a free account so Jordan and Luna remember you next time.
-    </div>
-    <button id="early-access-btn" style="background:none;border:none;color:var(--text3);font-size:12px;font-family:'DM Sans',sans-serif;cursor:pointer;margin-top:8px;letter-spacing:0.05em;text-decoration:underline;padding:8px">Have an early access code?</button>
   </div>
 </div>
 
@@ -371,6 +367,12 @@ function show(id) {
   document.getElementById(id).classList.add("active");
   var footer = document.getElementById("legal-footer");
   if (footer) footer.style.display = (id === "chat") ? "none" : "block";
+  if (id === "codescreen") {
+    setTimeout(function() { 
+      var input = document.getElementById("access-code-input");
+      if (input) input.focus();
+    }, 300);
+  }
 }
 
 function cleanText(t) {
@@ -415,7 +417,13 @@ async function loadMemory() {
       if (snap.exists()) MEMORY = snap.data();
     } catch(e) {}
   }
-  goToLanding();
+  var savedCode = localStorage.getItem("md_auth_code");
+  if (savedCode) {
+    AUTH_CODE = savedCode;
+    goToLanding();
+  } else {
+    show("codescreen");
+  }
 }
 
 function loadKeys() {
@@ -449,14 +457,9 @@ document.getElementById("setup-btn").addEventListener("click", function() {
 });
 
 function goToLanding() {
-  if (isGuest) document.getElementById("upgrade-notice").style.display = "block";
   show("landing");
   setTimeout(animQ, 400);
 }
-
-document.getElementById("early-access-btn").addEventListener("click", function() {
-  show("codescreen");
-});
 
 document.getElementById("code-submit-btn").addEventListener("click", function() {
   var code = document.getElementById("access-code-input").value.trim().toUpperCase();
@@ -507,7 +510,6 @@ function pickVoice(name) {
 
 document.getElementById("chatmode-btn").addEventListener("click", function() { openChat("chat"); });
 document.getElementById("voicemode-btn").addEventListener("click", function() { openChat("voice"); });
-document.getElementById("upgrade-notice").addEventListener("click", function() { show("authscreen"); });
 
 function getSys() {
   var mc = MOOD ? "User mood today: " + MOOD + "/10." : "";
