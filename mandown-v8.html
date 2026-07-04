@@ -644,7 +644,7 @@ function sendMsg() {
     if (!res.ok) return res.json().then(function(e) { throw new Error(e.error ? e.error.message : "API error"); });
     return res.json();
   }).then(function(data) {
-    var reply = data && data.content && data.content[0] ? data.content[0].text : "Say more?";
+    var reply = data && data.content && data.content[0] ? data.content[0].text : (data.error ? "Error: " + (data.error.message || JSON.stringify(data.error)) : "Say more?");
     typing.remove();
     addMsg(reply, "bot");
     HISTORY.push({role:"assistant", content:reply});
@@ -686,13 +686,12 @@ async function saveMemory() {
 }
 
 function speak(text) {
-  if (!ELKEY) return;
   var clean = cleanText(text);
-  var vid = VOICE === "Jordan" ? JORDAN_VID : LUNA_VID;
-  fetch("https://api.elevenlabs.io/v1/text-to-speech/" + vid, {
+  if (!clean) return;
+  fetch(SUPABASE_CHAT_URL, {
     method: "POST",
-    headers: {"Content-Type":"application/json","xi-api-key":ELKEY},
-    body: JSON.stringify({text:clean,model_id:"eleven_turbo_v2",voice_settings:{stability:0.3,similarity_boost:0.75,style:0.45,use_speaker_boost:true}})
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({action:"tts", voice:VOICE, text:clean, authCode:AUTH_CODE})
   }).then(function(res) {
     if (!res.ok) return;
     return res.blob();
@@ -766,7 +765,7 @@ document.getElementById("vorb").addEventListener("click", function() {
       body: JSON.stringify({voice:VOICE, mood:MOOD, memory:JSON.stringify(MEMORY), messages:HISTORY, authCode:AUTH_CODE})
     }).then(function(res) { if (!res.ok) throw new Error("error"); return res.json(); })
     .then(function(data) {
-      var reply = data && data.content && data.content[0] ? data.content[0].text : "Say more?";
+      var reply = data && data.content && data.content[0] ? data.content[0].text : (data.error ? "Error: " + (data.error.message || JSON.stringify(data.error)) : "Say more?");
       document.getElementById("vtxt").textContent = "";
       document.getElementById("vstatus").textContent = "Tap to speak";
       HISTORY.push({role:"assistant",content:reply});
