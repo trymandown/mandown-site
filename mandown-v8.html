@@ -305,24 +305,11 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important;-we
 </div>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDRxEu6a9FvFzdUu3m9W_BLMfxc3A0ymv8",
-  authDomain: "mandown-414f2.firebaseapp.com",
-  projectId: "mandown-414f2",
-  storageBucket: "mandown-414f2.firebasestorage.app",
-  messagingSenderId: "442970301957",
-  appId: "1:442970301957:web:e44ab90d2d26e28d595e6c",
-  measurementId: "G-JD81D085HX"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const googleProvider = new GoogleAuthProvider();
+const SUPABASE_URL = "https://tlnsetydewnmpdvsqqhn.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_LeqSIE5pXadPDLcqZQAfug_MDygUrcR";
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 var KEY = "";
 var AUTH_CODE = localStorage.getItem("md_auth_code") || "";
@@ -338,6 +325,12 @@ var MEMORY = {};
 var currentUser = null;
 var isGuest = false;
 var currentAudio = null;
+var USER_ID = null;
+var SESSION_ID = null;
+
+function generateSessionId() {
+  return "sess_" + Date.now() + "_" + Math.random().toString(36).substr(2, 9);
+}
 var isRec = false;
 var recog = null;
 var voiceActive = false;
@@ -386,38 +379,31 @@ function cleanText(t) {
 }
 
 // AUTH
-document.getElementById("google-btn").addEventListener("click", function() {
-  signInWithPopup(auth, googleProvider).catch(function(e) {
-    document.getElementById("auth-err").textContent = e.message;
+document.getElementById("google-btn").addEventListener("click", async function() {
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: "google",
+    options: { redirectTo: window.location.href }
   });
+  if (error) document.getElementById("auth-err").textContent = error.message;
 });
 
-document.getElementById("guest-btn").addEventListener("click", function() {
-  signInAnonymously(auth).catch(function(e) {
-    document.getElementById("auth-err").textContent = e.message;
-  });
+document.getElementById("guest-btn").addEventListener("click", async function() {
+  const { data, error } = await supabase.auth.signInAnonymously();
+  if (error) document.getElementById("auth-err").textContent = error.message;
 });
 
-onAuthStateChanged(auth, function(user) {
-  if (user) {
-    currentUser = user;
-    isGuest = user.isAnonymous;
-    loadMemory();
+supabase.auth.onAuthStateChange(async function(event, session) {
+  if (session && session.user) {
+    currentUser = session.user;
+    USER_ID = session.user.id;
+    isGuest = session.user.is_anonymous || false;
+    await loadMemory();
   } else {
-    signInAnonymously(auth).catch(function() {
-      isGuest = true;
-      goToLanding();
-    });
+    const { data } = await supabase.auth.signInAnonymously();
   }
 });
 
 async function loadMemory() {
-  if (!isGuest && currentUser) {
-    try {
-      var snap = await getDoc(doc(db, "memories", currentUser.uid));
-      if (snap.exists()) MEMORY = snap.data();
-    } catch(e) {}
-  }
   var savedCode = localStorage.getItem("md_auth_code");
   if (savedCode) {
     AUTH_CODE = savedCode;
@@ -541,6 +527,7 @@ function openChat(mode) {
   var savedCode = localStorage.getItem("md_auth_code");
   if (!savedCode) { show("codescreen"); return; }
   AUTH_CODE = savedCode;
+  SESSION_ID = generateSessionId();
   MODE = mode;
   HISTORY = [];
   msgCount = 0;
@@ -583,6 +570,14 @@ function openChat(mode) {
 
 document.getElementById("backbtn").addEventListener("click", function() {
   if (currentAudio) { currentAudio.pause(); currentAudio = null; }
+  // Save session memory before leaving
+  if (HISTORY.length >= 4 && USER_ID && SESSION_ID) {
+    fetch(SUPABASE_CHAT_URL, {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({action:"save_session", voice:VOICE, messages:HISTORY, authCode:AUTH_CODE, userId:USER_ID, sessionId:SESSION_ID})
+    }).catch(function() {});
+  }
   document.querySelectorAll(".vcard").forEach(function(c) { c.classList.remove("selected"); });
   VOICE = null;
   MOOD = null;
@@ -639,7 +634,7 @@ function sendMsg() {
   fetch(SUPABASE_CHAT_URL, {
     method: "POST",
     headers: {"Content-Type":"application/json"},
-    body: JSON.stringify({voice:VOICE, mood:MOOD, memory:JSON.stringify(MEMORY), messages:HISTORY, authCode:AUTH_CODE})
+    body: JSON.stringify({voice:VOICE, mood:MOOD, memory:JSON.stringify(MEMORY), messages:HISTORY, authCode:AUTH_CODE, userId:USER_ID, sessionId:SESSION_ID})
   }).then(function(res) {
     if (!res.ok) return res.json().then(function(e) { throw new Error(e.error ? e.error.message : "API error"); });
     return res.json();
@@ -649,10 +644,12 @@ function sendMsg() {
     addMsg(reply, "bot");
     HISTORY.push({role:"assistant", content:reply});
     if (MODE === "voice") speak(reply);
-    if (msgCount % 10 === 0) saveMemory();
-    if (!isGuest && msgCount === 5) {
-      var n = document.getElementById("upgrade-notice");
-      if (n) n.style.display = "none";
+    if (msgCount % 4 === 0 && USER_ID && SESSION_ID && HISTORY.length >= 4) {
+      fetch(SUPABASE_CHAT_URL, {
+        method: "POST",
+        headers: {"Content-Type":"application/json"},
+        body: JSON.stringify({action:"save_session", voice:VOICE, messages:HISTORY, authCode:AUTH_CODE, userId:USER_ID, sessionId:SESSION_ID})
+      }).catch(function() {});
     }
   }).catch(function(e) {
     typing.remove();
@@ -663,27 +660,6 @@ function sendMsg() {
   });
 }
 
-async function saveMemory() {
-  if (isGuest || !currentUser) return;
-  try {
-    var res = await fetch(SUPABASE_CHAT_URL, {
-      method: "POST",
-      headers: {"Content-Type":"application/json"},
-      body: JSON.stringify({
-        model: "claude-sonnet-4-6",
-        max_tokens: 200,
-        system: "Write a short private memory note in 2-3 sentences. Include: their name if mentioned, their main struggles, relationship situation, what they are working on, their mood patterns. Be factual and brief. This note will be read by an AI companion at the start of the next session.",
-        messages: [{role:"user", content: HISTORY.map(function(m) { return m.role + ": " + m.content; }).join("\n")}]
-      })
-    });
-    var data = await res.json();
-    var summary = data && data.content && data.content[0] ? data.content[0].text : "";
-    if (summary) {
-      MEMORY[VOICE] = summary;
-      await setDoc(doc(db, "memories", currentUser.uid), MEMORY);
-    }
-  } catch(e) {}
-}
 
 function speak(text) {
   var clean = cleanText(text);
@@ -762,7 +738,7 @@ document.getElementById("vorb").addEventListener("click", function() {
     fetch(SUPABASE_CHAT_URL, {
       method: "POST",
       headers: {"Content-Type":"application/json"},
-      body: JSON.stringify({voice:VOICE, mood:MOOD, memory:JSON.stringify(MEMORY), messages:HISTORY, authCode:AUTH_CODE})
+      body: JSON.stringify({voice:VOICE, mood:MOOD, memory:JSON.stringify(MEMORY), messages:HISTORY, authCode:AUTH_CODE, userId:USER_ID, sessionId:SESSION_ID})
     }).then(function(res) { if (!res.ok) throw new Error("error"); return res.json(); })
     .then(function(data) {
       var reply = data && data.content && data.content[0] ? data.content[0].text : (data.error ? "Error: " + (data.error.message || JSON.stringify(data.error)) : "Say more?");
