@@ -69,7 +69,7 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important;-we
 .btn:hover{opacity:.9}
 
 /* LANDING */
-#landing{z-index:2;padding:32px 20px}
+#landing{z-index:2;padding:32px 20px;position:relative}
 .land-inner{position:relative;z-index:2;width:100%;max-width:420px;display:flex;flex-direction:column;align-items:center;gap:40px;padding:20px 0}
 .big-q{text-align:center;font-size:clamp(36px,9vw,58px);font-weight:200;line-height:1.1;letter-spacing:-0.05em;margin-bottom:4px}
 .big-q em{font-style:italic;color:var(--gold);font-weight:300;display:block;font-size:clamp(38px,9.5vw,62px)}
@@ -93,6 +93,27 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important;-we
 .mp.on{background:linear-gradient(135deg,var(--gold),var(--gold-l));border-color:var(--gold-l);color:#07090F;font-weight:700;transform:translateY(-3px);box-shadow:0 6px 28px rgba(200,148,58,0.55)}
 .guest-notice{font-size:11px;color:var(--text3);text-align:center;padding:10px 16px;background:var(--gold-xs);border:1px solid var(--border-g);border-radius:10px;line-height:1.6;cursor:pointer;transition:all .2s}
 .guest-notice:hover{border-color:var(--gold);color:var(--text2)}
+.avatar-btn{position:absolute;top:16px;right:20px;width:38px;height:38px;border-radius:50%;overflow:hidden;cursor:pointer;z-index:5;border:1.5px solid var(--border-g);background:var(--glass2);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600;color:var(--gold-l);transition:transform .2s,box-shadow .2s}
+.avatar-btn:hover{transform:scale(1.05);box-shadow:0 4px 20px rgba(200,148,58,0.25)}
+.avatar-btn img{width:100%;height:100%;object-fit:cover}
+.account-menu{position:absolute;top:60px;right:20px;width:230px;background:var(--bg3);border:1px solid var(--border);border-radius:16px;box-shadow:0 12px 48px rgba(0,0,0,0.55);z-index:100;display:none;backdrop-filter:blur(24px);overflow:hidden}
+.account-menu.show{display:block}
+.menu-view{display:none}
+.menu-view.active{display:block}
+.menu-head{padding:16px 18px;font-size:13px;font-weight:600;color:var(--text);letter-spacing:0.02em;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.menu-back{cursor:pointer;color:var(--text2);font-size:16px;line-height:1;transition:color .2s}
+.menu-back:hover{color:var(--gold)}
+.menu-row{padding:13px 18px;font-size:13.5px;color:var(--text2);cursor:pointer;display:flex;align-items:center;justify-content:space-between;transition:background .15s,color .15s;border-bottom:1px solid rgba(255,255,255,0.03)}
+.menu-row:last-child{border-bottom:none}
+.menu-row:hover{background:var(--glass);color:var(--text)}
+.menu-row .chev{color:var(--text3);font-size:13px}
+.menu-info{padding:14px 18px;font-size:12.5px;color:var(--text2);line-height:1.7}
+.menu-info b{color:var(--text);font-weight:500}
+.menu-sub{padding:8px}
+.pop-btn{display:block;width:100%;padding:11px;font-size:13px;color:var(--text2);text-align:center;background:var(--glass);border:1px solid var(--border);border-radius:9px;cursor:pointer;margin-bottom:8px;font-family:"DM Sans",sans-serif;transition:all .2s}
+.pop-btn:hover{border-color:var(--border-g);color:var(--text)}
+.pop-btn:disabled{opacity:0.4;cursor:not-allowed}
+.pop-btn.danger:hover{border-color:var(--danger);color:var(--danger)}
 
 /* MODE */
 #modescreen{z-index:2;padding:32px 20px}
@@ -122,8 +143,8 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important;-we
 .tog{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:500;letter-spacing:0.05em;cursor:pointer;transition:all .2s;color:var(--text2);font-family:"DM Sans",sans-serif;border:none;background:transparent}
 .tog.on{background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--bg)}
 .chat-msgs{flex:1;overflow-y:auto;padding:20px 16px;display:flex;flex-direction:column;gap:14px;scrollbar-width:thin;scrollbar-color:var(--bg3) transparent}
-.msg{max-width:82%;padding:13px 17px;border-radius:20px;font-size:14px;line-height:1.75;font-weight:300;animation:mpop .3s ease both}
-@keyframes mpop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.msg{max-width:82%;padding:13px 17px;border-radius:20px;font-size:14px;line-height:1.75;font-weight:300;animation:mpop .25s cubic-bezier(.16,1,.3,1) both}
+@keyframes mpop{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
 .msg.bot{background:var(--glass);border:1px solid var(--border);align-self:flex-start;border-bottom-left-radius:4px;backdrop-filter:blur(20px)}
 .msg.user{background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--bg);align-self:flex-end;border-bottom-right-radius:4px;font-weight:400}
 .msg.typing{color:var(--text3);font-style:italic;font-size:13px;background:var(--glass);border:1px solid var(--border);align-self:flex-start;border-bottom-left-radius:4px}
@@ -240,6 +261,37 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important;-we
 
 <!-- LANDING -->
 <div class="screen" id="landing">
+  <div class="avatar-btn" id="avatarbtn"><span id="avatar-letter">?</span><img id="avatar-img" src="" alt="" style="display:none"/></div>
+  <div class="account-menu" id="accountmenu">
+
+    <div class="menu-view active" id="menu-main">
+      <div class="menu-row" data-target="menu-account">Account <span class="chev">&rsaquo;</span></div>
+      <div class="menu-row" data-target="menu-subscription">Subscription <span class="chev">&rsaquo;</span></div>
+      <div class="menu-row" data-target="menu-settings">Settings <span class="chev">&rsaquo;</span></div>
+    </div>
+
+    <div class="menu-view" id="menu-account">
+      <div class="menu-head"><span class="menu-back" data-back="menu-main">&lsaquo;</span> Account</div>
+      <div class="menu-info" id="account-info">Loading...</div>
+      <div class="menu-sub">
+        <button class="pop-btn" id="signoutbtn">Sign Out</button>
+      </div>
+    </div>
+
+    <div class="menu-view" id="menu-subscription">
+      <div class="menu-head"><span class="menu-back" data-back="menu-main">&lsaquo;</span> Subscription</div>
+      <div class="menu-info">You're on the <b>Free</b> plan.<br>Paid plans are coming soon.</div>
+    </div>
+
+    <div class="menu-view" id="menu-settings">
+      <div class="menu-head"><span class="menu-back" data-back="menu-main">&lsaquo;</span> Settings</div>
+      <div class="menu-sub">
+        <button class="pop-btn" id="exportbtn" disabled>Export My Data</button>
+        <button class="pop-btn danger" id="deletebtn">Delete My Data</button>
+      </div>
+    </div>
+
+  </div>
   <div class="land-inner">
     <div class="big-q" id="bigq">
       <span class="word">Still</span>
@@ -479,6 +531,7 @@ function goToLanding() {
 
 function showLandingScreen() {
   show("landing");
+  renderAvatar();
   setTimeout(animQ, 400);
 }
 
@@ -575,6 +628,93 @@ function getSys() {
 
   return base + persona + knowledge + howToRespond + crisis + rules;
 }
+
+function renderAvatar() {
+  var letterEl = document.getElementById("avatar-letter");
+  var imgEl = document.getElementById("avatar-img");
+  var infoEl = document.getElementById("account-info");
+  if (!currentUser) return;
+
+  if (isGuest) {
+    letterEl.style.display = "flex";
+    letterEl.textContent = "G";
+    imgEl.style.display = "none";
+    if (infoEl) infoEl.innerHTML = "You're in a <b>guest session</b>.<br>No email attached.";
+    return;
+  }
+
+  var meta = currentUser.user_metadata || {};
+  var avatarUrl = meta.avatar_url || meta.picture || null;
+  var name = meta.full_name || meta.name || (currentUser.email ? currentUser.email.split("@")[0] : "You");
+  var email = currentUser.email || "";
+
+  if (avatarUrl) {
+    imgEl.src = avatarUrl;
+    imgEl.style.display = "block";
+    letterEl.style.display = "none";
+  } else {
+    letterEl.style.display = "flex";
+    letterEl.textContent = name.charAt(0).toUpperCase();
+    imgEl.style.display = "none";
+  }
+
+  if (infoEl) infoEl.innerHTML = "<b>" + name + "</b><br>" + (email || "No email on file");
+}
+
+document.getElementById("avatarbtn").addEventListener("click", function(e) {
+  e.stopPropagation();
+  var menu = document.getElementById("accountmenu");
+  var isOpening = !menu.classList.contains("show");
+  if (isOpening) {
+    document.querySelectorAll(".menu-view").forEach(function(v) { v.classList.remove("active"); });
+    document.getElementById("menu-main").classList.add("active");
+  }
+  menu.classList.toggle("show");
+});
+
+document.querySelectorAll(".menu-row").forEach(function(row) {
+  row.addEventListener("click", function() {
+    var target = row.getAttribute("data-target");
+    document.querySelectorAll(".menu-view").forEach(function(v) { v.classList.remove("active"); });
+    document.getElementById(target).classList.add("active");
+  });
+});
+
+document.querySelectorAll(".menu-back").forEach(function(btn) {
+  btn.addEventListener("click", function() {
+    var target = btn.getAttribute("data-back");
+    document.querySelectorAll(".menu-view").forEach(function(v) { v.classList.remove("active"); });
+    document.getElementById(target).classList.add("active");
+  });
+});
+
+document.addEventListener("click", function(e) {
+  var menu = document.getElementById("accountmenu");
+  var btn = document.getElementById("avatarbtn");
+  if (menu.classList.contains("show") && !menu.contains(e.target) && e.target !== btn && !btn.contains(e.target)) {
+    menu.classList.remove("show");
+  }
+});
+
+document.getElementById("signoutbtn").addEventListener("click", async function() {
+  try { await supabase.auth.signOut(); } catch (e) {}
+  location.reload();
+});
+
+document.getElementById("deletebtn").addEventListener("click", function() {
+  if (!USER_ID) { alert("Guest sessions have nothing stored to delete."); return; }
+  if (!confirm("This will permanently delete all your messages and data. Are you sure?")) return;
+  fetch(SUPABASE_CHAT_URL, {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({action:"delete_data", userId:USER_ID, authCode:AUTH_CODE})
+  }).then(function() {
+    localStorage.clear();
+    location.reload();
+  }).catch(function() {
+    alert("Something went wrong. Please try again.");
+  });
+});
 
 async function loadPreviousMessages() {
   if (!USER_ID) return false;
@@ -726,17 +866,23 @@ function sendMsg() {
     return res.json();
   }).then(function(data) {
     var reply = data && data.content && data.content[0] ? data.content[0].text : (data.error ? "Error: " + (data.error.message || JSON.stringify(data.error)) : "Say more?");
-    typing.remove();
-    addMsg(reply, "bot");
-    HISTORY.push({role:"assistant", content:reply});
-    if (MODE === "voice") speak(reply);
-    if (msgCount % 4 === 0 && USER_ID && SESSION_ID && HISTORY.length >= 4) {
-      fetch(SUPABASE_CHAT_URL, {
-        method: "POST",
-        headers: {"Content-Type":"application/json"},
-        body: JSON.stringify({action:"save_session", voice:VOICE, messages:HISTORY, authCode:AUTH_CODE, userId:USER_ID, sessionId:SESSION_ID})
-      }).catch(function() {});
-    }
+    // Small random pause before the message appears, so it feels like someone
+    // typed it rather than an instant robot reply. Text chat only, sendMsg()
+    // is never used by the voice flow, so voice stays instant.
+    var thinkDelay = 500 + Math.random() * 500;
+    setTimeout(function() {
+      typing.remove();
+      addMsg(reply, "bot");
+      HISTORY.push({role:"assistant", content:reply});
+      if (MODE === "voice") speak(reply);
+      if (msgCount % 4 === 0 && USER_ID && SESSION_ID && HISTORY.length >= 4) {
+        fetch(SUPABASE_CHAT_URL, {
+          method: "POST",
+          headers: {"Content-Type":"application/json"},
+          body: JSON.stringify({action:"save_session", voice:VOICE, messages:HISTORY, authCode:AUTH_CODE, userId:USER_ID, sessionId:SESSION_ID})
+        }).catch(function() {});
+      }
+    }, thinkDelay);
   }).catch(function(e) {
     typing.remove();
     var eb = document.getElementById("errbar");
