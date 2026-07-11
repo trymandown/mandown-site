@@ -9,6 +9,7 @@
 <meta property="og:title" content="Man Down">
 <meta property="og:description" content="You don't have to carry it alone.">
 <meta property="og:url" content="https://trymandown.com/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2307090F'/%3E%3Ccircle cx='32' cy='38' r='9' fill='%23C8943A'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..500;1,6..72,300..500&display=swap" rel="stylesheet">
@@ -51,14 +52,19 @@
   /* ---------- header ---------- */
   header{
     padding-top:clamp(26px, 4.5vh, 52px);
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
   }
   .wordmark{
     font-family:var(--sans);
-    font-size:clamp(16px, 2vw, 19px);
-    font-weight:700;
-    letter-spacing:.3em;
-    color:var(--gold);
+    font-size:clamp(18px, 2.2vw, 22px);
+    font-weight:800;
+    letter-spacing:.26em;
+    color:var(--ink);
   }
+  /* the gold dot is the brand mark — same one as the favicon */
+  .wordmark .dot{ color:var(--gold); }
 
   /* ---------- hero (headline + the one action) ---------- */
   .hero{
@@ -97,6 +103,22 @@
   @keyframes settle{
     from{ opacity:0; transform:translateY(10px); }
     to{ opacity:1; transform:none; }
+  }
+
+  /* Wide screens: the hero becomes a two-column lockup. The headline holds
+     the left, the action holds the right, and the previously-empty right
+     margin now carries the one thing the page wants you to do. */
+  @media (min-width:1080px){
+    .hero{
+      display:grid;
+      grid-template-columns:1.35fr 1fr;
+      column-gap:clamp(48px, 5vw, 96px);
+      align-content:center;
+      align-items:end;
+    }
+    .hero h1{ grid-column:1; grid-row:1 / span 2; }
+    .hero .sub{ grid-column:2; grid-row:1; align-self:end; margin-top:0; }
+    .hero-capture{ grid-column:2; grid-row:2; margin-top:30px; }
   }
 
   form.capture{
@@ -205,8 +227,14 @@
   /* ---------- shared section rhythm ---------- */
   section{ padding-top:clamp(90px, 15vh, 170px); }
 
+  /* Reveal is reserved for the two sections where arrival matters (the
+     scenarios and the voices) — not sprayed on everything, and not on the
+     founder note, which should simply already be there when you get to it.
+     Durations differ on purpose. */
   .reveal{ opacity:0; transform:translateY(12px); transition:opacity .7s ease, transform .7s ease; }
   .reveal.on{ opacity:1; transform:none; }
+  .persona-row.reveal{ transition-duration:.55s; }
+  .persona-row.flip.reveal{ transition-duration:.85s; }
 
   /* ---------- scenarios ---------- */
   /* This section steps in from the right: the one voice on the page that
@@ -251,9 +279,11 @@
   }
   .dots{
     display:flex;
+    flex-wrap:wrap; /* twelve situations now; on narrow phones the dots take two quiet rows */
     gap:6px;
     margin-top:12px;
     margin-left:-8px; /* optically align first dot with the text edge */
+    max-width:400px;
   }
   /* the visible dot is 6px, but the tap target is 24px — thumbs at 2am miss small things */
   .dots button{
@@ -403,7 +433,7 @@
 <body>
 
 <header class="frame">
-  <div class="wordmark">MAN DOWN</div>
+  <div class="wordmark">MAN DOWN<span class="dot">.</span></div>
 </header>
 
 <div class="hero frame">
@@ -464,6 +494,26 @@
         <p class="line">You&rsquo;ve thought about reaching out for help.</p>
         <p class="after">But something stops you every time.</p>
       </div>
+      <div class="scenario">
+        <p class="line">Your best friends became people you only see at weddings.</p>
+        <p class="after">And you can&rsquo;t remember who stopped calling first.</p>
+      </div>
+      <div class="scenario">
+        <p class="line">You&rsquo;ve never once heard your father say he&rsquo;s proud of you.</p>
+        <p class="after">You tell yourself it stopped mattering years ago.</p>
+      </div>
+      <div class="scenario">
+        <p class="line">You lost someone, took three days off, and went back to work.</p>
+        <p class="after">Everyone assumed that meant you were okay.</p>
+      </div>
+      <div class="scenario">
+        <p class="line">Lately the smallest things set you off, and you don&rsquo;t know why.</p>
+        <p class="after">The anger was never really about the dishes.</p>
+      </div>
+      <div class="scenario">
+        <p class="line">You got the promotion, the apartment, the things you were supposed to want.</p>
+        <p class="after">So why does it feel like nothing?</p>
+      </div>
     </div>
     <div class="dots" id="dots" aria-label="Situations"></div>
   </div>
@@ -476,7 +526,7 @@
       <div class="persona-text">
         <p class="name">JORDAN</p>
         <p class="desc">Says the thing you already know but can&rsquo;t say yet.</p>
-        <p class="more">No therapy voice. No careful little questions. He remembers what you told him last week and brings it up when it matters &mdash; and when you say you&rsquo;re fine and you&rsquo;re not, he doesn&rsquo;t let it slide.</p>
+        <p class="more">No therapy voice. No careful little questions. He remembers what you told him last week and brings it up when it matters. And when you say you&rsquo;re fine and you&rsquo;re not, he doesn&rsquo;t let it slide.</p>
       </div>
       <div class="exchange" aria-label="Example conversation with Jordan">
         <p class="msg him">lost my job today. haven&rsquo;t told anyone yet.</p>
@@ -496,12 +546,12 @@
       </div>
     </div>
 
-    <p class="who-honest reveal"><strong>Jordan and Luna are AI</strong> &mdash; built for this, and honest about it. Both remember you. Neither judges, flinches, or repeats a word. There&rsquo;s no face to keep straight here. That&rsquo;s the point.</p>
+    <p class="who-honest"><strong>Jordan and Luna are AI,</strong> built for this and honest about it. Both remember you. Neither judges, flinches, or repeats a word. There&rsquo;s no face to keep straight here. That&rsquo;s the point.</p>
   </div>
 </section>
 
 <section class="founder frame" aria-label="Founder note">
-  <div class="founder-inner reveal">
+  <div class="founder-inner">
     <p>Built by someone who watched the men around him disappear into silence. This is for them.</p>
   </div>
 </section>
