@@ -1,474 +1,635 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Man Down — for the thoughts you don't say out loud</title>
 <meta name="description" content="You don't have to carry it alone.">
+<meta name="theme-color" content="#07090F">
+<meta property="og:title" content="Man Down">
+<meta property="og:description" content="You don't have to carry it alone.">
+<meta property="og:url" content="https://trymandown.com/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..500;1,6..72,300..500&display=swap" rel="stylesheet">
 <style>
+  /* The sans is the phone's own voice (texting); the serif is the page's voice.
+     Two registers, both committed — neither is a decoration on the other. */
   :root{
-    --bg:#07090F;
-    --bg2:#0B0E17;
+    --ink:#EEE9E0;
+    --muted:#8A867B;
     --gold:#C8943A;
-    --gold-l:#E0B060;
-    --text:#EEE9E0;
-    --text2:#7A8BA4;
-    --text3:#354458;
-    --border:rgba(255,255,255,0.07);
-    --border-g:rgba(200,148,58,0.28);
+    --night:#07090F;
+    --hairline:rgba(238,233,224,0.14);
+    --serif:'Newsreader', Georgia, 'Times New Roman', serif;
+    --sans:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   }
+
   *{ margin:0; padding:0; box-sizing:border-box; }
-  html{ scroll-behavior:smooth; }
+
+  html{ background:var(--night); }
+
   body{
-    background:var(--bg);
-    color:var(--text);
-    font-family:'DM Sans',sans-serif;
+    background:var(--night);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:16px;
+    line-height:1.6;
     -webkit-font-smoothing:antialiased;
     overflow-x:hidden;
   }
-  body::before{
-    content:"";
-    position:fixed;inset:0;
-    pointer-events:none;
-    z-index:9999;
-    opacity:0.035;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-    mix-blend-mode:overlay;
-  }
-  body::after{
-    content:"";
-    position:fixed;inset:0;
-    pointer-events:none;
-    z-index:0;
-    background:radial-gradient(ellipse 900px 600px at 15% 0%,rgba(200,148,58,0.05),transparent 60%);
-  }
-  section{ position:relative; z-index:1; }
 
-  /* HERO + FORM — first thing they see */
-  .hero{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    padding:80px 24px 48px;
+  ::selection{ background:var(--gold); color:var(--night); }
+
+  a{ color:var(--muted); text-decoration:none; transition:color .25s ease; }
+  a:hover{ color:var(--ink); }
+
+  :focus-visible{ outline:1px solid var(--gold); outline-offset:4px; }
+
+  .frame{ padding-left:clamp(24px, 8vw, 120px); padding-right:clamp(24px, 6vw, 96px); }
+
+  /* ---------- header ---------- */
+  header{
+    padding-top:clamp(26px, 4.5vh, 52px);
   }
   .wordmark{
-    font-family:'DM Sans',sans-serif;
-    font-size:18px;
+    font-family:var(--sans);
+    font-size:clamp(16px, 2vw, 19px);
     font-weight:700;
-    letter-spacing:0.14em;
-    color:var(--gold-l);
-    text-transform:uppercase;
-    margin-bottom:40px;
+    letter-spacing:.3em;
+    color:var(--gold);
   }
-  .hero-line{
-    font-family:'Instrument Serif',serif;
-    font-style:italic;
-    font-weight:400;
-    font-size:clamp(30px,6vw,52px);
-    line-height:1.25;
-    max-width:16ch;
-    color:var(--text);
-    opacity:0;
-    transform:translateY(14px);
-    animation:rise 1.2s cubic-bezier(.2,.8,.2,1) 0.2s forwards;
-    margin-bottom:40px;
-  }
-  .hero-line .warm{ color:var(--gold-l); }
-  @keyframes rise{ to{ opacity:1; transform:translateY(0); } }
 
-  .form-wrap{
-    width:100%;
-    max-width:380px;
+  /* ---------- hero (headline + the one action) ---------- */
+  .hero{
+    min-height:86svh;
     display:flex;
     flex-direction:column;
-    gap:12px;
-    opacity:0;
-    animation:rise 1s cubic-bezier(.2,.8,.2,1) 0.55s forwards;
+    justify-content:center;
+    padding-top:24px;
+    padding-bottom:32px;
   }
-  .email-field{
+  .hero h1{
+    font-family:var(--serif);
+    font-weight:340;
+    font-optical-sizing:auto;
+    font-size:clamp(40px, 7.6vw, 96px);
+    line-height:1.06;
+    letter-spacing:-0.015em;
+    max-width:12ch;
+    animation:settle 1.1s cubic-bezier(.22,1,.36,1) both;
+  }
+  .hero h1 .gold{ color:var(--gold); }
+  .hero .sub{
+    margin-top:clamp(20px, 3vh, 32px);
+    font-family:var(--serif);
+    font-style:italic;
+    font-weight:340;
+    font-size:clamp(18px, 2vw, 22px);
+    color:var(--muted);
+    animation:settle 1.1s cubic-bezier(.22,1,.36,1) .2s both;
+  }
+  .hero-capture{
+    margin-top:clamp(36px, 5.5vh, 64px);
+    max-width:520px;
+    animation:settle 1.1s cubic-bezier(.22,1,.36,1) .4s both;
+  }
+  @keyframes settle{
+    from{ opacity:0; transform:translateY(10px); }
+    to{ opacity:1; transform:none; }
+  }
+
+  form.capture{
     display:flex;
-    align-items:center;
-    gap:10px;
-    background:var(--bg2);
-    border:1px solid var(--border);
-    border-radius:10px;
-    padding:14px 16px;
-    transition:border-color 0.25s ease;
+    flex-wrap:wrap;
+    align-items:flex-end;
+    gap:18px 24px;
   }
-  .email-field:focus-within{ border-color:var(--border-g); }
-  .email-field input{
-    flex:1;
-    background:none;
+  .capture input[type="email"]{
+    flex:1 1 240px;
+    background:transparent;
     border:none;
+    border-bottom:1px solid var(--hairline);
+    padding:10px 0;
+    font-family:var(--sans);
+    font-size:17px;
+    color:var(--ink);
+    border-radius:0;
+    transition:border-color .3s ease;
+  }
+  .capture input[type="email"]::placeholder{ color:var(--muted); opacity:.75; }
+  .capture input[type="email"]:focus{
     outline:none;
-    color:var(--text);
-    font-family:'DM Sans',sans-serif;
-    font-size:15px;
+    border-bottom-color:var(--gold);
   }
-  .email-field input::placeholder{ color:var(--text3); }
-  .email-icon{ color:var(--text3); font-size:14px; }
-  .err-msg{ color:#C86A4A; font-size:12px; min-height:14px; text-align:left; }
-  .submit-btn{
-    width:100%;
-    padding:15px;
-    border-radius:10px;
-    border:none;
-    background:linear-gradient(135deg,var(--gold),var(--gold-l));
-    color:#07090F;
-    font-family:'DM Sans',sans-serif;
+  .capture button{
+    background:transparent;
+    border:1px solid var(--gold);
+    color:var(--gold);
+    font-family:var(--sans);
     font-size:15px;
-    font-weight:600;
-    letter-spacing:0.01em;
+    letter-spacing:.04em;
+    padding:12px 28px;
     cursor:pointer;
-    transition:transform 0.15s ease,box-shadow 0.25s ease;
+    transition:background .25s ease, color .25s ease;
   }
-  .submit-btn:hover{ transform:translateY(-1px); box-shadow:0 8px 24px rgba(200,148,58,0.25); }
-  .submit-btn:active{ transform:translateY(0); }
-  .submit-btn.loading{ pointer-events:none; opacity:0.7; }
-  .no-spam{ font-size:12px; color:var(--text3); line-height:1.7; margin-top:4px; }
-  .no-spam span{ color:var(--text2); }
+  .capture button:hover, .capture button:focus-visible{
+    background:var(--gold);
+    color:var(--night);
+  }
+  .capture button[disabled]{ opacity:.55; cursor:default; }
+  .capture-note{
+    margin-top:18px;
+    font-size:13px;
+    line-height:1.8;
+    color:var(--muted);
+  }
+  .capture-error{
+    margin-top:14px;
+    font-size:14px;
+    color:var(--gold);
+    display:none;
+  }
+  .capture-error.show{ display:block; }
+
+  .door-success{ display:none; }
+  .door-success.show{ display:block; animation:settle .9s cubic-bezier(.22,1,.36,1) both; }
+  .door-success .big{
+    font-family:var(--serif);
+    font-weight:340;
+    font-size:clamp(24px, 3vw, 32px);
+    line-height:1.35;
+  }
+  .door-success .small{
+    margin-top:14px;
+    font-family:var(--serif);
+    font-style:italic;
+    font-weight:340;
+    font-size:clamp(17px, 2vw, 20px);
+    color:var(--muted);
+  }
+
+  /* access code — quiet, for the ten men who already have one */
+  .code-row{ margin-top:34px; font-size:13px; color:var(--muted); }
   .code-toggle{
-    background:none;
+    background:none; border:none; padding:0;
+    font-family:var(--sans); font-size:13px;
+    color:var(--muted); cursor:pointer;
+    border-bottom:1px solid var(--hairline);
+    transition:color .25s ease;
+  }
+  .code-toggle:hover{ color:var(--ink); }
+  .code-form{ display:none; margin-top:16px; gap:16px; align-items:flex-end; flex-wrap:wrap; }
+  .code-form.show{ display:flex; }
+  .code-form input{
+    flex:1 1 200px;
+    background:transparent;
     border:none;
-    color:var(--text3);
-    font-size:12px;
-    text-decoration:underline;
-    text-underline-offset:3px;
-    cursor:pointer;
-    margin-top:6px;
-    font-family:'DM Sans',sans-serif;
-    transition:color 0.2s;
-  }
-  .code-toggle:hover{ color:var(--text2); }
-  .code-panel{ display:none; margin-top:14px; gap:10px; flex-direction:column; }
-  .code-panel.show{ display:flex; }
-  .code-panel input{
-    width:100%;
-    background:var(--bg2);
-    border:1px solid var(--border-g);
-    border-radius:10px;
-    padding:14px 16px;
-    color:var(--gold-l);
-    text-align:center;
-    letter-spacing:0.1em;
+    border-bottom:1px solid var(--hairline);
+    padding:8px 0;
+    font-family:var(--sans);
+    font-size:15px;
+    letter-spacing:.06em;
+    color:var(--ink);
+    border-radius:0;
     text-transform:uppercase;
-    font-family:'DM Sans',sans-serif;
-    font-size:14px;
-    outline:none;
-    -webkit-user-select:text;
-    user-select:text;
   }
-  .code-err{ color:#C86A4A; font-size:12px; min-height:14px; text-align:center; }
-  .code-panel button{
-    width:100%;
-    padding:14px;
-    border-radius:10px;
-    border:1px solid var(--border-g);
-    background:none;
-    color:var(--gold-l);
-    font-size:14px;
-    cursor:pointer;
-    font-family:'DM Sans',sans-serif;
-    transition:background 0.2s;
+  .code-form input:focus{ outline:none; border-bottom-color:var(--gold); }
+  .code-form button{
+    background:none; border:none; padding:8px 0;
+    font-family:var(--sans); font-size:15px;
+    color:var(--gold); cursor:pointer;
+    letter-spacing:.04em;
   }
-  .code-panel button:hover{ background:rgba(200,148,58,0.08); }
-  .success-wrap{ display:none; flex-direction:column; align-items:center; gap:14px; }
-  .success-wrap.show{ display:flex; }
-  .form-wrap.hide{ display:none; }
-  .success-icon{
-    width:44px;height:44px;
-    border-radius:50%;
-    border:1px solid var(--border-g);
-    display:flex;align-items:center;justify-content:center;
-    color:var(--gold-l);font-size:18px;margin-bottom:6px;
-  }
-  .success-title{
-    font-family:'Instrument Serif',serif;
-    font-style:italic;
-    font-size:24px;
-    color:var(--text);
-  }
-  .success-sub{ font-size:14px; color:var(--text2); max-width:30ch; }
 
-  /* SCENARIOS — below the fold, scroll content */
-  .scenarios{
-    padding:48px 24px 32px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    text-align:center;
+  /* ---------- shared section rhythm ---------- */
+  section{ padding-top:clamp(90px, 15vh, 170px); }
+
+  .reveal{ opacity:0; transform:translateY(12px); transition:opacity .7s ease, transform .7s ease; }
+  .reveal.on{ opacity:1; transform:none; }
+
+  /* ---------- scenarios ---------- */
+  /* This section steps in from the right: the one voice on the page that
+     isn't the product talking — it's his own life read back to him. */
+  .scenarios-inner{
+    margin-left:clamp(0px, 22vw, 380px);
+    max-width:640px;
   }
   .scenarios-label{
-    font-family:'Instrument Serif',serif;
-    font-style:italic;
-    font-size:17px;
-    color:var(--text2);
-    margin-bottom:28px;
-    letter-spacing:0;
-    text-transform:none;
+    font-size:13px;
+    letter-spacing:.08em;
+    color:var(--muted);
   }
   .scenario-stage{
-    max-width:640px;
-    min-height:180px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
     position:relative;
-    width:100%;
+    margin-top:36px;
+    /* Children are absolutely positioned for the crossfade, so they don't
+       contribute height — this must fit the longest scenario on its own. */
+    min-height:clamp(280px, 36vh, 380px);
   }
   .scenario{
-    position:absolute;inset:0;
-    display:flex;flex-direction:column;
-    align-items:center;justify-content:center;
-    opacity:0;transform:translateY(10px);
-    transition:opacity 0.7s ease,transform 0.7s ease;
+    position:absolute;
+    inset:0;
+    opacity:0;
+    transition:opacity .8s ease;
     pointer-events:none;
   }
-  .scenario.active{ opacity:1; transform:translateY(0); pointer-events:auto; }
-  .scenario-line{
-    font-family:'Instrument Serif',serif;
-    font-size:clamp(20px,3.2vw,28px);
-    line-height:1.5;
-    color:var(--text);
-    margin-bottom:16px;
+  .scenario.active{ opacity:1; pointer-events:auto; }
+  .scenario .line{
+    font-family:var(--serif);
+    font-weight:340;
+    font-size:clamp(24px, 3.2vw, 34px);
+    line-height:1.32;
   }
-  .scenario-sub{ font-size:15px; line-height:1.7; color:var(--text2); max-width:46ch; }
-  .scenario-dots{ display:flex; gap:8px; margin-top:24px; }
-  .dot{
-    width:6px;height:6px;border-radius:50%;
-    background:var(--text3);cursor:pointer;
-    transition:background 0.3s ease,transform 0.3s ease;
-  }
-  .dot.active{ background:var(--gold); transform:scale(1.3); }
-
-  /* FOUNDER — left aligned, intentionally asymmetric, breaks the all-centered pattern */
-  .founder{
-    padding:28px 24px 80px;
-    max-width:560px;
-    margin:0 auto;
-  }
-  .founder-note{
-    font-size:16px;
-    line-height:1.9;
-    color:var(--text2);
-    max-width:34ch;
-    text-align:left;
-    border-left:1px solid var(--border-g);
-    padding-left:20px;
-  }
-  .founder-note span{
-    display:block;margin-top:8px;
-    color:var(--text);
-    font-family:'Instrument Serif',serif;
+  .scenario .after{
+    margin-top:18px;
+    font-family:var(--serif);
     font-style:italic;
-    font-size:19px;
+    font-weight:340;
+    font-size:clamp(17px, 2.1vw, 21px);
+    color:var(--muted);
+  }
+  .dots{
+    display:flex;
+    gap:6px;
+    margin-top:12px;
+    margin-left:-8px; /* optically align first dot with the text edge */
+  }
+  /* the visible dot is 6px, but the tap target is 24px — thumbs at 2am miss small things */
+  .dots button{
+    position:relative;
+    width:24px; height:24px;
+    padding:0;
+    border:none;
+    background:transparent;
+    cursor:pointer;
+  }
+  .dots button::before{
+    content:'';
+    position:absolute;
+    top:50%; left:50%;
+    width:6px; height:6px;
+    margin:-3px 0 0 -3px;
+    border-radius:50%;
+    background:var(--hairline);
+    transition:background .3s ease, transform .3s ease;
+  }
+  .dots button.active::before{ background:var(--gold); transform:scale(1.35); }
+
+  /* ---------- who's there ---------- */
+  /* Telling a man what Jordan sounds like is weaker than letting him read
+     one message. Each persona gets a real exchange, written to the same
+     rules the live product runs on. */
+  .who-inner{ max-width:1060px; }
+  .persona-row{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:36px;
+    align-items:center;
+  }
+  .persona-row + .persona-row{ margin-top:clamp(80px, 12vh, 140px); }
+  .persona-text{ max-width:440px; }
+  .persona-text .name{
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:.28em;
+    color:var(--gold);
+  }
+  .persona-text .desc{
+    margin-top:14px;
+    font-family:var(--serif);
+    font-weight:340;
+    font-size:clamp(22px, 2.6vw, 28px);
+    line-height:1.4;
+  }
+  .persona-text .more{
+    margin-top:18px;
+    font-size:15px;
+    line-height:1.85;
+    color:var(--muted);
+  }
+  .exchange{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    max-width:420px;
+  }
+  .msg{
+    padding:13px 17px;
+    border-radius:16px;
+    font-size:15px;
+    line-height:1.55;
+  }
+  .msg.him{
+    align-self:flex-end;
+    background:rgba(238,233,224,0.07);
+    color:var(--muted);
+    border-bottom-right-radius:5px;
+    max-width:85%;
+  }
+  .msg.ai{
+    align-self:flex-start;
+    border:1px solid var(--hairline);
+    color:var(--ink);
+    border-bottom-left-radius:5px;
+    max-width:88%;
+  }
+  .msg.ai .who{
+    display:block;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.2em;
+    color:var(--gold);
+    margin-bottom:7px;
+  }
+  .who-honest{
+    margin-top:clamp(70px, 10vh, 110px);
+    max-width:460px;
+    font-size:15px;
+    line-height:1.85;
+    color:var(--muted);
+  }
+  .who-honest strong{ color:var(--ink); font-weight:500; }
+
+  @media (min-width:740px){
+    .persona-row{ grid-template-columns:1fr 1fr; gap:clamp(48px, 7vw, 110px); }
+    .persona-row.flip .persona-text{ order:2; justify-self:end; }
+    .persona-row.flip .exchange{ order:1; }
+    .persona-row:not(.flip) .exchange{ justify-self:end; }
+    .who-honest{ margin-left:clamp(0px, 24vw, 420px); }
   }
 
+  /* ---------- founder ---------- */
+  .founder-inner{
+    margin-left:clamp(0px, 30vw, 480px);
+    max-width:520px;
+    border-left:1px solid var(--gold);
+    padding-left:clamp(20px, 3vw, 36px);
+  }
+  .founder-inner p{
+    font-family:var(--serif);
+    font-style:italic;
+    font-weight:340;
+    font-size:clamp(19px, 2.3vw, 24px);
+    line-height:1.55;
+    color:var(--ink);
+  }
+  .founder{ padding-bottom:clamp(90px, 14vh, 160px); }
+
+  /* ---------- footer ---------- */
   footer{
-    position:fixed;bottom:0;left:0;right:0;
-    padding:14px 24px;
-    text-align:center;
-    background:linear-gradient(transparent,#07090F);
-    z-index:10;
-    pointer-events:none;
+    border-top:1px solid var(--hairline);
+    padding-top:36px;
+    padding-bottom:48px;
+    font-size:13px;
+    color:var(--muted);
+    line-height:2;
   }
-  footer a{ pointer-events:all; }
+  footer .legal a{ border-bottom:1px solid transparent; }
+  footer .legal a:hover{ border-bottom-color:var(--muted); }
+  footer .disclaimer{ margin-top:6px; }
 
-  @media (prefers-reduced-motion:reduce){
-    *{ animation:none !important; transition:none !important; }
-    .hero-line,.form-wrap{ opacity:1; transform:none; }
+  @media (prefers-reduced-motion: reduce){
+    *, *::before, *::after{ animation:none !important; transition:none !important; }
+    .reveal{ opacity:1; transform:none; }
   }
-  button:focus-visible,input:focus-visible,.dot:focus-visible{
-    outline:2px solid var(--gold-l);
-    outline-offset:2px;
+
+  @media (max-width:600px){
+    .hero{ min-height:auto; padding-top:9vh; padding-bottom:10vh; }
+    .scenario-stage{ min-height:320px; }
   }
 </style>
 </head>
 <body>
 
-<!-- HERO + FORM — what they see first -->
-<section class="hero">
-  <div class="wordmark">Man Down</div>
+<header class="frame">
+  <div class="wordmark">MAN DOWN</div>
+</header>
 
-  <h1 class="hero-line">You don't have to<br>carry it <span class="warm">alone</span>.</h1>
-
-  <div class="form-wrap" id="form-wrap">
-    <div class="email-field">
-      <span class="email-icon">&#9993;</span>
-      <input type="email" id="email-input" placeholder="your@email.com" autocomplete="email" />
+<div class="hero frame">
+  <h1>You don&rsquo;t have to carry it <span class="gold">alone</span>.</h1>
+  <p class="sub">For the thoughts you don&rsquo;t say out loud.</p>
+  <div class="hero-capture">
+    <div id="doorAsk">
+      <form class="capture" id="captureForm" novalidate>
+        <input type="email" id="emailInput" name="email" placeholder="Your email" autocomplete="email" inputmode="email" aria-label="Your email">
+        <button type="submit" id="submitBtn">I&rsquo;m ready</button>
+      </form>
+      <p class="capture-error" id="captureError"></p>
+      <p class="capture-note">One email when we&rsquo;re ready. That&rsquo;s it.<br>Can&rsquo;t find our email? Check your spam folder.</p>
     </div>
-    <div class="err-msg" id="err-msg"></div>
-    <button class="submit-btn" id="submit-btn" onclick="handleSubmit()">I'm ready</button>
-    <p class="no-spam">One email when we're ready. That's it.<br>
-      <span>Can't find our email? Check your spam folder.</span>
-    </p>
-    <button class="code-toggle" id="code-toggle">Have an early access code?</button>
-    <div class="code-panel" id="code-panel">
-      <input type="text" id="code-input" placeholder="Your access code" autocomplete="off" />
-      <div class="code-err" id="code-err"></div>
-      <button id="code-submit">Unlock &rarr;</button>
+    <div class="door-success" id="doorSuccess">
+      <p class="big">First step is always the hardest.</p>
+      <p class="small">You won&rsquo;t have to carry it alone much longer.</p>
+    </div>
+    <div class="code-row">
+      <button class="code-toggle" id="codeToggle">Have an early access code?</button>
+      <form class="code-form" id="codeForm">
+        <input type="text" id="codeInput" placeholder="Your code" autocomplete="off" aria-label="Early access code">
+        <button type="submit">Unlock &rarr;</button>
+      </form>
     </div>
   </div>
+</div>
 
-  <div class="success-wrap" id="success-wrap">
-    <div class="success-icon">&#10003;</div>
-    <p class="success-title">First step is always the hardest.</p>
-    <p class="success-sub">You won't have to carry it alone much longer.</p>
+<section class="frame" aria-label="Situations">
+  <div class="scenarios-inner reveal">
+    <p class="scenarios-label">Have you ever been in this situation?</p>
+    <div class="scenario-stage" id="stage">
+      <div class="scenario active">
+        <p class="line">You lost your job and your relationship in the same month.</p>
+        <p class="after">And you told everyone you were fine.</p>
+      </div>
+      <div class="scenario">
+        <p class="line">You&rsquo;re lying awake at 2am with thoughts you can&rsquo;t turn off.</p>
+        <p class="after">But you don&rsquo;t want to burden anyone, so you just&hellip; wait for morning.</p>
+      </div>
+      <div class="scenario">
+        <p class="line">You moved to a new city. Built a life. And still feel completely alone.</p>
+        <p class="after">You smile every time someone asks how you&rsquo;re doing.</p>
+      </div>
+      <div class="scenario">
+        <p class="line">Something happened years ago that you&rsquo;ve never told a single person.</p>
+        <p class="after">You&rsquo;ve gotten good at carrying it.</p>
+      </div>
+      <div class="scenario">
+        <p class="line">You feel like you&rsquo;re falling behind in your career, your relationships, your life.</p>
+        <p class="after">And the worst part is not knowing who you could even say that to.</p>
+      </div>
+      <div class="scenario">
+        <p class="line">You&rsquo;ve been the strong one for everyone around you.</p>
+        <p class="after">Nobody ever thought to ask if you were okay.</p>
+      </div>
+      <div class="scenario">
+        <p class="line">You&rsquo;ve thought about reaching out for help.</p>
+        <p class="after">But something stops you every time.</p>
+      </div>
+    </div>
+    <div class="dots" id="dots" aria-label="Situations"></div>
   </div>
 </section>
 
-<!-- SCENARIOS — scroll content below -->
-<section class="scenarios">
-  <p class="scenarios-label">Have you ever been in this situation?</p>
-  <div class="scenario-stage" id="stage">
-    <div class="scenario active" data-i="0">
-      <p class="scenario-line">You lost your job and your relationship in the same month.</p>
-      <p class="scenario-sub">And you told everyone you were fine.</p>
+<section class="frame" aria-label="Who's there">
+  <div class="who-inner">
+
+    <div class="persona-row reveal">
+      <div class="persona-text">
+        <p class="name">JORDAN</p>
+        <p class="desc">Says the thing you already know but can&rsquo;t say yet.</p>
+        <p class="more">No therapy voice. No careful little questions. He remembers what you told him last week and brings it up when it matters &mdash; and when you say you&rsquo;re fine and you&rsquo;re not, he doesn&rsquo;t let it slide.</p>
+      </div>
+      <div class="exchange" aria-label="Example conversation with Jordan">
+        <p class="msg him">lost my job today. haven&rsquo;t told anyone yet.</p>
+        <p class="msg ai"><span class="who">JORDAN</span>the job&rsquo;s the smaller half of this. the bigger half is telling the people who think you&rsquo;ve always got it handled. who are you dreading most?</p>
+      </div>
     </div>
-    <div class="scenario" data-i="1">
-      <p class="scenario-line">You're lying awake at 2am with thoughts you can't turn off.</p>
-      <p class="scenario-sub">But you don't want to burden anyone, so you just... wait for morning.</p>
+
+    <div class="persona-row flip reveal">
+      <div class="persona-text">
+        <p class="name">LUNA</p>
+        <p class="desc">The person you can fall apart in front of.</p>
+        <p class="more">She never rushes you, and she never fixes you before she&rsquo;s actually heard you. Say it badly. Say it out of order. Start in the middle at 2am. She stays.</p>
+      </div>
+      <div class="exchange" aria-label="Example conversation with Luna">
+        <p class="msg him">it&rsquo;s 2am and i can&rsquo;t turn my head off</p>
+        <p class="msg ai"><span class="who">LUNA</span>you don&rsquo;t have to turn it off here. it&rsquo;s been loud in there all night with no one to hear it. which thought circles back the hardest?</p>
+      </div>
     </div>
-    <div class="scenario" data-i="2">
-      <p class="scenario-line">You moved to a new city. Built a life. And still feel completely alone.</p>
-      <p class="scenario-sub">You smile every time someone asks how you're doing.</p>
-    </div>
-    <div class="scenario" data-i="3">
-      <p class="scenario-line">Something happened years ago that you've never told a single person.</p>
-      <p class="scenario-sub">You've gotten good at carrying it.</p>
-    </div>
-    <div class="scenario" data-i="4">
-      <p class="scenario-line">You feel like you're falling behind in your career, your relationships, your life.</p>
-      <p class="scenario-sub">And the worst part is not knowing who you could even say that to.</p>
-    </div>
-    <div class="scenario" data-i="5">
-      <p class="scenario-line">You've been the strong one for everyone around you.</p>
-      <p class="scenario-sub">Nobody ever thought to ask if you were okay.</p>
-    </div>
-    <div class="scenario" data-i="6">
-      <p class="scenario-line">You've thought about reaching out for help.</p>
-      <p class="scenario-sub">But something stops you every time.</p>
-    </div>
+
+    <p class="who-honest reveal"><strong>Jordan and Luna are AI</strong> &mdash; built for this, and honest about it. Both remember you. Neither judges, flinches, or repeats a word. There&rsquo;s no face to keep straight here. That&rsquo;s the point.</p>
   </div>
-  <div class="scenario-dots" id="dots"></div>
 </section>
 
-<!-- FOUNDER NOTE -->
-<section class="founder">
-  <p class="founder-note">
-    Built by someone who watched the men around him disappear into silence.
-    <span>This is for them.</span>
+<section class="founder frame" aria-label="Founder note">
+  <div class="founder-inner reveal">
+    <p>Built by someone who watched the men around him disappear into silence. This is for them.</p>
+  </div>
+</section>
+
+<footer class="frame">
+  <p class="legal">
+    <a href="legal.html">Privacy</a> &middot; <a href="legal.html">Terms</a> &middot; <a href="legal.html">Disclaimer</a>
   </p>
-</section>
-
-<footer>
-  <a href="https://trymandown.com/legal.html" style="font-size:12px;color:#7A8BA4;text-decoration:none;letter-spacing:0.1em;">Privacy · Terms · Disclaimer</a><br>
-  <span style="font-size:11px;color:#5a6a7a;letter-spacing:0.05em;">Jordan and Luna are AI companions, not licensed therapists or crisis services.</span>
+  <p class="disclaimer">Jordan and Luna are AI companions, not licensed therapists or crisis services.</p>
+  <p>&copy; 2026 Man Down &middot; <a href="mailto:hello@trymandown.com">hello@trymandown.com</a></p>
 </footer>
 
 <script>
-var SUPABASE_URL = 'https://tlnsetydewnmpdvsqqhn.supabase.co';
-var SUPABASE_KEY = 'sb_publishable_LeqSIE5pXadPDLcqZQAfug_MDygUrcR';
-
-// Scenario carousel
 (function(){
-  var scenarios = document.querySelectorAll('.scenario');
+  'use strict';
+
+  var SUPABASE_URL = 'https://tlnsetydewnmpdvsqqhn.supabase.co';
+  var SUPABASE_KEY = 'sb_publishable_LeqSIE5pXadPDLcqZQAfug_MDygUrcR';
+
+  /* ---- scenario rotation ---- */
+  var scenarios = Array.prototype.slice.call(document.querySelectorAll('.scenario'));
   var dotsWrap = document.getElementById('dots');
-  var total = scenarios.length;
   var current = 0;
-  var timer;
-  for (var i = 0; i < total; i++){
-    var d = document.createElement('div');
-    d.className = 'dot' + (i === 0 ? ' active' : '');
-    d.setAttribute('role','button');
-    d.setAttribute('tabindex','0');
-    d.dataset.i = i;
-    d.addEventListener('click', function(){ goTo(parseInt(this.dataset.i)); });
-    dotsWrap.appendChild(d);
-  }
-  var dots = document.querySelectorAll('.dot');
-  function goTo(i){
+  var timer = null;
+  var HOLD = 7500; // long enough to read both lines twice — these aren't headlines to skim
+
+  scenarios.forEach(function(_, i){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.setAttribute('aria-label', 'Situation ' + (i + 1));
+    if (i === 0){ b.className = 'active'; b.setAttribute('aria-current', 'true'); }
+    b.addEventListener('click', function(){
+      show(i);
+      restart(); // a manual choice resets the clock so it isn't yanked away mid-read
+    });
+    dotsWrap.appendChild(b);
+  });
+  var dots = Array.prototype.slice.call(dotsWrap.children);
+
+  function show(i){
     scenarios[current].classList.remove('active');
     dots[current].classList.remove('active');
+    dots[current].removeAttribute('aria-current');
     current = i;
     scenarios[current].classList.add('active');
     dots[current].classList.add('active');
-    restart();
+    dots[current].setAttribute('aria-current', 'true');
   }
-  function next(){ goTo((current + 1) % total); }
-  function restart(){ clearInterval(timer); timer = setInterval(next, 5200); }
-  restart();
-})();
+  function next(){ show((current + 1) % scenarios.length); }
+  function restart(){
+    clearInterval(timer);
+    timer = setInterval(next, HOLD);
+  }
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduced) restart();
 
-// Email submit
-async function handleSubmit() {
-  var email = document.getElementById('email-input').value.trim().toLowerCase();
-  var err = document.getElementById('err-msg');
-  err.textContent = '';
-  var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!email || !emailRegex.test(email)) {
-    err.textContent = 'Please enter a valid email address.';
-    return;
+  /* ---- scroll reveals ---- */
+  var revealEls = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
+  if ('IntersectionObserver' in window && !reduced){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting){ e.target.classList.add('on'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.2 });
+    revealEls.forEach(function(el){ io.observe(el); });
+  } else {
+    revealEls.forEach(function(el){ el.classList.add('on'); });
   }
-  var btn = document.getElementById('submit-btn');
-  btn.textContent = '...';
-  btn.classList.add('loading');
-  try {
-    var response = await fetch(SUPABASE_URL + '/rest/v1/waitlist', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'apikey': SUPABASE_KEY,
-        'Authorization': 'Bearer ' + SUPABASE_KEY,
-        'Prefer': 'return=minimal'
-      },
-      body: JSON.stringify({ email: email })
-    });
-    if (response.status === 409) {
-      err.textContent = "you're already on the list.";
-      btn.textContent = "I'm ready";
-      btn.classList.remove('loading');
+
+  /* ---- waitlist ---- */
+  var form = document.getElementById('captureForm');
+  var input = document.getElementById('emailInput');
+  var btn = document.getElementById('submitBtn');
+  var errEl = document.getElementById('captureError');
+
+  form.addEventListener('submit', function(ev){
+    ev.preventDefault();
+    errEl.classList.remove('show');
+    var email = input.value.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){
+      showError('That email doesn’t look right.');
       return;
     }
-    if (!response.ok) throw new Error('Signup failed');
-  } catch(e) {
-    console.log('Error:', e);
+    btn.disabled = true;
+    fetch(SUPABASE_URL + '/rest/v1/waitlist', {
+      method: 'POST',
+      headers: {
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=minimal'
+      },
+      body: JSON.stringify({ email: email.toLowerCase() })
+    }).then(function(res){
+      // 409 = already on the list; that's a success from his side of the screen
+      if (res.ok || res.status === 409){ succeed(); }
+      else { fail(); }
+    }).catch(fail);
+  });
+
+  function succeed(){
+    document.getElementById('doorAsk').style.display = 'none';
+    document.getElementById('doorSuccess').classList.add('show');
   }
-  document.getElementById('form-wrap').classList.add('hide');
-  document.getElementById('success-wrap').classList.add('show');
-}
-
-document.getElementById('email-input').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') handleSubmit();
-});
-
-// Access code
-document.getElementById('code-toggle').addEventListener('click', function(){
-  document.getElementById('code-panel').classList.toggle('show');
-  if (document.getElementById('code-panel').classList.contains('show')) {
-    setTimeout(function(){ document.getElementById('code-input').focus(); }, 100);
+  function fail(){
+    btn.disabled = false;
+    showError('Something broke on our end. Try once more.');
   }
-});
+  function showError(msg){
+    errEl.textContent = msg;
+    errEl.classList.add('show');
+  }
 
-function checkAccessCode() {
-  var code = document.getElementById('code-input').value.trim().toUpperCase();
-  var err = document.getElementById('code-err');
-  var validCodes = ['MANDOWN-ALPHA-001','MANDOWN-ALPHA-002','MANDOWN-ALPHA-003','MANDOWN-ALPHA-004','MANDOWN-ALPHA-005','MANDOWN-ALPHA-006','MANDOWN-ALPHA-007','MANDOWN-ALPHA-008','MANDOWN-ALPHA-009','MANDOWN-ALPHA-010','MANDOWN-FOUNDER-001'];
-  if (!code) { err.textContent = 'Please enter your code.'; return; }
-  if (!validCodes.includes(code)) { err.textContent = 'Invalid code. Try again.'; return; }
-  localStorage.setItem('md_auth_code', code);
-  window.location.href = '/mandown-v8.html';
-}
-
-document.getElementById('code-submit').addEventListener('click', checkAccessCode);
-document.getElementById('code-input').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter') checkAccessCode();
-});
+  /* ---- early access code ---- */
+  var codeToggle = document.getElementById('codeToggle');
+  var codeForm = document.getElementById('codeForm');
+  codeToggle.addEventListener('click', function(){
+    codeForm.classList.toggle('show');
+    if (codeForm.classList.contains('show')) document.getElementById('codeInput').focus();
+  });
+  codeForm.addEventListener('submit', function(ev){
+    ev.preventDefault();
+    var code = document.getElementById('codeInput').value.trim().toUpperCase();
+    if (!code) return;
+    window.location.href = 'mandown-v8.html?code=' + encodeURIComponent(code);
+  });
+})();
 </script>
+
 </body>
 </html>
