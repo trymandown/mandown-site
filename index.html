@@ -9,6 +9,8 @@
 <meta property="og:title" content="Man Down">
 <meta property="og:description" content="You don't have to carry it alone.">
 <meta property="og:url" content="https://trymandown.com/">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://tlnsetydewnmpdvsqqhn.supabase.co; img-src data:; base-uri 'none'; form-action 'self'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2307090F'/%3E%3Ccircle cx='32' cy='38' r='9' fill='%23C8943A'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -56,14 +58,16 @@
     justify-content:space-between;
     align-items:baseline;
   }
+  /* The wordmark is a masthead, not a badge: the same serif voice as the
+     headline, set solid, with the gold dot as the mark (same dot as the
+     favicon). Letterspaced-caps mini-labels read as template chrome. */
   .wordmark{
-    font-family:var(--sans);
-    font-size:clamp(18px, 2.2vw, 22px);
-    font-weight:800;
-    letter-spacing:.26em;
+    font-family:var(--serif);
+    font-size:clamp(24px, 2.8vw, 30px);
+    font-weight:450;
+    letter-spacing:0;
     color:var(--ink);
   }
-  /* the gold dot is the brand mark — same one as the favicon */
   .wordmark .dot{ color:var(--gold); }
 
   /* ---------- hero (headline + the one action) ---------- */
@@ -251,18 +255,33 @@
   .scenario-stage{
     position:relative;
     margin-top:36px;
-    /* Children are absolutely positioned for the crossfade, so they don't
-       contribute height — this must fit the longest scenario on its own. */
-    min-height:clamp(280px, 36vh, 380px);
+    /* Fallback only — script measures the tallest scenario and sets the exact
+       height, so the dots sit the same distance below every scenario on every
+       screen instead of floating under a fixed-height hole. */
+    min-height:240px;
   }
   .scenario{
     position:absolute;
     inset:0;
-    opacity:0;
-    transition:opacity .8s ease;
     pointer-events:none;
   }
-  .scenario.active{ opacity:1; pointer-events:auto; }
+  .scenario.active{ pointer-events:auto; }
+  /* The two lines arrive the way the thought does: the situation first,
+     then a beat, then the part underneath it. */
+  .scenario .line, .scenario .after{
+    opacity:0;
+    transform:translateY(10px);
+    transition:opacity .5s ease, transform .5s ease;
+  }
+  .scenario.active .line{
+    opacity:1; transform:none;
+    transition-duration:.65s;
+  }
+  .scenario.active .after{
+    opacity:1; transform:none;
+    transition-duration:.65s;
+    transition-delay:.9s;
+  }
   .scenario .line{
     font-family:var(--serif);
     font-weight:340;
@@ -426,14 +445,16 @@
 
   @media (max-width:600px){
     .hero{ min-height:auto; padding-top:9vh; padding-bottom:10vh; }
-    .scenario-stage{ min-height:320px; }
   }
+
+  /* honeypot: invisible to people, irresistible to bots */
+  .hp{ position:absolute; left:-9999px; width:1px; height:1px; opacity:0; }
 </style>
 </head>
 <body>
 
 <header class="frame">
-  <div class="wordmark">MAN DOWN<span class="dot">.</span></div>
+  <div class="wordmark">Man Down<span class="dot">.</span></div>
 </header>
 
 <div class="hero frame">
@@ -442,7 +463,8 @@
   <div class="hero-capture">
     <div id="doorAsk">
       <form class="capture" id="captureForm" novalidate>
-        <input type="email" id="emailInput" name="email" placeholder="Your email" autocomplete="email" inputmode="email" aria-label="Your email">
+        <input type="email" id="emailInput" name="email" placeholder="Your email" maxlength="254" autocomplete="email" inputmode="email" aria-label="Your email">
+        <input type="text" class="hp" id="hpInput" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
         <button type="submit" id="submitBtn">I&rsquo;m ready</button>
       </form>
       <p class="capture-error" id="captureError"></p>
@@ -558,7 +580,7 @@
 
 <footer class="frame">
   <p class="legal">
-    <a href="legal.html">Privacy</a> &middot; <a href="legal.html">Terms</a> &middot; <a href="legal.html">Disclaimer</a>
+    <a href="legal.html#privacy">Privacy</a> &middot; <a href="legal.html#terms">Terms</a> &middot; <a href="legal.html#disclaimer">Disclaimer</a>
   </p>
   <p class="disclaimer">Jordan and Luna are AI companions, not licensed therapists or crisis services.</p>
   <p>&copy; 2026 Man Down &middot; <a href="mailto:hello@trymandown.com">hello@trymandown.com</a></p>
@@ -608,6 +630,27 @@
   var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (!reduced) restart();
 
+  /* Size the stage to the tallest scenario at this exact viewport, so the
+     dots sit the same distance under every scenario instead of under a
+     fixed-height hole. Re-measured when fonts land and on resize. */
+  var stage = document.getElementById('stage');
+  function sizeStage(){
+    try {
+      var max = 0;
+      scenarios.forEach(function(s){
+        s.style.position = 'static';
+        var h = s.offsetHeight;
+        s.style.position = '';
+        if (h > max) max = h;
+      });
+      if (max > 0) stage.style.minHeight = (max + 6) + 'px';
+    } catch (e) { /* fallback CSS min-height still applies */ }
+  }
+  sizeStage();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(sizeStage);
+  var rsz;
+  window.addEventListener('resize', function(){ clearTimeout(rsz); rsz = setTimeout(sizeStage, 150); });
+
   /* ---- scroll reveals ---- */
   var revealEls = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
   if ('IntersectionObserver' in window && !reduced){
@@ -630,6 +673,8 @@
   form.addEventListener('submit', function(ev){
     ev.preventDefault();
     errEl.classList.remove('show');
+    // a filled honeypot means a bot; show it the success screen and save nothing
+    if (document.getElementById('hpInput').value){ succeed(); return; }
     var email = input.value.trim();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){
       showError('That email doesn’t look right.');
