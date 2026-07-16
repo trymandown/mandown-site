@@ -44,6 +44,19 @@
 
   ::selection{ background:var(--gold); color:var(--night); }
 
+  /* Film grain: a static SVG-noise tile at whisper opacity. It gives the navy
+     a paper surface instead of a screen surface. Fixed and inert — it never
+     intercepts a tap and never moves. */
+  body::after{
+    content:'';
+    position:fixed;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+    opacity:.04;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
   a{ color:var(--muted); text-decoration:none; transition:color .25s ease; }
   a:hover{ color:var(--ink); }
 
@@ -72,7 +85,7 @@
 
   /* ---------- hero (headline + the one action) ---------- */
   .hero{
-    min-height:86svh;
+    min-height:76svh;
     display:flex;
     flex-direction:column;
     justify-content:center;
@@ -227,9 +240,17 @@
     color:var(--gold); cursor:pointer;
     letter-spacing:.04em;
   }
+  .code-form button[disabled]{ opacity:.55; cursor:default; }
+  .code-error{
+    margin-top:12px;
+    font-size:13px;
+    color:var(--gold);
+    display:none;
+  }
+  .code-error.show{ display:block; }
 
   /* ---------- shared section rhythm ---------- */
-  section{ padding-top:clamp(90px, 15vh, 170px); }
+  section{ padding-top:clamp(56px, 9vh, 110px); }
 
   /* Reveal is reserved for the two sections where arrival matters (the
      scenarios and the voices) — not sprayed on everything, and not on the
@@ -401,7 +422,11 @@
   .who-honest strong{ color:var(--ink); font-weight:500; }
 
   @media (min-width:740px){
-    .persona-row{ grid-template-columns:1fr 1fr; gap:clamp(48px, 7vw, 110px); }
+    .persona-row{
+      position:relative;
+      grid-template-columns:1fr 1fr;
+      gap:clamp(48px, 7vw, 110px);
+    }
     .persona-row.flip .persona-text{ order:2; justify-self:end; }
     .persona-row.flip .exchange{ order:1; }
     .persona-row:not(.flip) .exchange{ justify-self:end; }
@@ -478,8 +503,9 @@
       <button class="code-toggle" id="codeToggle">Have an early access code?</button>
       <form class="code-form" id="codeForm">
         <input type="text" id="codeInput" placeholder="Your code" autocomplete="off" aria-label="Early access code">
-        <button type="submit">Unlock &rarr;</button>
+        <button type="submit" id="codeBtn">Unlock &rarr;</button>
       </form>
+      <p class="code-error" id="codeError"></p>
     </div>
   </div>
 </div>
@@ -717,11 +743,34 @@
     codeForm.classList.toggle('show');
     if (codeForm.classList.contains('show')) document.getElementById('codeInput').focus();
   });
+  /* A wrong code must never leave this page. The code is checked against the
+     server first (a lightweight ping the chat function already rejects with
+     401 when the code is invalid); only a good code redirects to the app. */
+  var codeBtn = document.getElementById('codeBtn');
+  var codeErr = document.getElementById('codeError');
   codeForm.addEventListener('submit', function(ev){
     ev.preventDefault();
+    codeErr.classList.remove('show');
     var code = document.getElementById('codeInput').value.trim().toUpperCase();
     if (!code) return;
-    window.location.href = 'mandown-v8.html?code=' + encodeURIComponent(code);
+    codeBtn.disabled = true;
+    fetch(SUPABASE_URL + '/functions/v1/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ authCode: code, action: 'load_session' })
+    }).then(function(res){
+      if (res.status === 401){
+        codeBtn.disabled = false;
+        codeErr.textContent = 'That code isn’t right. Check it and try again.';
+        codeErr.classList.add('show');
+      } else {
+        window.location.href = 'mandown-v8.html?code=' + encodeURIComponent(code);
+      }
+    }).catch(function(){
+      codeBtn.disabled = false;
+      codeErr.textContent = 'Couldn’t check the code just now. Try again in a moment.';
+      codeErr.classList.add('show');
+    });
   });
 })();
 </script>
