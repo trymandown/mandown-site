@@ -43,7 +43,7 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important;-we
 .auth-err{font-size:12px;color:var(--danger);text-align:center;min-height:18px;margin-bottom:4px}
 /* LANDING */
 #landing{z-index:2;padding:32px 20px;position:relative}
-.land-inner{position:relative;z-index:2;width:100%;max-width:420px;display:flex;flex-direction:column;align-items:center;gap:40px;padding:20px 0}
+.land-inner{position:relative;z-index:2;width:100%;max-width:430px;display:flex;flex-direction:column;align-items:center;gap:44px;padding:24px 0}
 .big-q{text-align:center;font-size:clamp(36px,9vw,58px);font-weight:200;line-height:1.1;letter-spacing:-0.05em;margin-bottom:4px}
 .big-q em{font-style:italic;color:var(--gold);font-weight:300;display:block;font-size:clamp(38px,9.5vw,62px)}
 .word{display:inline-block;opacity:0;transform:translateY(16px);transition:opacity .5s ease,transform .5s ease;margin:0 2px}
@@ -52,16 +52,16 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important;-we
 .vcard{width:100%;padding:0;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:22px;overflow:hidden;cursor:pointer;transition:all .3s;display:flex;align-items:center;backdrop-filter:blur(20px)}
 .vcard.selected{border-color:var(--gold);background:rgba(200,148,58,0.08);box-shadow:0 0 0 1px var(--gold),0 8px 40px rgba(200,148,58,0.15)}
 .vcard:hover{border-color:var(--border-g);transform:translateY(-3px);box-shadow:0 12px 48px rgba(0,0,0,0.5)}
-.vphoto{width:90px;height:90px;flex-shrink:0;overflow:hidden}
+.vphoto{width:104px;height:104px;flex-shrink:0;overflow:hidden}
 .vphoto img{width:100%;height:100%;object-fit:cover;object-position:center top}
 .vinfo{flex:1;padding:0 20px}
-.vname{font-size:22px;font-weight:500;letter-spacing:-0.02em;color:var(--text);margin-bottom:3px}
-.vsub{font-size:12px;color:var(--text2);font-weight:300;line-height:1.5}
-.varr{font-size:22px;color:var(--gold);opacity:0.6;padding-right:20px;font-weight:200}
+.vname{font-size:25px;font-weight:500;letter-spacing:-0.02em;color:var(--text);margin-bottom:5px}
+.vsub{font-size:14px;color:var(--text2);font-weight:300;line-height:1.55}
+.varr{font-size:24px;color:var(--gold);opacity:0.6;padding-right:20px;font-weight:200}
 .mood-wrap{width:100%}
-.mlabel{font-size:14px;color:var(--text);text-align:center;margin-bottom:20px;font-weight:300;letter-spacing:-0.01em}
-.mpills{display:flex;gap:5px;justify-content:center}
-.mp{width:36px;height:36px;border-radius:12px;border:1px solid rgba(200,148,58,0.2);background:rgba(200,148,58,0.06);font-size:12px;font-family:"DM Sans",sans-serif;cursor:pointer;transition:all .2s cubic-bezier(.16,1,.3,1);display:flex;align-items:center;justify-content:center;font-weight:600;color:rgba(255,255,255,0.85);backdrop-filter:blur(10px)}
+.mlabel{font-size:16px;color:var(--text);text-align:center;margin-bottom:22px;font-weight:300;letter-spacing:-0.01em}
+.mpills{display:flex;gap:7px;justify-content:center}
+.mp{width:44px;height:44px;border-radius:13px;border:1px solid rgba(200,148,58,0.2);background:rgba(200,148,58,0.06);font-size:15px;font-family:"DM Sans",sans-serif;cursor:pointer;transition:all .2s cubic-bezier(.16,1,.3,1);display:flex;align-items:center;justify-content:center;font-weight:600;color:rgba(255,255,255,0.85);backdrop-filter:blur(10px)}
 .mp:hover{border-color:rgba(200,148,58,0.6);color:var(--gold-l);background:rgba(200,148,58,0.14);transform:translateY(-3px);box-shadow:0 6px 20px rgba(0,0,0,0.4)}
 .mp.on{background:linear-gradient(135deg,var(--gold),var(--gold-l));border-color:var(--gold-l);color:#07090F;font-weight:700;transform:translateY(-3px);box-shadow:0 6px 28px rgba(200,148,58,0.55)}
 .avatar-btn{position:absolute;top:16px;right:20px;width:38px;height:38px;border-radius:50%;overflow:hidden;cursor:pointer;z-index:5;border:1.5px solid var(--border-g);background:var(--glass2);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:600;color:var(--gold-l);transition:transform .2s,box-shadow .2s}
@@ -112,7 +112,7 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important;-we
 .tog{padding:5px 12px;border-radius:20px;font-size:11px;font-weight:500;letter-spacing:0.05em;cursor:pointer;transition:all .2s;color:var(--text2);font-family:"DM Sans",sans-serif;border:none;background:transparent}
 .tog.on{background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--bg)}
 .chat-msgs{flex:1;overflow-y:auto;padding:22px 18px 8px;display:flex;flex-direction:column;gap:16px;scrollbar-width:thin;scrollbar-color:var(--bg3) transparent}
-.msg{max-width:80%;padding:14px 18px;border-radius:22px;font-size:14.5px;line-height:1.8;font-weight:300;animation:mpop .3s cubic-bezier(.16,1,.3,1) both}
+.msg{max-width:80%;padding:15px 19px;border-radius:22px;font-size:16px;line-height:1.78;font-weight:300;animation:mpop .3s cubic-bezier(.16,1,.3,1) both}
 @keyframes mpop{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
 /* the companion's words come from the warm side — a faint gold wash, no cold
    white border. his own words are the solid gold. */
@@ -150,8 +150,8 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important;-we
    steady and bright. Tap the light to begin, tap again to end. */
 .voice-ui{flex:1;display:none;flex-direction:column;align-items:center;justify-content:flex-start;position:relative;overflow:hidden;padding-top:22px}
 .voice-ui.show{display:flex}
-.vtop{display:flex;align-items:center;justify-content:center;min-height:24px;padding-bottom:8px}
-.vtop .vplace{font-size:11px;letter-spacing:0.14em;color:var(--text3)}
+.vtop{display:flex;align-items:center;justify-content:center;min-height:26px;padding-bottom:6px}
+.vtop .vplace{font-size:13px;letter-spacing:0.12em;color:var(--text2);opacity:0.7}
 .vwrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;width:100%;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .vhalo{position:relative;width:300px;height:300px;display:flex;align-items:center;justify-content:center}
 .vaura{position:absolute;border-radius:50%;animation:vbreath 7s ease-in-out infinite}
@@ -160,10 +160,16 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important;-we
 .vface{position:relative;width:168px;height:168px;border-radius:50%;overflow:hidden;animation:vbreath 7s ease-in-out infinite;box-shadow:0 0 0 1px rgba(200,148,58,0.35), 0 0 55px 6px rgba(200,148,58,0.28);will-change:transform,box-shadow}
 .vface img{width:100%;height:100%;object-fit:cover;object-position:center top}
 .vface::after{content:'';position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 50% 40%, transparent 55%, rgba(6,7,11,0.55))}
-.vpname{margin-top:30px;font-size:20px;font-weight:400;letter-spacing:-0.01em;color:var(--text)}
-.vstate{margin-top:8px;font-size:15px;color:var(--text2);font-weight:300;padding:0 32px;min-height:22px;text-align:center;animation:vbreathtext 7s ease-in-out infinite;transition:opacity .4s ease}
-.vlive{margin-top:16px;max-width:320px;font-size:14px;font-style:italic;color:var(--text2);font-weight:300;padding:0 24px;min-height:40px;text-align:center;line-height:1.7;opacity:0.75}
-.vhint{padding:0 0 max(30px, env(safe-area-inset-bottom,0px) + 20px);font-size:12px;letter-spacing:0.05em;color:var(--text3);font-weight:300}
+.vpname{margin-top:34px;font-size:28px;font-weight:400;letter-spacing:-0.01em;color:var(--text)}
+.vstate{margin-top:12px;font-size:18px;color:var(--text);font-weight:300;padding:0 32px;min-height:26px;text-align:center;opacity:0.9;animation:vbreathtext 7s ease-in-out infinite;transition:opacity .4s ease}
+.vlive{margin-top:18px;max-width:330px;font-size:17px;font-style:italic;color:var(--text2);font-weight:300;padding:0 24px;min-height:46px;text-align:center;line-height:1.7;opacity:0.85}
+/* end-call control — always reachable during a call, in comfortable thumb range */
+.vend{display:none;margin:0 auto;padding:0 0 max(34px, env(safe-area-inset-bottom,0px) + 22px)}
+.voice-ui.live .vend{display:block}
+.vend button{background:rgba(255,255,255,0.05);border:1px solid var(--hairline);color:var(--text2);font-family:"DM Sans",sans-serif;font-size:15px;font-weight:400;padding:13px 30px;border-radius:30px;cursor:pointer;transition:all .2s}
+.vend button:hover{border-color:var(--danger);color:var(--danger)}
+.vhint{padding:0 0 max(34px, env(safe-area-inset-bottom,0px) + 22px);font-size:15px;letter-spacing:0.02em;color:var(--text2);font-weight:300;opacity:0.85}
+.voice-ui.live .vhint{display:none}
 @keyframes vbreath{0%,100%{transform:scale(0.96);opacity:0.9}50%{transform:scale(1.05);opacity:1}}
 @keyframes vbreathtext{0%,100%{opacity:0.5}50%{opacity:0.9}}
 /* when the call is live the aura is driven by voice (--vlevel 0..1), so the
@@ -333,6 +339,7 @@ input,textarea{-webkit-user-select:text!important;user-select:text!important;-we
       <div class="vlive" id="vtxt"></div>
     </div>
     <div class="vhint" id="vhint">tap the light to begin</div>
+    <div class="vend"><button id="vendbtn">End</button></div>
   </div>
 </div>
 <script type="module">
@@ -873,9 +880,26 @@ function initVoiceScreen() {
   if (wrap && !wrap.__wired) {
     wrap.__wired = true;
     wrap.addEventListener("click", function() {
-      if (convoActive) endConvo(); else startConvo();
+      if (!convoActive) { startConvo(); return; }
+      // in a call: tapping while they're speaking cuts them off and hands the
+      // floor back to him — nobody should have to wait out a reply they're
+      // done with. tapping while already listening does nothing jarring.
+      if (currentAudio) { interrupt(); }
     });
   }
+  var endBtn = document.getElementById("vendbtn");
+  if (endBtn && !endBtn.__wired) {
+    endBtn.__wired = true;
+    endBtn.addEventListener("click", function(e) { e.stopPropagation(); endConvo(); });
+  }
+}
+/* barge-in: stop the reply mid-sentence and start listening again */
+function interrupt() {
+  if (currentAudio) { try { currentAudio.pause(); } catch (e) {} currentAudio = null; }
+  awaitingReply = false;
+  playLevel = 0;
+  setVState("go ahead, i'm listening.");
+  if (convoActive) listen();
 }
 function startConvo() {
   if (!window.SpeechRecognition && !window.webkitSpeechRecognition) { alert("Voice works in Chrome and Safari."); return; }
