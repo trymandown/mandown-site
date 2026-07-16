@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Man Down — voice line (component demo)</title>
+<!--
+  DROP-IN COMPONENT for mandown-v8.html's voice screen.
+
+  What it is: the mic icon replaced by a single horizontal line that breathes
+  while idle (slow, organic, ~6s cycle — a resting heartbeat, not a loader)
+  and morphs into a soft live waveform while the user holds spacebar (or
+  presses and holds the line itself on touch devices).
+
+  Integration: copy the <div class="voiceline"> block, the CSS between the
+  VOICELINE markers, and the <script>. Call VoiceLine.startCapture() /
+  VoiceLine.stopCapture() from v8's existing push-to-talk handlers instead of
+  the built-in spacebar binding if v8 already manages recording state.
+
+  The mic stream here is used ONLY to drive the visual (an AnalyserNode);
+  nothing is recorded or transmitted by this component.
+-->
+<style>
+  /* ===== VOICELINE component styles — start ===== */
+  :root{
+    --ink:#EEE9E0;
+    --muted:#8A867B;
+    --gold:#C8943A;
+    --night:#07090F;
+    --hairline:rgba(238,233,224,0.14);
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html,body{ height:100%; }
+  body{
+    background:var(--night);
+    color:var(--ink);
+    font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .voiceline{
+    position:relative;
+    width:min(680px, 92vw);
+    padding:48px 0 64px;
+  }
+  .voiceline .avatar{
+    width:96px; height:96px;
+    margin:0 auto 56px;
+    border-radius:50%;
+    border:1px solid var(--hairline);
+    display:flex; align-items:center; justify-content:center;
+    font-family:Georgia, serif;
+    font-size:34px;
+    color:var(--gold);
+  }
+  .voiceline canvas{
+    display:block;
+    width:100%;
+    height:140px;
+    cursor:pointer;
+    touch-action:none;
+  }
+  .voiceline .corner{
+    position:absolute;
+    font-family:ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+    font-size:10px;
+    letter-spacing:.12em;
+    color:var(--muted);
+    user-select:none;
+  }
+  .voiceline .corner.tl{ top:12px; left:0; }
+  .voiceline .corner.br{ bottom:12px; right:0; text-align:right; }
+  .voiceline .corner .live{ color:var(--gold); }
+  @media (prefers-reduced-motion: reduce){
+    /* the line rests flat; it still responds to real speech, which is
+       user-initiated motion, not decoration */
+  }
+  /* ===== VOICELINE component styles — end ===== */
+</style>
+</head>
+<body>
+
+<div class="voiceline">
+  <div class="avatar">L</div>
+  <div class="corner tl">[<span class="live" id="lineState">ENCRYPTED LINE ACTIVE</span>]</div>
+  <canvas id="vl"></canvas>
+  <div class="corner br">[PRESS SPACEBAR TO TALK &middot; NO RUSH]</div>
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  var canvas = document.getElementById('vl');
+  var ctx = canvas.getContext('2d');
+  var stateEl = document.getElementById('lineState');
+
+  var GOLD = '#C8943A';
+  var dpr = Math.min(window.devicePixelRatio || 1, 2);
+  var W = 0, H = 0;
+
+  function resize(){
+    W = canvas.clientWidth; H = canvas.clientHeight;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* audio plumbing — created lazily on first talk, reused after */
+  var audioCtx = null, analyser = null, stream = null, timeData = null;
+  var talking = false;      // key/pointer currently held
+  var level = 0;            // smoothed morph between idle (0) and speech (1)
+
+  function startCapture(){
+    if (talking) return;
+    talking = true;
+    if (!audioCtx){
+      navigator.mediaDevices.getUserMedia({ audio: true }).then(function(s){
+        stream = s;
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        var src = audioCtx.createMediaStreamSource(stream);
+        analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 1024;
+        analyser.smoothingTimeConstant = 0.85;
+        src.connect(analyser);
+        timeData = new Uint8Array(analyser.fftSize);
+      }).catch(function(){ talking = false; });
+    } else if (audioCtx.state === 'suspended'){
+      audioCtx.resume();
+    }
+  }
+  function stopCapture(){ talking = false; }
+
+  // spacebar push-to-talk
+  window.addEventListener('keydown', function(e){
+    if (e.code === 'Space' && !e.repeat){ e.preventDefault(); startCapture(); }
+  });
+  window.addEventListener('keyup', function(e){
+    if (e.code === 'Space'){ e.preventDefault(); stopCapture(); }
+  });
+  // press-and-hold on the line itself (phones have no spacebar)
+  canvas.addEventListener('pointerdown', function(e){ e.preventDefault(); startCapture(); });
+  window.addEventListener('pointerup', stopCapture);
+  window.addEventListener('pointercancel', stopCapture);
+
+  /* the drawing: one line, two lives.
+     Idle: a slow breath — a ~6s swell with two soft harmonics drifting
+     against each other so no two cycles are identical.
+     Speech: the analyser's time-domain signal, windowed so the line stays
+     anchored at its ends and swells in the middle, like a voice does. */
+  function draw(now){
+    ctx.clearRect(0, 0, W, H);
+    var mid = H / 2;
+    var t = now / 1000;
+
+    var speaking = talking && analyser;
+    level += ((speaking ? 1 : 0) - level) * 0.06; // fluid morph, no snap
+
+    if (speaking) analyser.getByteTimeDomainData(timeData);
+
+    ctx.beginPath();
+    var N = 160;
+    for (var i = 0; i <= N; i++){
+      var x = (i / N) * W;
+      var window_ = Math.sin((i / N) * Math.PI); // anchor the ends
+      var y = 0;
+
+      // idle breath (fades out as speech fades in)
+      if (!reduced){
+        var breath =
+          Math.sin(t * 1.05 + i * 0.045) * 2.2 +
+          Math.sin(t * 0.62 - i * 0.028) * 1.6;
+        y += breath * window_ * (1 - level) * (0.6 + 0.4 * Math.sin(t * 0.9));
+      }
+
+      // live speech
+      if (analyser && level > 0.01){
+        var idx = Math.floor((i / N) * (timeData.length - 1));
+        var v = (timeData[idx] - 128) / 128; // -1..1
+        y += v * 34 * window_ * level;
+      }
+
+      if (i === 0) ctx.moveTo(x, mid + y);
+      else ctx.lineTo(x, mid + y);
+    }
+    ctx.strokeStyle = GOLD;
+    ctx.lineWidth = 1.5;
+    ctx.globalAlpha = 0.55 + 0.45 * level;
+    ctx.stroke();
+    ctx.globalAlpha = 1;
+
+    stateEl.textContent = level > 0.5 ? 'LISTENING' : 'ENCRYPTED LINE ACTIVE';
+
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+
+  /* exposed so v8's existing push-to-talk logic can drive the visual */
+  window.VoiceLine = { startCapture: startCapture, stopCapture: stopCapture };
+})();
+</script>
+
+</body>
+</html>
