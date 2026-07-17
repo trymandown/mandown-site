@@ -44,6 +44,24 @@
 
   ::selection{ background:var(--gold); color:var(--night); }
 
+  /* Warm ambient light — a low gold glow drifting behind everything so the
+     page reads as a warm dark room, not flat black. Fixed, inert, behind all
+     content. This is the single biggest 'more alive' lever. */
+  body::before{
+    content:'';
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    background:
+      radial-gradient(60% 50% at 82% 12%, rgba(200,148,58,0.13), transparent 60%),
+      radial-gradient(55% 45% at 12% 88%, rgba(30,50,100,0.20), transparent 62%),
+      radial-gradient(50% 40% at 92% 92%, rgba(200,148,58,0.07), transparent 65%);
+    animation:drift 24s ease-in-out infinite alternate;
+  }
+  @keyframes drift{ from{ transform:translate(0,0); } to{ transform:translate(-14px, 12px); } }
+  header, .hero, section, .founder, footer{ position:relative; z-index:2; }
+
   /* Film grain: a static SVG-noise tile at whisper opacity. It gives the navy
      a paper surface instead of a screen surface. Fixed and inert — it never
      intercepts a tap and never moves. */
@@ -71,36 +89,45 @@
     justify-content:space-between;
     align-items:baseline;
   }
+  .header-tag{
+    font-size:12px;
+    letter-spacing:.14em;
+    color:var(--muted);
+    opacity:.7;
+  }
   /* The wordmark is a masthead, not a badge: the same serif voice as the
      headline, set solid, with the gold dot as the mark (same dot as the
      favicon). Letterspaced-caps mini-labels read as template chrome. */
   .wordmark{
     font-family:var(--serif);
-    font-size:clamp(24px, 2.8vw, 30px);
-    font-weight:450;
-    letter-spacing:0;
+    font-size:clamp(34px, 4vw, 48px);
+    font-weight:500;
+    letter-spacing:-0.015em;
     color:var(--ink);
   }
   .wordmark .dot{ color:var(--gold); }
 
-  /* ---------- hero (headline + the one action) ---------- */
+  /* ---------- hero: the editorial lockup ----------
+     Headline holds the left, the one action holds the right behind a single
+     gold hairline. Warm glow and grain carry the room. */
   .hero{
-    min-height:76svh;
+    position:relative;
+    min-height:78svh;
     display:flex;
     flex-direction:column;
     justify-content:center;
     padding-top:24px;
-    padding-bottom:32px;
+    padding-bottom:36px;
   }
   .hero h1{
     font-family:var(--serif);
     font-weight:340;
     font-optical-sizing:auto;
-    font-size:clamp(40px, 7.6vw, 96px);
-    line-height:1.06;
-    letter-spacing:-0.015em;
+    font-size:clamp(44px, 7.8vw, 100px);
+    line-height:1.04;
+    letter-spacing:-0.02em;
     max-width:12ch;
-    animation:settle 1.1s cubic-bezier(.22,1,.36,1) both;
+    animation:fade-rise .8s ease-out both;
   }
   .hero h1 .gold{ color:var(--gold); }
   .hero .sub{
@@ -108,34 +135,40 @@
     font-family:var(--serif);
     font-style:italic;
     font-weight:340;
-    font-size:clamp(18px, 2vw, 22px);
+    font-size:clamp(20px, 2.2vw, 25px);
     color:var(--muted);
-    animation:settle 1.1s cubic-bezier(.22,1,.36,1) .2s both;
+    animation:fade-rise .8s ease-out .2s both;
   }
   .hero-capture{
-    margin-top:clamp(36px, 5.5vh, 64px);
-    max-width:520px;
-    animation:settle 1.1s cubic-bezier(.22,1,.36,1) .4s both;
+    margin-top:clamp(36px, 5vh, 56px);
+    max-width:540px;
+    animation:fade-rise .8s ease-out .4s both;
   }
-  @keyframes settle{
-    from{ opacity:0; transform:translateY(10px); }
-    to{ opacity:1; transform:none; }
+  @keyframes fade-rise{
+    from{ opacity:0; transform:translateY(24px); }
+    to{ opacity:1; transform:translateY(0); }
   }
 
   /* Wide screens: the hero becomes a two-column lockup. The headline holds
      the left, the action holds the right, and the previously-empty right
      margin now carries the one thing the page wants you to do. */
+  /* Wide screens: the two-column lockup. The whole right column sits behind
+     one gold hairline — structure, never a form floating in a void. */
   @media (min-width:1080px){
     .hero{
       display:grid;
-      grid-template-columns:1.35fr 1fr;
-      column-gap:clamp(48px, 5vw, 96px);
+      grid-template-columns:1.3fr 1fr;
+      column-gap:clamp(40px, 4vw, 72px);
       align-content:center;
-      align-items:end;
+      align-items:center;
     }
-    .hero h1{ grid-column:1; grid-row:1 / span 2; }
-    .hero .sub{ grid-column:2; grid-row:1; align-self:end; margin-top:0; }
-    .hero-capture{ grid-column:2; grid-row:2; margin-top:30px; }
+    .hero h1{ grid-column:1; }
+    .hero-right{
+      grid-column:2;
+      padding-left:clamp(26px, 2.6vw, 40px);
+      border-left:1px solid rgba(200,148,58,0.25);
+    }
+    .hero-right .sub{ margin-top:0; }
   }
 
   form.capture{
@@ -149,9 +182,9 @@
     background:transparent;
     border:none;
     border-bottom:1px solid var(--hairline);
-    padding:10px 0;
+    padding:14px 0;
     font-family:var(--sans);
-    font-size:17px;
+    font-size:19px;
     color:var(--ink);
     border-radius:0;
     transition:border-color .3s ease;
@@ -166,9 +199,9 @@
     border:1px solid var(--gold);
     color:var(--gold);
     font-family:var(--sans);
-    font-size:15px;
+    font-size:16px;
     letter-spacing:.04em;
-    padding:12px 28px;
+    padding:15px 34px;
     cursor:pointer;
     transition:background .25s ease, color .25s ease;
   }
@@ -178,9 +211,9 @@
   }
   .capture button[disabled]{ opacity:.55; cursor:default; }
   .capture-note{
-    margin-top:18px;
-    font-size:13px;
-    line-height:1.8;
+    margin-top:20px;
+    font-size:14px;
+    line-height:1.85;
     color:var(--muted);
   }
   .capture-error{
@@ -262,10 +295,9 @@
   .persona-row.flip.reveal{ transition-duration:.85s; }
 
   /* ---------- scenarios ---------- */
-  /* This section steps in from the right: the one voice on the page that
-     isn't the product talking — it's his own life read back to him. */
+  /* Indent lives in a desktop-only rule below — on phones this must sit flush
+     to the frame's own padding, not shoved further right. */
   .scenarios-inner{
-    margin-left:clamp(0px, 22vw, 380px);
     max-width:640px;
   }
   .scenarios-label{
@@ -434,8 +466,8 @@
   }
 
   /* ---------- founder ---------- */
+  /* desktop indent handled below; flush on phones */
   .founder-inner{
-    margin-left:clamp(0px, 30vw, 480px);
     max-width:520px;
     border-left:1px solid var(--gold);
     padding-left:clamp(20px, 3vw, 36px);
@@ -469,7 +501,23 @@
   }
 
   @media (max-width:600px){
-    .hero{ min-height:auto; padding-top:9vh; padding-bottom:10vh; }
+    .hero{ min-height:auto; padding-top:8vh; padding-bottom:10vh; }
+  }
+
+  /* ---------- desktop: a held column, not a left-shoved page ----------
+     On a wide Mac the old layout hugged the left and left a dead void on the
+     right. Instead the whole page lives in a centered max-width column with
+     balanced margins both sides — the way Aesop and Kinfolk hold a page. The
+     editorial asymmetry then happens *inside* that column (modest indents),
+     so nothing reads as empty or broken. */
+  @media (min-width:1000px){
+    header, .hero, section, .founder, footer{
+      max-width:1080px;
+      margin-left:auto;
+      margin-right:auto;
+    }
+    .scenarios-inner{ margin-left:clamp(120px, 20vw, 300px); }
+    .founder-inner{ margin-left:clamp(160px, 26vw, 400px); }
   }
 
   /* honeypot: invisible to people, irresistible to bots */
@@ -484,6 +532,7 @@
 
 <div class="hero frame">
   <h1>You don&rsquo;t have to carry it <span class="gold">alone</span>.</h1>
+  <div class="hero-right">
   <p class="sub">For the thoughts you don&rsquo;t say out loud.</p>
   <div class="hero-capture">
     <div id="doorAsk">
@@ -507,6 +556,7 @@
       </form>
       <p class="code-error" id="codeError"></p>
     </div>
+  </div>
   </div>
 </div>
 
@@ -609,7 +659,7 @@
     <a href="legal.html#privacy">Privacy</a> &middot; <a href="legal.html#terms">Terms</a> &middot; <a href="legal.html#disclaimer">Disclaimer</a>
   </p>
   <p class="disclaimer">Jordan and Luna are AI companions, not licensed therapists or crisis services.</p>
-  <p>&copy; 2026 Man Down &middot; <a href="mailto:hello@trymandown.com">hello@trymandown.com</a></p>
+  <p>&copy; 2026 Man Down &middot; <a href="mailto:hello@trymandown.com" id="mailLink" title="Click to email, or click to copy">hello@trymandown.com</a><span id="mailCopied" style="margin-left:8px;color:var(--gold);display:none;">copied</span></p>
 </footer>
 
 <script>
@@ -618,6 +668,7 @@
 
   var SUPABASE_URL = 'https://tlnsetydewnmpdvsqqhn.supabase.co';
   var SUPABASE_KEY = 'sb_publishable_LeqSIE5pXadPDLcqZQAfug_MDygUrcR';
+
 
   /* ---- scenario rotation ---- */
   var scenarios = Array.prototype.slice.call(document.querySelectorAll('.scenario'));
@@ -772,6 +823,21 @@
       codeErr.classList.add('show');
     });
   });
+
+  /* mailto opens the mail app when one is set. On a Mac with no default mail
+     client, mailto silently does nothing — so also copy the address to the
+     clipboard and confirm, guaranteeing the person can always reach us. */
+  var mailLink = document.getElementById('mailLink');
+  if (mailLink){
+    mailLink.addEventListener('click', function(){
+      if (navigator.clipboard){
+        navigator.clipboard.writeText('hello@trymandown.com').then(function(){
+          var c = document.getElementById('mailCopied');
+          if (c){ c.style.display = 'inline'; setTimeout(function(){ c.style.display = 'none'; }, 2200); }
+        }).catch(function(){});
+      }
+    });
+  }
 })();
 </script>
 
