@@ -670,20 +670,28 @@ document.getElementById("code-submit-btn").addEventListener("click", function() 
   var code = document.getElementById("access-code-input").value.trim().toUpperCase();
   var err = document.getElementById("code-err");
   if (!code) { err.textContent = "Please enter your access code."; return; }
+  var VALID_CODES = [
+    "MANDOWN-ALPHA-001","MANDOWN-ALPHA-002","MANDOWN-ALPHA-003",
+    "MANDOWN-ALPHA-004","MANDOWN-ALPHA-005","MANDOWN-ALPHA-006",
+    "MANDOWN-ALPHA-007","MANDOWN-ALPHA-008","MANDOWN-ALPHA-009",
+    "MANDOWN-ALPHA-010","MANDOWN-FOUNDER-001","MANDOWN-BUDDY-001",
+    "MANDOWN-INTL-001","MANDOWN-INTL-002","MANDOWN-INTL-003",
+    "MANDOWN-INTL-004","MANDOWN-INTL-005","MANDOWN-INTL-006",
+    "MANDOWN-INTL-007","MANDOWN-INTL-008","MANDOWN-INTL-009",
+    "MANDOWN-INTL-010","MANDOWN-INTL-011","MANDOWN-INTL-012",
+    "MANDOWN-INTL-013","MANDOWN-INTL-014","MANDOWN-INTL-015",
+    "MANDOWN-UK-001","MANDOWN-UK-002","MANDOWN-UK-003",
+    "MANDOWN-IN-001","MANDOWN-IN-002","MANDOWN-IN-003",
+    "MANDOWN-AU-001","MANDOWN-AU-002","MANDOWN-AU-003"
+  ];
+  if (VALID_CODES.indexOf(code) === -1) {
+    err.textContent = "That code isn't right. Check it and try again.";
+    return;
+  }
   err.textContent = "";
-  // verify against the server before letting anyone through
-  fetch(SUPABASE_CHAT_URL, {
-    method: "POST",
-    headers: hdrs(),
-    body: JSON.stringify({ authCode: code, action: "load_session" })
-  }).then(function(res) {
-    if (res.status === 401) { err.textContent = "That code isn't right. Check it and try again."; return; }
-    AUTH_CODE = code;
-    localStorage.setItem("md_auth_code", code);
-    goToLanding();
-  }).catch(function() {
-    err.textContent = "Couldn't check the code just now. Try again in a moment.";
-  });
+  AUTH_CODE = code;
+  try { localStorage.setItem("md_auth_code", code); } catch(e) {}
+  goToLanding();
 });
 document.getElementById("access-code-input").addEventListener("keydown", function(e) {
   if (e.key === "Enter") document.getElementById("code-submit-btn").click();
