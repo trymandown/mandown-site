@@ -608,13 +608,20 @@ document.getElementById("guest-btn").addEventListener("click", async function() 
   const { data, error } = await supabase.auth.signInAnonymously();
   if (error) document.getElementById("auth-err").textContent = error.message;
 });
+var authReady = false;
 supabase.auth.onAuthStateChange(async function(event, session) {
   if (session && session.user) {
     currentUser = session.user;
     USER_ID = session.user.id;
     ACCESS_TOKEN = session.access_token || null;
     isGuest = session.user.is_anonymous || false;
-    await afterAuth();
+    if (!authReady) {
+      authReady = true;
+      await afterAuth();
+    } else {
+      /* token refresh — just update token, don't re-route */
+      ACCESS_TOKEN = session.access_token || null;
+    }
   } else {
     ACCESS_TOKEN = null;
     const { data } = await supabase.auth.signInAnonymously();
