@@ -412,11 +412,6 @@ document.addEventListener('DOMContentLoaded', function(){
     });
   }
 
-  /* ---- back to top ---- */
-  document.getElementById('backUp').addEventListener('click',function(e){
-    e.preventDefault(); window.scrollTo({top:0,behavior:reduced?'auto':'smooth'});
-  });
-
   /* ---- ACT 0 wiring (waitlist) — preserved ---- */
   var form=document.getElementById('captureForm'),input=document.getElementById('emailInput'),
       btn=document.getElementById('submitBtn'),errEl=document.getElementById('captureError');
