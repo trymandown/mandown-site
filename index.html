@@ -439,13 +439,9 @@ document.addEventListener('DOMContentLoaded', function(){
     ev.preventDefault(); codeErr.classList.remove('show');
     var code=document.getElementById('codeInput').value.trim().toUpperCase();
     if(!code) return;
-    codeBtn.disabled=true;
-    fetch(SUPABASE_URL+'/functions/v1/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({authCode:code,action:'load_session'})})
-    .then(function(res){
-      codeBtn.disabled=false;
-      if(res.status===401){ codeErr.textContent='That code isn’t right. Check it and try again.'; codeErr.classList.add('show'); }
-      else { window.location.href='mandown-v8.html?code='+encodeURIComponent(code); }
-    }).catch(function(){ codeBtn.disabled=false; codeErr.textContent='Couldn’t check the code just now. Try again in a moment.'; codeErr.classList.add('show'); });
+    var V=["MANDOWN-ALPHA-001","MANDOWN-ALPHA-002","MANDOWN-ALPHA-003","MANDOWN-ALPHA-004","MANDOWN-ALPHA-005","MANDOWN-ALPHA-006","MANDOWN-ALPHA-007","MANDOWN-ALPHA-008","MANDOWN-ALPHA-009","MANDOWN-ALPHA-010","MANDOWN-FOUNDER-001","MANDOWN-BUDDY-001","MANDOWN-INTL-001","MANDOWN-INTL-002","MANDOWN-INTL-003","MANDOWN-INTL-004","MANDOWN-INTL-005","MANDOWN-INTL-006","MANDOWN-INTL-007","MANDOWN-INTL-008","MANDOWN-INTL-009","MANDOWN-INTL-010","MANDOWN-INTL-011","MANDOWN-INTL-012","MANDOWN-INTL-013","MANDOWN-INTL-014","MANDOWN-INTL-015","MANDOWN-UK-001","MANDOWN-UK-002","MANDOWN-UK-003","MANDOWN-IN-001","MANDOWN-IN-002","MANDOWN-IN-003","MANDOWN-AU-001","MANDOWN-AU-002","MANDOWN-AU-003"];
+    if(V.indexOf(code)===-1){ codeErr.textContent='That code isn’t right. Check it and try again.'; codeErr.classList.add('show'); return; }
+    window.location.href='mandown-v8.html?code='+encodeURIComponent(code);
   });
 
   /* mailto clipboard */
