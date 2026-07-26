@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /mandown-v8.html
+
+Sitemap: https://trymandown.com/sitemap.xml
