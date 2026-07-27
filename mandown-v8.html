@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Man Down</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
    MAN DOWN — app design system, rebuilt from zero.
@@ -16,11 +16,12 @@
    ============================================================ */
 :root{
   --bg:#07090F;
-  --surface:#0D1017;
-  --raised:#141820;
+  --surface:rgba(232,234,240,0.05);
+  --raised:rgba(232,234,240,0.09);
   --ink:#E8EAF0;
   --muted:#6B7280;
-  --dim:#374151;
+  --dim:rgba(232,234,240,0.10);
+  --hairline:rgba(232,234,240,0.08);
   --gold:#C8943A;
   --gold-l:#E0B060;
   --luna:#D8B36A;
@@ -28,9 +29,13 @@
   --serif:'DM Serif Display', Georgia, serif;
   --sans:'DM Sans', -apple-system, sans-serif;
   --mono:'JetBrains Mono', ui-monospace, monospace;
-  --bg2:#0D1017; --bg3:#141820;
+  --bg2:rgba(232,234,240,0.04); --bg3:rgba(232,234,240,0.08);
   --glass:rgba(255,255,255,0.03); --glass2:rgba(255,255,255,0.06);
   --gold-s:rgba(200,148,58,0.12); --gold-xs:rgba(200,148,58,0.06);
+  --surface:rgba(232,234,240,0.05);
+  --raised:rgba(232,234,240,0.09);
+  --dim:rgba(232,234,240,0.10);
+  --hairline:rgba(232,234,240,0.08);
   --text:#E8EAF0; --text2:#6B7280; --text3:#4B5563;
   --border:rgba(255,255,255,0.07); --border-g:rgba(200,148,58,0.3);
   --hairline:rgba(232,234,240,0.12);
@@ -39,7 +44,19 @@
 *,*::before,*::after{ box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
 input,textarea{ -webkit-user-select:text; user-select:text; }
 html,body{ height:100%; width:100%; background:var(--bg); color:var(--ink);
-  font-family:var(--sans); overflow:hidden; font-weight:400; font-size:16px; }
+  font-family:var(--sans); overflow:hidden; font-weight:300; font-size:16px;
+  -webkit-font-smoothing:antialiased; }
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(ellipse 900px 700px at 18% 25%,rgba(200,148,58,.085) 0%,transparent 65%),
+    radial-gradient(ellipse 600px 500px at 78% 65%,rgba(180,90,20,.045) 0%,transparent 65%);
+  animation:aurora-app 22s ease-in-out infinite alternate;
+}
+@keyframes aurora-app{
+  0%{transform:translate(0,0) scale(1)}
+  100%{transform:translate(30px,-20px) scale(1.04)}
+}
 input,textarea{ -webkit-user-select:text!important; user-select:text!important;
   touch-action:auto!important; pointer-events:all!important; position:relative; z-index:100; }
 
@@ -49,7 +66,7 @@ body::after{ content:''; position:fixed; inset:0; z-index:60; pointer-events:non
 
 /* ---------- screens ---------- */
 .screen{ position:fixed; inset:0; display:flex; flex-direction:column; align-items:center;
-  justify-content:center; opacity:0; pointer-events:none;
+  justify-content:center; opacity:0; pointer-events:none; z-index:10;
   transition:opacity .55s ease; overflow-y:auto; overflow-x:hidden; }
 .screen.active{ opacity:1; pointer-events:all; }
 
@@ -154,12 +171,12 @@ body::after{ content:''; position:fixed; inset:0; z-index:60; pointer-events:non
 
 /* account menu */
 .avatar-btn{ position:absolute; top:18px; right:20px; width:40px; height:40px; border-radius:50%;
-  overflow:hidden; cursor:pointer; z-index:5; border:1px solid var(--border-g);
+  overflow:hidden; cursor:pointer; z-index:15; border:1px solid var(--border-g);
   background:var(--surface); display:flex; align-items:center; justify-content:center;
   font-size:15px; font-weight:600; color:var(--gold-l); transition:transform .2s; }
 .avatar-btn:hover{ transform:scale(1.06); }
 .avatar-btn img{ width:100%; height:100%; object-fit:cover; }
-.account-menu{ position:absolute; top:66px; right:20px; width:238px; background:var(--raised);
+.account-menu{ position:absolute; top:66px; right:20px; width:238px; background:rgba(20,24,32,0.95);
   border:1px solid var(--dim); border-radius:16px; box-shadow:0 18px 56px rgba(0,0,0,0.6);
   z-index:100; display:none; overflow:hidden; }
 .account-menu.show{ display:block; animation:rise .3s ease both; }
@@ -208,7 +225,7 @@ body::after{ content:''; position:fixed; inset:0; z-index:60; pointer-events:non
 /* ---------- chat: the room ---------- */
 #chat{ padding:0; justify-content:flex-start; align-items:stretch; }
 .chat-hdr{ display:flex; align-items:center; gap:12px; padding:14px 16px;
-  background:rgba(7,9,15,0.94); border-bottom:1px solid var(--dim);
+  background:var(--bg); border-bottom:1px solid var(--hairline);
   flex-shrink:0; z-index:10; position:relative; }
 .hback{ font-size:24px; color:var(--gold); cursor:pointer; opacity:.6; transition:opacity .2s;
   font-weight:300; padding-right:4px; }
@@ -262,7 +279,7 @@ body::after{ content:''; position:fixed; inset:0; z-index:60; pointer-events:non
   border:1px solid rgba(248,113,113,.2); border-radius:10px; font-size:12px;
   color:#fca5a5; font-style:italic; }
 .input-row{ padding:12px 14px calc(12px + env(safe-area-inset-bottom, 0px));
-  border-top:1px solid var(--dim); background:rgba(7,9,15,0.94); flex-shrink:0; }
+  border-top:1px solid var(--hairline); background:var(--bg); flex-shrink:0; }
 .input-row-inner{ display:flex; gap:10px; align-items:flex-end; }
 .cta{ flex:1; padding:13px 18px; background:var(--surface); border:1px solid var(--dim);
   border-radius:24px; color:var(--ink); font-family:var(--sans); font-size:15px;
@@ -504,6 +521,7 @@ body::after{ content:''; position:fixed; inset:0; z-index:60; pointer-events:non
     <div class="vend"><button id="vendbtn">End</button></div>
   </div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script type="module">
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 const SUPABASE_URL = "https://tlnsetydewnmpdvsqqhn.supabase.co";
@@ -1230,14 +1248,71 @@ function sendVoiceTurn(text) {
   });
 }
 </script>
-<footer id="legal-footer" style="position:fixed;bottom:0;left:0;right:0;padding:16px 24px;text-align:center;background:linear-gradient(transparent,#07090F);z-index:10;pointer-events:none"><a href="https://trymandown.com/legal.html" style="font-size:11px;color:#354458;text-decoration:none;letter-spacing:0.1em;pointer-events:all">Privacy · Terms · Disclaimer</a><br><span style="font-size:10px;color:#2a3a50;letter-spacing:0.05em;">Jordan and Luna are AI companions, not licensed therapists or crisis services.</span></footer>
-<canvas id="dust" style="position:fixed;inset:0;z-index:0;pointer-events:none" aria-hidden="true"></canvas>
+<footer id="legal-footer" style="position:fixed;bottom:0;left:0;right:0;padding:16px 24px;text-align:center;background:linear-gradient(transparent,var(--bg));z-index:20;pointer-events:none"><a href="https://trymandown.com/legal.html" style="font-size:11px;color:#354458;text-decoration:none;letter-spacing:0.1em;pointer-events:all">Privacy · Terms · Disclaimer</a><br><span style="font-size:10px;color:#2a3a50;letter-spacing:0.05em;">Jordan and Luna are AI, not licensed therapists or crisis services.</span></footer>
+<canvas id="dust" style="position:fixed;inset:0;z-index:2;pointer-events:none" aria-hidden="true"></canvas>
+<div id="cursorGlow" style="position:fixed;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(200,148,58,.06) 0%,transparent 70%);pointer-events:none;z-index:3;transform:translate(-50%,-50%);transition:opacity .4s;opacity:0;top:0;left:0" aria-hidden="true"></div>
 <script>
 (function(){
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var cv=document.getElementById('dust'),cx=cv.getContext('2d');
-  var W,H,parts=[],px=0,py=0,tx=0,ty=0;
-  function size(){W=cv.width=innerWidth;H=cv.height=innerHeight}
+  /* THREE.JS PARTICLE FIELD */
+  (function(){
+    var cv = document.getElementById('dust');
+    if (!window.THREE) { cv.style.display='none'; return; }
+    var W = window.innerWidth, H = window.innerHeight;
+    var renderer = new THREE.WebGLRenderer({canvas:cv, alpha:true, antialias:false});
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    renderer.setSize(W, H);
+    renderer.setClearColor(0x000000, 0);
+    cv.style.position='fixed'; cv.style.top='0'; cv.style.left='0';
+    cv.style.width='100vw'; cv.style.height='100vh';
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(60, W/H, 0.1, 200);
+    camera.position.z = 40;
+    function makePoints(count, color, size, spread){
+      var geo = new THREE.BufferGeometry();
+      var pos = new Float32Array(count*3);
+      for(var i=0;i<count;i++){
+        pos[i*3]   = (Math.random()-.5)*spread;
+        pos[i*3+1] = (Math.random()-.5)*spread*.7;
+        pos[i*3+2] = (Math.random()-.5)*spread*.5;
+      }
+      geo.setAttribute('position', new THREE.BufferAttribute(pos,3));
+      return new THREE.Points(geo, new THREE.PointsMaterial({color:color,size:size,transparent:true,opacity:.5,sizeAttenuation:true}));
+    }
+    var dust = makePoints(500, 0xE8EAF0, 0.06, 100);
+    var gold = makePoints(80,  0xC8943A, 0.12, 80);
+    scene.add(dust); scene.add(gold);
+    var tx=0, ty=0, mx=0, my=0;
+    window.addEventListener('pointermove', function(e){
+      tx=(e.clientX/W-.5)*10; ty=(e.clientY/H-.5)*7;
+    },{passive:true});
+    window.addEventListener('resize', function(){
+      W=window.innerWidth; H=window.innerHeight;
+      camera.aspect=W/H; camera.updateProjectionMatrix();
+      renderer.setSize(W,H);
+    });
+    (function tick(){
+      requestAnimationFrame(tick);
+      mx+=(tx-mx)*.03; my+=(ty-my)*.03;
+      dust.rotation.y+=.0003; dust.rotation.x+=.00015;
+      gold.rotation.y-=.0004; gold.rotation.x+=.0002;
+      camera.position.x+=(mx-camera.position.x)*.04;
+      camera.position.y+=(-my-camera.position.y)*.04;
+      renderer.render(scene, camera);
+    })();
+  })();
+
+  /* CURSOR GLOW */
+  (function(){
+    var g = document.getElementById('cursorGlow');
+    if (!g) return;
+    window.addEventListener('pointermove', function(e){
+      g.style.left=e.clientX+'px'; g.style.top=e.clientY+'px'; g.style.opacity='1';
+    },{passive:true});
+    window.addEventListener('pointerleave', function(){ g.style.opacity='0'; });
+  })();
+
+    function size(){W=cv.width=innerWidth;H=cv.height=innerHeight}
   size();addEventListener('resize',size);
   for(var i=0;i<90;i++){var b=i%3;
     parts.push({x:Math.random(),y:Math.random(),r:[0.6,1.0,1.5][b],a:[0.10,0.16,0.24][b],d:[6,14,26][b],
