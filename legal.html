@@ -1,194 +1,361 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Man Down — Legal</title>
-<meta name="description" content="Privacy Policy, Terms of Service, and Mental Health Disclaimer for Man Down.">
-<meta name="theme-color" content="#07090F">
-<meta name="referrer" content="strict-origin-when-cross-origin">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2307090F'/%3E%3Ccircle cx='32' cy='38' r='9' fill='%23C8943A'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..500;1,6..72,300..500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#EEE9E0;
-    --muted:#8A867B;
+    --ink:#E8EAF0;
+    --muted:#6B7280;
+    --dim:#374151;
     --gold:#C8943A;
-    --night:#07090F;
-    --hairline:rgba(238,233,224,0.14);
-    --serif:'Newsreader', Georgia, 'Times New Roman', serif;
-    --sans:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    --gold-l:#E0B060;
+    --bg:#07090F;
+    --surface:#0D1017;
+    --hairline:rgba(232,234,240,0.08);
+    --serif:'DM Serif Display',Georgia,serif;
+    --sans:'DM Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
   }
-  *{ margin:0; padding:0; box-sizing:border-box; }
-  html{ background:var(--night); scroll-behavior:smooth; }
-  body{
-    background:var(--night);
-    color:var(--ink);
-    font-family:var(--sans);
-    font-size:15.5px;
-    line-height:1.8;
-    -webkit-font-smoothing:antialiased;
-  }
-  ::selection{ background:var(--gold); color:var(--night); }
-  a{ color:var(--gold); text-decoration:none; }
-  a:hover{ text-decoration:underline; }
-  .wrap{
-    max-width:760px;
-    margin:0 auto;
-    padding:clamp(28px, 5vh, 56px) clamp(24px, 6vw, 48px) 80px;
-  }
-  .wordmark{
-    font-family:var(--serif);
-    font-size:clamp(24px, 2.8vw, 30px);
-    font-weight:450;
-    color:var(--ink);
-  }
-  .wordmark .dot{ color:var(--gold); }
-  .wordmark a{ color:inherit; }
-  .wordmark a:hover{ text-decoration:none; }
-  nav{ margin-top:40px; font-size:14px; color:var(--muted); line-height:2.2; }
-  nav a{ color:var(--muted); border-bottom:1px solid var(--hairline); margin-right:22px; }
-  nav a:hover{ color:var(--ink); text-decoration:none; }
-  h1{
-    font-family:var(--serif);
-    font-weight:340;
-    font-size:clamp(30px, 4.6vw, 40px);
-    line-height:1.15;
-    margin-top:clamp(70px, 10vh, 110px);
-    padding-top:24px;
-    border-top:1px solid var(--hairline);
-  }
-  .updated{ margin-top:10px; font-size:13px; color:var(--muted); }
-  h2{
-    font-family:var(--serif);
-    font-weight:400;
-    font-size:19px;
-    margin-top:40px;
-    margin-bottom:8px;
-  }
-  h2 .num{ color:var(--gold); margin-right:10px; }
-  p{ margin-top:12px; }
-  .crisis{
-    margin-top:16px;
-    border-left:1px solid var(--gold);
-    padding-left:20px;
-  }
-  footer{
-    margin-top:90px;
-    padding-top:28px;
-    border-top:1px solid var(--hairline);
-    font-size:13px;
-    color:var(--muted);
-    line-height:2;
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{background:var(--bg);scroll-behavior:smooth}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:300;font-size:15px;line-height:1.85;-webkit-font-smoothing:antialiased}
+  ::selection{background:var(--gold);color:var(--bg)}
+  a{color:var(--gold);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:780px;margin:0 auto;padding:clamp(28px,5vh,56px) clamp(24px,6vw,48px) 100px}
+  .wordmark{font-family:var(--serif);font-size:clamp(22px,2.6vw,28px);font-weight:400;color:var(--ink)}
+  .wordmark .dot{color:var(--gold)}
+  .wordmark a{color:inherit}
+  nav{margin-top:36px;font-size:13px;color:var(--muted);line-height:2.4;display:flex;flex-wrap:wrap;gap:4px 0}
+  nav a{color:var(--muted);border-bottom:1px solid var(--hairline);margin-right:24px;padding-bottom:1px}
+  nav a:hover{color:var(--ink);text-decoration:none}
+
+  /* document sections */
+  .doc{margin-top:clamp(60px,10vh,100px)}
+  h1{font-family:var(--serif);font-weight:400;font-size:clamp(28px,4vw,38px);line-height:1.15;padding-top:24px;border-top:1px solid var(--hairline);letter-spacing:-.01em}
+  .updated{margin-top:10px;font-size:12px;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+  .preamble{margin-top:20px;font-size:14px;color:var(--muted);max-width:64ch;border-left:2px solid rgba(200,148,58,.3);padding-left:16px}
+
+  h2{font-family:var(--serif);font-weight:400;font-size:17px;margin-top:44px;margin-bottom:6px;color:var(--ink)}
+  h2 .num{color:var(--gold);margin-right:10px;font-family:var(--sans);font-size:12px;font-weight:500;letter-spacing:.06em}
+  p{margin-top:10px;color:rgba(232,234,240,.85)}
+  ul,ol{margin-top:10px;padding-left:20px;color:rgba(232,234,240,.85)}
+  li{margin-top:6px}
+  strong{color:var(--ink);font-weight:500}
+
+  /* callout boxes */
+  .box{margin-top:20px;padding:18px 20px;border:1px solid var(--hairline);border-radius:8px;background:var(--surface)}
+  .box.warn{border-color:rgba(200,148,58,.3);background:rgba(200,148,58,.04)}
+  .box p{margin-top:6px}
+  .box p:first-child{margin-top:0}
+
+  .crisis{margin-top:16px;border-left:2px solid var(--gold);padding-left:18px}
+  .crisis p{color:var(--ink)}
+
+  .contact-note{margin-top:48px;padding-top:20px;border-top:1px solid var(--hairline);font-size:13px;color:var(--muted)}
+
+  footer{margin-top:80px;padding-top:24px;border-top:1px solid var(--hairline);font-size:12px;color:var(--dim);line-height:2.2}
+
+  @media(max-width:600px){
+    h1{font-size:clamp(24px,7vw,32px)}
+    h2{font-size:16px}
   }
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <div class="wordmark"><a href="index.html">Man Down<span class="dot">.</span></a></div>
-
+  <div class="wordmark"><a href="/">Man Down<span class="dot">.</span></a></div>
   <nav>
     <a href="#privacy">Privacy Policy</a>
     <a href="#terms">Terms of Service</a>
     <a href="#disclaimer">Mental Health Disclaimer</a>
   </nav>
 
-  <!-- ================= PRIVACY ================= -->
-  <h1 id="privacy">Privacy Policy</h1>
-  <p class="updated">Effective date: July 15, 2026</p>
+  <!-- ═══════════════════════════════════════════
+       PRIVACY POLICY
+  ═══════════════════════════════════════════ -->
+  <div class="doc" id="privacy">
+    <h1>Privacy Policy</h1>
+    <p class="updated">Effective date: July 15, 2026 &nbsp;&middot;&nbsp; Version 1.0</p>
+    <p class="preamble">This Policy governs the collection, use, retention, and disclosure of personal information by Man Down (&ldquo;Man Down,&rdquo; &ldquo;we,&rdquo; &ldquo;us,&rdquo; &ldquo;our&rdquo;), operated from Montr&eacute;al, Qu&eacute;bec, Canada. By accessing or using the Service, you acknowledge that you have read and understood this Policy. The person responsible for the protection of personal information can be reached at <a href="mailto:hello@trymandown.com">hello@trymandown.com</a>.</p>
 
-  <h2><span class="num">1.</span>Application of this Policy</h2>
-  <p>This Privacy Policy describes how Man Down (&ldquo;Man Down,&rdquo; &ldquo;we,&rdquo; &ldquo;us&rdquo;), operated from Montr&eacute;al, Qu&eacute;bec, Canada, collects, uses, retains, and discloses personal information in connection with the Man Down application and website (the &ldquo;Service&rdquo;). The person responsible for the protection of personal information may be contacted at <a href="mailto:hello@trymandown.com">hello@trymandown.com</a>. By using the Service, you acknowledge the practices described in this Policy.</p>
+    <h2><span class="num">1.</span>Definitions</h2>
+    <p>&ldquo;Service&rdquo; means the Man Down application, website, and all related software, features, and content. &ldquo;Personal Information&rdquo; means any information that identifies or could reasonably identify you as an individual, including information about your mental health or emotional state where inferable from your content. &ldquo;Conversation Content&rdquo; means the text, audio transcriptions, and any other content you submit through the Service. &ldquo;Personalization Records&rdquo; means machine-generated summaries and inferences derived from your Conversation Content used to tailor responses.</p>
 
-  <h2><span class="num">2.</span>Information We Collect</h2>
-  <p>We collect: (a) account information, being your email address and, where you authenticate through Google, your name and profile image; (b) the content of your conversations within the Service, which is retained to provide conversational continuity; (c) optional session inputs, such as mood ratings; (d) limited technical data, being your IP address, processed solely for rate limiting and abuse prevention; (e) limited, content-free service metadata, such as message length, used internally to evaluate whether the Service is functioning as intended; and (f) for waitlist registrants, an email address used solely to send a launch notification. We collect no other categories of personal information, and we operate no advertising or third-party analytics trackers of any kind.</p>
+    <h2><span class="num">2.</span>Information We Collect</h2>
+    <p>We collect only what is necessary to provide the Service. This includes:</p>
+    <ul>
+      <li><strong>Account information:</strong> your email address and, where you authenticate via Google, your name and profile image as provided by Google;</li>
+      <li><strong>Conversation Content:</strong> the text and voice messages you submit, retained to provide conversational continuity across sessions;</li>
+      <li><strong>Mood and session inputs:</strong> optional ratings and preferences you provide within the Service;</li>
+      <li><strong>Technical and security data:</strong> your IP address, collected and processed solely for rate limiting and abuse prevention, and retained for no longer than 30 days;</li>
+      <li><strong>Service metadata:</strong> session timing and approximate message length, used in aggregate to evaluate whether the Service is functioning as intended, not linked to your identity;</li>
+      <li><strong>Waitlist registrations:</strong> email addresses submitted via our waitlist form, used solely to send a launch notification and no other communication without further consent.</li>
+    </ul>
+    <p>We do not collect payment card numbers, government identifiers, biometric identifiers, precise geolocation, or browsing history. We operate no advertising networks and no third-party analytics trackers of any kind.</p>
 
-  <h2><span class="num">3.</span>Automated Processing</h2>
-  <p>The Service uses automated processing of your conversation content to generate internal personalization records that tailor how the Service responds to you. These records are derived exclusively from your own content, are not disclosed to any third party, are not used to make any decision producing legal or similarly significant effects concerning you, and are permanently deleted upon deletion of your data. They form part of your personal information and are available to you upon request in accordance with Section 7.</p>
+    <h2><span class="num">3.</span>Sensitive Personal Information</h2>
+    <p>The Service is designed for emotional support conversations. By its nature, your Conversation Content may contain or imply information about your mental health, emotional state, family circumstances, or other sensitive matters. You consent to our processing of any such information solely as described in this Policy by choosing to provide it. We apply heightened internal access controls to Conversation Content. We do not disclose the substance of your conversations to any third party except as required by law or as necessary to prevent imminent risk of serious harm to you or others, in accordance with Section 9.</p>
 
-  <h2><span class="num">4.</span>Service Providers and Cross-Border Processing</h2>
-  <p>Personal information is stored on infrastructure located in Canada. To operate the Service, certain processing is performed on our behalf by service providers, comprising: a cloud database and authentication provider (Canada); an AI language-processing provider (United States); a voice-synthesis provider (United States), engaged only where you use voice features; and a transactional email provider. Each provider is contractually limited to processing personal information solely to provide its services to us, and no provider is permitted to use your conversation content for its own purposes, including the training of artificial-intelligence models. Where personal information is communicated outside Qu&eacute;bec, we assess the protection it will receive in accordance with applicable law before engaging the provider. A current list of the categories of providers is available upon written request.</p>
+    <h2><span class="num">4.</span>Automated Processing and Personalization</h2>
+    <p>The Service uses automated processing to generate Personalization Records that tailor how Jordan and Luna respond to you. These records are derived exclusively from your own Conversation Content. They are not disclosed to any third party, are not used to make decisions that produce legal or similarly significant effects concerning you, and are permanently and irreversibly deleted when you delete your data. Personalization Records form part of your Personal Information and are available to you upon written request. No third party, including our AI processing provider, is permitted to use your Conversation Content to train, fine-tune, or improve any artificial-intelligence model.</p>
 
-  <h2><span class="num">5.</span>Purposes and Legal Bases</h2>
-  <p>We process personal information to provide and secure the Service, to maintain conversational continuity, to evaluate Service performance, and to comply with legal obligations. For users in the European Economic Area or the United Kingdom, our legal bases are the performance of our contract with you (Art. 6(1)(b) GDPR) and, in respect of any special-category data inferable from your conversation content, your explicit consent (Art. 9(2)(a) GDPR), which you may withdraw at any time.</p>
+    <h2><span class="num">5.</span>How We Use Your Information</h2>
+    <p>We use your Personal Information exclusively to:</p>
+    <ul>
+      <li>provide, maintain, and improve the Service;</li>
+      <li>authenticate your identity and manage your account;</li>
+      <li>generate and apply Personalization Records to tailor the Service to you;</li>
+      <li>detect and prevent abuse, fraud, and security incidents;</li>
+      <li>comply with applicable legal obligations;</li>
+      <li>communicate with you about your account or material changes to the Service.</li>
+    </ul>
+    <p>We do not sell, rent, or trade your Personal Information. We do not use your Personal Information for targeted advertising.</p>
 
-  <h2><span class="num">6.</span>Retention</h2>
-  <p>Conversation content and personalization records are retained for the duration of your account. Upon deletion, data is removed from production systems immediately and from encrypted backups within 35 days through routine backup rotation. Waitlist email addresses are retained no longer than one year following the launch notification. Service metadata is retained thereafter only in aggregate, non-identifying form.</p>
+    <h2><span class="num">6.</span>Service Providers and Cross-Border Transfers</h2>
+    <p>To operate the Service, we engage the following categories of service providers, each of which is contractually bound to process your data solely to provide services to us and is prohibited from using your data for any other purpose:</p>
+    <ul>
+      <li><strong>Cloud database and authentication:</strong> infrastructure located in Canada;</li>
+      <li><strong>AI language processing:</strong> Anthropic, PBC, located in the United States; your Conversation Content is transmitted to Anthropic solely to generate responses and is not retained by Anthropic for model training pursuant to our agreement;</li>
+      <li><strong>Voice synthesis:</strong> ElevenLabs, Inc., located in the United States, engaged only when you use voice features;</li>
+      <li><strong>Transactional email delivery:</strong> Resend, Inc., located in the United States, engaged only to deliver account and waitlist emails.</li>
+    </ul>
+    <p>Where your Personal Information is transferred outside Qu&eacute;bec, we conduct a privacy impact assessment and implement contractual safeguards before transfer, as required by the Act respecting the protection of personal information in the private sector (Qu&eacute;bec). A current list of service provider categories is available upon written request to <a href="mailto:hello@trymandown.com">hello@trymandown.com</a>.</p>
 
-  <h2><span class="num">7.</span>Your Rights</h2>
-  <p>Subject to applicable law, you have the right to access the personal information we hold about you, to have it rectified, to have it deleted, to receive it in a structured, commonly used technological format, and to withdraw consent to its processing. Deletion is available directly within the Service (Settings &rarr; Delete My Data) and takes effect without further steps. All other requests may be directed to <a href="mailto:hello@trymandown.com">hello@trymandown.com</a> and will be answered within thirty (30) days. Residents of Qu&eacute;bec may lodge a complaint with the Commission d&rsquo;acc&egrave;s &agrave; l&rsquo;information du Qu&eacute;bec; residents of the European Economic Area may lodge a complaint with their supervisory authority.</p>
+    <h2><span class="num">7.</span>Legal Bases for Processing (EEA and UK Users)</h2>
+    <p>For users in the European Economic Area or the United Kingdom, our legal bases for processing are: (a) performance of our contract with you (Article 6(1)(b) GDPR) in respect of account data and Conversation Content required to provide the Service; and (b) your explicit consent (Article 9(2)(a) GDPR) in respect of any special-category data (including health-related data) inferable from your Conversation Content. You may withdraw consent at any time by deleting your data; withdrawal does not affect the lawfulness of processing conducted prior to withdrawal.</p>
 
-  <h2><span class="num">8.</span>Safeguards and Incident Notification</h2>
-  <p>We employ technical and organizational safeguards proportionate to the sensitivity of the information we hold, including access controls that restrict conversation data to the account that created it, server-side isolation of all credentials, and data minimization. In the event of a confidentiality incident presenting a risk of serious injury, we will notify affected persons and the authorities required by law without undue delay and will maintain the incident register required by applicable legislation.</p>
+    <h2><span class="num">8.</span>Retention</h2>
+    <p>Conversation Content and Personalization Records are retained for the duration of your account. Upon deletion, data is removed from production systems within 72 hours and purged from encrypted backups within 35 days through routine backup rotation. IP addresses are retained for no longer than 30 days. Waitlist email addresses are retained until the earlier of one year following the launch notification or receipt of an unsubscribe request. Service metadata is retained in aggregate, non-identifying form indefinitely for service improvement purposes.</p>
 
-  <h2><span class="num">9.</span>Age Restriction</h2>
-  <p>The Service is available only to persons aged 18 or older. We do not knowingly collect personal information from minors; any account determined to belong to a minor will be closed and its data deleted.</p>
+    <h2><span class="num">9.</span>Disclosure in Exceptional Circumstances</h2>
+    <p>We will not disclose your Personal Information to law enforcement or regulatory authorities except: (a) where required to do so by a valid court order, subpoena, or other lawful process; (b) where we reasonably believe disclosure is necessary to prevent imminent risk of serious physical harm to you or to an identifiable third party; or (c) where necessary to detect, prevent, or investigate fraud or security incidents affecting the Service. Where legally permitted, we will notify you of any such disclosure request before complying. We will not disclose the existence of a sealed court order to the extent prohibited by law. We do not currently receive national-security process, and we will update this Policy with a canary statement if that changes and we are legally permitted to do so.</p>
 
-  <h2><span class="num">10.</span>Amendments</h2>
-  <p>Material amendments to this Policy will be communicated to account holders by email before taking effect. The effective date above identifies the version in force.</p>
+    <h2><span class="num">10.</span>Your Rights</h2>
+    <p>Subject to applicable law, you have the right to: access the Personal Information we hold about you; request correction of inaccurate information; request deletion of your data; receive your data in a structured, portable format; withdraw consent to processing (where our legal basis is consent); and lodge a complaint with a supervisory authority. Deletion is available directly within the Service at <strong>Settings &rarr; Delete My Data</strong> and takes immediate effect in our production systems. All other requests should be submitted to <a href="mailto:hello@trymandown.com">hello@trymandown.com</a> and will receive a substantive response within 30 days. Residents of Qu&eacute;bec may lodge a complaint with the Commission d&rsquo;acc&egrave;s &agrave; l&rsquo;information (CAI). EEA residents may lodge a complaint with their local supervisory authority. California residents have additional rights under the CCPA described in Section 11.</p>
 
-  <!-- ================= TERMS ================= -->
-  <h1 id="terms">Terms of Service</h1>
-  <p class="updated">Effective date: July 15, 2026</p>
+    <h2><span class="num">11.</span>California Privacy Rights (CCPA)</h2>
+    <p>If you are a California resident, you have the right to know what Personal Information we collect and how we use it, to delete your Personal Information, to correct inaccurate Personal Information, and to opt out of the sale or sharing of your Personal Information. We do not sell or share your Personal Information for cross-context behavioral advertising. To exercise any of these rights, contact <a href="mailto:hello@trymandown.com">hello@trymandown.com</a>. We will not discriminate against you for exercising your rights.</p>
 
-  <h2><span class="num">1.</span>Acceptance</h2>
-  <p>These Terms of Service (the &ldquo;Terms&rdquo;) constitute a binding agreement between you and Man Down, operated from Montr&eacute;al, Qu&eacute;bec, Canada, governing your use of the Service. You accept these Terms by creating an account or using the Service. If you do not accept them, you must not use the Service.</p>
+    <h2><span class="num">12.</span>Cookies and Tracking Technologies</h2>
+    <p>The Service uses only technically necessary session tokens and authentication tokens stored in your browser&rsquo;s local storage to maintain your logged-in state. We do not use advertising cookies, third-party tracking pixels, fingerprinting technologies, or any other technology designed to track your activity across websites. No consent to tracking is required or sought because no non-essential tracking occurs.</p>
 
-  <h2><span class="num">2.</span>Nature of the Service</h2>
-  <p>The Service provides conversational interaction with artificial-intelligence companions identified as &ldquo;Jordan&rdquo; and &ldquo;Luna.&rdquo; The Service is not a healthcare service. Jordan and Luna are not natural persons and are not therapists, psychologists, physicians, counselors, or crisis responders; no output of the Service constitutes medical, psychological, legal, or other professional advice, and use of the Service does not create a treatment or professional relationship of any kind. The Mental Health Disclaimer below forms an integral part of these Terms.</p>
+    <h2><span class="num">13.</span>Children&rsquo;s Privacy</h2>
+    <p>The Service is available only to persons 18 years of age or older. We do not knowingly collect, use, or disclose Personal Information from minors. If we determine that an account belongs to a minor, we will terminate the account and permanently delete all associated data without delay. If you believe a minor has used the Service, contact us at <a href="mailto:hello@trymandown.com">hello@trymandown.com</a>.</p>
 
-  <h2><span class="num">3.</span>Emergency Situations</h2>
-  <p class="crisis">The Service is not designed or equipped to respond to emergencies. If you are in danger or experiencing thoughts of suicide or self-harm, contact emergency services or a crisis line before using the Service: in Canada, 1-833-456-4566; in the United States, call or text 988; elsewhere, <a href="https://findahelpline.com">findahelpline.com</a>.</p>
+    <h2><span class="num">14.</span>Security and Breach Notification</h2>
+    <p>We implement technical and organizational safeguards appropriate to the sensitivity of the information we process, including: access controls that restrict Conversation Content to the account that created it; server-side encryption of credentials and API keys; network-level access controls on our database; and rate limiting to prevent unauthorized automated access. No system is impenetrable. In the event of a confidentiality incident presenting a risk of serious injury to one or more individuals, we will: (a) notify affected individuals without undue delay and within the timeframe required by applicable law; (b) notify the Commission d&rsquo;acc&egrave;s &agrave; l&rsquo;information (Qu&eacute;bec), the applicable supervisory authority (EEA/UK), and any other authority required by law; and (c) maintain a register of confidentiality incidents as required by applicable legislation.</p>
 
-  <h2><span class="num">4.</span>Eligibility</h2>
-  <p>You must be at least 18 years of age to use the Service. By using the Service you represent that you meet this requirement. Accounts determined to belong to minors will be terminated and their data deleted.</p>
+    <h2><span class="num">15.</span>Third-Party Links and Resources</h2>
+    <p>The Service may reference or link to third-party crisis resources, websites, and services, including but not limited to findahelpline.com. We have no control over the content, privacy practices, or availability of third-party resources. Their inclusion does not constitute our endorsement, and we are not responsible for their content or data practices. We encourage you to review the privacy policies of any third-party service you access.</p>
 
-  <h2><span class="num">5.</span>Accounts and Access Codes</h2>
-  <p>You are responsible for activity occurring under your account. During early access, access codes are personal and non-transferable: each code is issued to a single individual, is technically bound to the account or accounts of the person who first uses it, and may not be shared, published, or redistributed. We may suspend codes that show use inconsistent with issuance to a single individual.</p>
+    <h2><span class="num">16.</span>Amendments</h2>
+    <p>We will notify account holders of material amendments to this Policy by email at least 14 days before the amendment takes effect, except where a shorter notice period is required to address a security incident or comply with applicable law. Continued use of the Service after an amendment takes effect constitutes acceptance of the updated Policy. The effective date at the top of this Policy identifies the version currently in force. Prior versions are available upon request.</p>
 
-  <h2><span class="num">6.</span>Acceptable Use</h2>
-  <p>You shall not use the Service to plan or facilitate harm to any person; to harass or threaten; to probe, disrupt, or circumvent the security or operation of the Service; to attempt to extract the Service&rsquo;s underlying instructions or configuration; to reverse-engineer, resell, or commercially exploit the Service; or in violation of any applicable law.</p>
+    <div class="contact-note">Questions about this Privacy Policy? Contact us at <a href="mailto:hello@trymandown.com">hello@trymandown.com</a>. We aim to respond within 5 business days.</div>
+  </div>
 
-  <h2><span class="num">7.</span>User Content; Licence; Intellectual Property</h2>
-  <p>As between you and Man Down, you retain all rights in the content you submit. You grant Man Down a limited, non-exclusive licence to host, process, and store that content solely as necessary to operate the Service for you, including the automated processing described in the Privacy Policy. Your conversation content is not used to train artificial-intelligence models. The Service, including its software, design, branding, and the Jordan and Luna characters, is and remains the exclusive property of Man Down; no rights are granted except as expressly stated.</p>
+  <!-- ═══════════════════════════════════════════
+       TERMS OF SERVICE
+  ═══════════════════════════════════════════ -->
+  <div class="doc" id="terms">
+    <h1>Terms of Service</h1>
+    <p class="updated">Effective date: July 15, 2026 &nbsp;&middot;&nbsp; Version 1.0</p>
+    <p class="preamble">Please read these Terms carefully before using the Service. They contain important provisions including limitations on our liability, your assumption of risk, and the nature of the Service. By using the Service, you agree to be bound by these Terms.</p>
 
-  <h2><span class="num">8.</span>Fees</h2>
-  <p>The Service is currently provided without charge. Any future fees will be disclosed before you incur them.</p>
+    <h2><span class="num">1.</span>Acceptance and Binding Agreement</h2>
+    <p>These Terms of Service (&ldquo;Terms&rdquo;) constitute a legally binding agreement between you (&ldquo;you,&rdquo; &ldquo;your,&rdquo; &ldquo;User&rdquo;) and Man Down (&ldquo;Man Down,&rdquo; &ldquo;we,&rdquo; &ldquo;us,&rdquo; &ldquo;our&rdquo;), operated from Montr&eacute;al, Qu&eacute;bec, Canada, governing your access to and use of the Man Down application, website, and all related software, features, content, and services (collectively, the &ldquo;Service&rdquo;). You accept these Terms by creating an account, clicking &ldquo;I agree,&rdquo; checking the acceptance box, or by accessing or using any part of the Service. If you do not accept all of these Terms, you must immediately cease using the Service. These Terms incorporate by reference the Privacy Policy and Mental Health Disclaimer published at this URL, which form an integral part of this agreement.</p>
 
-  <h2><span class="num">9.</span>Disclaimer of Warranties</h2>
-  <p>The Service is an artificial-intelligence system and may produce inaccurate, incomplete, or unsuitable output, and its availability and data continuity are not guaranteed. To the maximum extent permitted by applicable law, the Service is provided &ldquo;as is&rdquo; and &ldquo;as available,&rdquo; without warranties or conditions of any kind, whether express, implied, or statutory. This section does not exclude warranties that cannot be excluded under the laws applicable to you, including the Civil Code of Qu&eacute;bec and the Qu&eacute;bec Consumer Protection Act.</p>
+    <h2><span class="num">2.</span>Nature and Limitations of the Service</h2>
+    <div class="box warn">
+      <p><strong>The Service is not a healthcare service, a medical service, a crisis service, or a professional mental health service of any kind.</strong></p>
+      <p>Jordan and Luna are artificial-intelligence software programs. They are not natural persons. They are not licensed therapists, psychologists, psychiatrists, counselors, social workers, physicians, nurses, or any other regulated health professional. No conversation with Jordan or Luna constitutes therapy, psychotherapy, counseling, diagnosis, treatment, prognosis, or professional advice of any kind. Your use of the Service does not create a therapeutic relationship, a professional relationship, a confidential relationship of any regulated kind, or a duty of care on the part of Man Down or its personnel toward you.</p>
+      <p>Outputs generated by the Service are produced by automated artificial-intelligence systems. They may be inaccurate, incomplete, misleading, contextually inappropriate, or harmful. You agree not to rely on any output of the Service as a substitute for professional medical, psychological, legal, financial, or other professional advice.</p>
+    </div>
 
-  <h2><span class="num">10.</span>Limitation of Liability</h2>
-  <p>To the maximum extent permitted by applicable law, the aggregate liability of Man Down arising out of or relating to the Service shall not exceed the amounts you paid to Man Down in the twelve (12) months preceding the event giving rise to the claim, and Man Down shall not be liable for indirect, incidental, consequential, or punitive damages. Nothing in these Terms excludes or limits liability that cannot be excluded or limited under applicable law, including liability for intentional or gross fault, nor does anything in these Terms limit rights you hold under mandatory consumer-protection legislation.</p>
+    <h2><span class="num">3.</span>Emergency Situations — Read This</h2>
+    <div class="box warn">
+      <p><strong>The Service is not designed, equipped, or intended for emergencies. Do not use the Service as a substitute for emergency services.</strong></p>
+      <p>If you are in immediate danger, experiencing a medical emergency, or are having thoughts of suicide or self-harm, stop using the Service and contact emergency services immediately:</p>
+    </div>
+    <div class="crisis">
+      <p><strong>Canada:</strong> 1-833-456-4566 (24 hours) or 911</p>
+      <p><strong>United States:</strong> Call or text 988 (Suicide &amp; Crisis Lifeline) or 911</p>
+      <p><strong>United Kingdom:</strong> 116 123 (Samaritans) or 999</p>
+      <p><strong>Australia:</strong> 13 11 14 (Lifeline) or 000</p>
+      <p><strong>India:</strong> iCall 9152987821 or 112</p>
+      <p><strong>All other locations:</strong> <a href="https://findahelpline.com" target="_blank" rel="noopener">findahelpline.com</a> or your local emergency number</p>
+    </div>
 
-  <h2><span class="num">11.</span>Suspension; Termination; Wind-Down</h2>
-  <p>You may terminate at any time by deleting your data within the Service. We may suspend or terminate accounts for material breach of these Terms. If the Service is discontinued, we will provide reasonable advance notice and a period during which you may obtain or delete your data.</p>
+    <h2><span class="num">4.</span>Eligibility</h2>
+    <p>You must be at least 18 years of age to use the Service. By accessing or using the Service, you represent and warrant that you are at least 18 years of age, that you have the legal capacity to enter into a binding contract in your jurisdiction, and that your use of the Service does not violate any applicable law. Accounts determined to belong to persons under 18 will be terminated without notice and all associated data permanently deleted. We reserve the right to request proof of age at any time.</p>
 
-  <h2><span class="num">12.</span>Amendments</h2>
-  <p>We may amend these Terms. Material amendments will be communicated to account holders before taking effect; continued use of the Service after the effective date constitutes acceptance.</p>
+    <h2><span class="num">5.</span>Account Registration; Access Codes</h2>
+    <p>Certain features of the Service require account registration. You agree to provide accurate, current, and complete information during registration and to keep that information updated. You are solely responsible for maintaining the confidentiality of your account credentials and for all activity that occurs under your account, whether or not authorized by you. You must notify us immediately at <a href="mailto:hello@trymandown.com">hello@trymandown.com</a> of any unauthorized use of your account.</p>
+    <p>During early access, access to the Service is conditioned on possession of a valid access code. Access codes are personal and non-transferable. Each code is issued to a single individual and is technically bound to the account or accounts of the person who first activates it. You may not sell, share, publish, redistribute, or transfer your access code to any other person. We may immediately suspend or revoke any code used in a manner inconsistent with issuance to a single individual, without notice or liability.</p>
 
-  <h2><span class="num">13.</span>Governing Law; Jurisdiction</h2>
-  <p>These Terms are governed by the laws of the Province of Qu&eacute;bec and the federal laws of Canada applicable therein. Subject to any non-waivable right you hold as a consumer to proceed in the courts of your place of residence, the courts of the judicial district of Montr&eacute;al have jurisdiction over disputes arising from these Terms or the Service.</p>
+    <h2><span class="num">6.</span>Acceptable Use; Prohibited Conduct</h2>
+    <p>You agree not to use the Service to:</p>
+    <ul>
+      <li>plan, facilitate, promote, or carry out harm to any person, including yourself;</li>
+      <li>harass, threaten, stalk, intimidate, or abuse any person;</li>
+      <li>attempt to extract, reverse-engineer, or reproduce the Service&rsquo;s underlying instructions, system prompts, configuration, source code, or AI model weights;</li>
+      <li>probe, test, scan, or evaluate the Service for security vulnerabilities without our prior written consent;</li>
+      <li>circumvent, disable, or interfere with any security, authentication, or access control feature of the Service;</li>
+      <li>transmit malware, viruses, or any code designed to damage or interfere with systems;</li>
+      <li>use automated means, bots, scripts, or scrapers to access or interact with the Service;</li>
+      <li>impersonate any person or entity or misrepresent your affiliation with any person or entity;</li>
+      <li>resell, sublicense, or otherwise commercially exploit the Service or any output of the Service without our written consent;</li>
+      <li>attempt to manipulate or deceive the AI system in a manner designed to elicit harmful, dangerous, or illegal outputs;</li>
+      <li>use the Service in any manner that violates applicable law, including without limitation privacy laws, consumer protection laws, and laws governing the provision of healthcare services.</li>
+    </ul>
+    <p>We reserve the right to determine, in our sole discretion, whether conduct violates this section, and to take appropriate action including immediate account suspension or termination.</p>
 
-  <!-- ================= DISCLAIMER ================= -->
-  <h1 id="disclaimer">Mental Health Disclaimer</h1>
-  <p class="updated">Effective date: July 15, 2026</p>
+    <h2><span class="num">7.</span>Assumption of Risk</h2>
+    <p><strong>You expressly acknowledge and assume all risks associated with the use of an artificial-intelligence system in connection with your emotional, psychological, and mental health.</strong> You understand and agree that:</p>
+    <ul>
+      <li>AI-generated responses may be inaccurate, inappropriate, contextually wrong, or emotionally harmful;</li>
+      <li>the Service may fail to recognize a crisis, emergency, or urgent situation, and may respond inappropriately to such situations;</li>
+      <li>the Service may not always be available, and interruptions in service may occur at any time;</li>
+      <li>the emotional support provided by the Service is not a substitute for professional mental health care, medication, hospitalization, or human connection;</li>
+      <li>decisions you make in reliance on outputs of the Service are made at your sole risk;</li>
+      <li>you are solely responsible for seeking qualified professional help if your mental health requires it.</li>
+    </ul>
+    <p>By using the Service, you voluntarily and knowingly assume all such risks.</p>
 
-  <h2><span class="num">1.</span>No Professional Services</h2>
-  <p>Jordan and Luna are artificial-intelligence companions. They are not licensed therapists, psychologists, psychiatrists, physicians, or mental-health professionals, and the Service is not a crisis service. Interaction with the Service does not constitute therapy, counseling, diagnosis, or treatment, and is not a substitute for professional mental-health or medical care. Output of the Service may be inaccurate; consult a qualified professional before acting on anything that concerns your health.</p>
+    <h2><span class="num">8.</span>User Content; Intellectual Property</h2>
+    <p>As between you and Man Down, you retain all rights in the content you submit to the Service (&ldquo;User Content&rdquo;). You grant Man Down a limited, non-exclusive, royalty-free, worldwide licence to host, store, transmit, and process your User Content solely as necessary to provide and operate the Service for you, including the automated processing described in the Privacy Policy. This licence terminates when you delete your User Content or your account. Your User Content is not used to train, fine-tune, or improve any artificial-intelligence model. You represent and warrant that your User Content does not violate any third-party rights or any applicable law.</p>
+    <p>The Service, including its software, algorithms, design, branding, the Jordan and Luna characters, personas, voice models, and all associated intellectual property (&ldquo;Man Down IP&rdquo;), is and remains the exclusive property of Man Down. No rights in Man Down IP are granted to you except the limited right to use the Service in accordance with these Terms. You may not copy, modify, distribute, create derivative works of, reverse-engineer, decompile, or disassemble any part of the Service or Man Down IP.</p>
 
-  <h2><span class="num">2.</span>Emergencies</h2>
-  <p class="crisis">If you are experiencing thoughts of suicide or self-harm, or any mental-health emergency: in Canada, call 1-833-456-4566 (24 hours); in the United States, call or text 988; anywhere in the world, <a href="https://findahelpline.com">findahelpline.com</a> lists local services; in any emergency, contact your local emergency number.</p>
+    <h2><span class="num">9.</span>Fees and Payment</h2>
+    <p>The Service is currently provided free of charge. We reserve the right to introduce fees at any time. If we do so, we will provide affected users with at least 30 days&rsquo; advance notice before any paid feature or subscription takes effect, and your continued use of the Service after the notice period constitutes acceptance of the applicable fees. We will never charge you without your explicit affirmative consent at the time of purchase.</p>
 
-  <h2><span class="num">3.</span>Intended Use</h2>
-  <p>The Service is intended for adults seeking a private, non-clinical space for reflection and conversation. It is not intended for persons experiencing acute crises or severe psychiatric conditions, and it is designed to complement, not replace, the people and professionals in your life.</p>
+    <h2><span class="num">10.</span>Third-Party Services and Links</h2>
+    <p>The Service may reference, recommend, or link to third-party services, websites, crisis resources, and applications that are not owned or controlled by Man Down. We have no control over and assume no responsibility for the content, terms, privacy practices, accuracy, availability, or reliability of any third-party service. The inclusion of any third-party link or reference does not constitute our endorsement of that service. Your use of third-party services is at your own risk and subject to the terms and privacy policies of those services. We specifically disclaim any responsibility for the availability, accuracy, or conduct of third-party crisis resources referenced in the Service.</p>
+
+    <h2><span class="num">11.</span>Disclaimer of Warranties</h2>
+    <div class="box">
+      <p>TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, THE SERVICE IS PROVIDED &ldquo;AS IS&rdquo; AND &ldquo;AS AVAILABLE,&rdquo; WITHOUT WARRANTY OR CONDITION OF ANY KIND, EXPRESS, IMPLIED, OR STATUTORY. MAN DOWN EXPRESSLY DISCLAIMS ALL WARRANTIES, INCLUDING WITHOUT LIMITATION WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, NON-INFRINGEMENT, ACCURACY, COMPLETENESS, RELIABILITY, SECURITY, TIMELINESS, SAFETY, THERAPEUTIC EFFICACY, AND ANY WARRANTY ARISING FROM COURSE OF DEALING OR USAGE OF TRADE.</p>
+      <p>WITHOUT LIMITING THE FOREGOING, MAN DOWN DOES NOT WARRANT THAT: (A) THE SERVICE WILL MEET YOUR REQUIREMENTS OR EXPECTATIONS; (B) THE SERVICE WILL BE UNINTERRUPTED, TIMELY, ERROR-FREE, OR FREE OF HARMFUL COMPONENTS; (C) ANY OUTPUT GENERATED BY THE SERVICE WILL BE ACCURATE, COMPLETE, OR APPROPRIATE FOR YOUR CIRCUMSTANCES; (D) THE SERVICE WILL DETECT OR RESPOND APPROPRIATELY TO ANY CRISIS, EMERGENCY, OR MENTAL HEALTH EPISODE; OR (E) THE SERVICE WILL BE AVAILABLE IN ANY PARTICULAR JURISDICTION.</p>
+      <p>This disclaimer does not exclude warranties that cannot be excluded under the laws applicable to you, including the Civil Code of Qu&eacute;bec and the Consumer Protection Act (Qu&eacute;bec).</p>
+    </div>
+
+    <h2><span class="num">12.</span>Limitation of Liability</h2>
+    <div class="box">
+      <p>TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW:</p>
+      <p>(A) THE AGGREGATE LIABILITY OF MAN DOWN, ITS DIRECTORS, OFFICERS, EMPLOYEES, AGENTS, CONTRACTORS, AFFILIATES, SUCCESSORS, AND ASSIGNS (COLLECTIVELY, &ldquo;MAN DOWN PARTIES&rdquo;) TO YOU ARISING OUT OF OR RELATING TO THE SERVICE OR THESE TERMS SHALL NOT EXCEED THE GREATER OF: (I) THE TOTAL AMOUNTS PAID BY YOU TO MAN DOWN IN THE TWELVE (12) MONTHS IMMEDIATELY PRECEDING THE EVENT OR CIRCUMSTANCES GIVING RISE TO THE CLAIM; OR (II) ONE HUNDRED CANADIAN DOLLARS (CAD $100).</p>
+      <p>(B) IN NO EVENT SHALL THE MAN DOWN PARTIES BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, EXEMPLARY, OR PUNITIVE DAMAGES OF ANY KIND WHATSOEVER, INCLUDING WITHOUT LIMITATION: LOSS OF PROFITS, LOSS OF REVENUE, LOSS OF GOODWILL, LOSS OF DATA, LOSS OF BUSINESS OPPORTUNITY, BUSINESS INTERRUPTION, COSTS OF SUBSTITUTE SERVICES, EMOTIONAL DISTRESS, PERSONAL INJURY, DEATH, OR WORSENING OF MENTAL HEALTH CONDITIONS, REGARDLESS OF THE CAUSE OF ACTION, WHETHER IN CONTRACT, TORT (INCLUDING NEGLIGENCE), STRICT LIABILITY, OR ANY OTHER LEGAL OR EQUITABLE THEORY, AND EVEN IF MAN DOWN HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.</p>
+      <p>NOTHING IN THESE TERMS EXCLUDES OR LIMITS LIABILITY: (I) FOR INTENTIONAL OR GROSS FAULT BY MAN DOWN UNDER THE CIVIL CODE OF QU&Eacute;BEC; (II) FOR DEATH OR PERSONAL INJURY CAUSED BY OUR NEGLIGENCE TO THE EXTENT SUCH LIMITATION IS PROHIBITED BY APPLICABLE LAW; OR (III) FOR ANY LIABILITY THAT CANNOT BE EXCLUDED OR LIMITED UNDER ANY MANDATORY CONSUMER PROTECTION LEGISLATION APPLICABLE TO YOU.</p>
+    </div>
+
+    <h2><span class="num">13.</span>Indemnification</h2>
+    <p>To the maximum extent permitted by applicable law, you agree to defend, indemnify, and hold harmless the Man Down Parties from and against any and all claims, demands, damages, losses, liabilities, costs, and expenses (including reasonable legal fees) arising out of or relating to: (a) your use of or access to the Service; (b) your violation of these Terms or any applicable law or regulation; (c) your violation of any third-party rights, including intellectual property rights or privacy rights; (d) your User Content; (e) any misrepresentation made by you; or (f) any harm to a third party resulting from your use of the Service. We reserve the right to assume exclusive control of the defence of any claim for which you are obligated to indemnify us, and you agree to cooperate with us in such defence.</p>
+
+    <h2><span class="num">14.</span>Suspension; Termination; Service Discontinuation</h2>
+    <p>You may terminate your account at any time by deleting your data through the Service settings and ceasing use of the Service. We may suspend or restrict your access to the Service immediately and without prior notice if we reasonably believe you have violated these Terms, your use poses a security risk, or suspension is required by law. We may permanently terminate your account for material or repeated violations of these Terms. Upon termination, your right to access the Service ceases immediately and we will permanently delete your data in accordance with the Privacy Policy.</p>
+    <p>We may discontinue the Service, in whole or in part, at any time with reasonable advance notice. If we decide to discontinue the Service permanently, we will provide account holders with at least 30 days&rsquo; notice by email and a means to export or delete their data before the Service is shut down.</p>
+
+    <h2><span class="num">15.</span>Force Majeure</h2>
+    <p>Man Down shall not be in breach of these Terms and shall not be liable for any failure or delay in the performance of its obligations where such failure or delay is caused by circumstances beyond Man Down&rsquo;s reasonable control, including without limitation: acts of God, natural disasters, war, terrorism, civil unrest, government actions, regulatory changes, pandemics, failures of third-party telecommunications or internet infrastructure, failure of third-party service providers (including AI model providers), power failures, denial-of-service attacks, or any other event of force majeure.</p>
+
+    <h2><span class="num">16.</span>Modifications to the Service and Terms</h2>
+    <p>We reserve the right to modify, suspend, or discontinue any feature, aspect, or component of the Service at any time, with or without notice, and without liability to you. We may amend these Terms at any time. For significant changes &mdash; such as changes to fees, material changes to your rights, or changes to data practices &mdash; we will notify account holders by email at least 14 days before the change takes effect. For minor updates such as clarifications or corrections, we will update the effective date. Your continued use of the Service after any amendment constitutes acceptance of the updated Terms. If you do not accept an amendment, your sole remedy is to stop using the Service and delete your account before the amendment takes effect.</p>
+
+    <h2><span class="num">17.</span>Governing Law and Jurisdiction</h2>
+    <p>These Terms, the Privacy Policy, and the Mental Health Disclaimer are governed by the laws of the Province of Qu&eacute;bec and the federal laws of Canada applicable therein, without regard to conflict-of-law principles. Subject to any non-waivable right you hold as a consumer under the law of your place of residence to bring proceedings in a court of competent jurisdiction in that location, any dispute arising out of or relating to the Service or these Terms shall be subject to the exclusive jurisdiction of the courts of the judicial district of Montr&eacute;al, Qu&eacute;bec, Canada, and you irrevocably submit to the personal jurisdiction of such courts. The United Nations Convention on Contracts for the International Sale of Goods does not apply to these Terms.</p>
+
+    <h2><span class="num">18.</span>Class Action Waiver</h2>
+    <p>TO THE EXTENT PERMITTED BY APPLICABLE LAW, YOU AGREE THAT ANY CLAIM OR DISPUTE ARISING OUT OF OR RELATING TO THE SERVICE OR THESE TERMS MUST BE BROUGHT ON AN INDIVIDUAL BASIS ONLY, AND NOT AS A PLAINTIFF OR CLASS MEMBER IN ANY PURPORTED CLASS, COLLECTIVE, CONSOLIDATED, OR REPRESENTATIVE PROCEEDING. THIS WAIVER DOES NOT APPLY TO THE EXTENT PROHIBITED BY MANDATORY CONSUMER PROTECTION LEGISLATION IN YOUR JURISDICTION OF RESIDENCE.</p>
+
+    <h2><span class="num">19.</span>General Provisions</h2>
+    <p><strong>Entire Agreement.</strong> These Terms, together with the Privacy Policy and Mental Health Disclaimer, constitute the entire agreement between you and Man Down with respect to the Service and supersede all prior agreements, understandings, negotiations, and representations, whether oral or written, relating to the Service.</p>
+    <p><strong>Severability.</strong> If any provision of these Terms is held to be invalid, unlawful, void, or unenforceable for any reason, that provision shall be deemed severed from these Terms and shall not affect the validity and enforceability of the remaining provisions, which shall continue in full force and effect.</p>
+    <p><strong>No Waiver.</strong> Our failure to enforce any right or provision of these Terms on any occasion shall not constitute a waiver of such right or provision. No waiver by Man Down of any breach or default shall be deemed a waiver of any subsequent breach or default.</p>
+    <p><strong>No Third-Party Beneficiaries.</strong> These Terms are entered into solely between you and Man Down. No other person or entity shall have any rights under or be entitled to enforce these Terms.</p>
+    <p><strong>Assignment.</strong> You may not assign or transfer these Terms or any of your rights or obligations hereunder without our prior written consent. Man Down may freely assign these Terms in connection with a merger, acquisition, sale of assets, or operation of law, and the Terms will bind the assignee. These Terms will inure to the benefit of Man Down&rsquo;s successors and assigns.</p>
+    <p><strong>Relationship of the Parties.</strong> Nothing in these Terms creates any partnership, joint venture, employment, franchise, or agency relationship between you and Man Down.</p>
+    <p><strong>Language.</strong> These Terms are written in English. To the extent required by the Charter of the French Language (Qu&eacute;bec), a French version will be made available upon request.</p>
+
+    <div class="contact-note">Questions about these Terms? Contact us at <a href="mailto:hello@trymandown.com">hello@trymandown.com</a>.</div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       MENTAL HEALTH DISCLAIMER
+  ═══════════════════════════════════════════ -->
+  <div class="doc" id="disclaimer">
+    <h1>Mental Health Disclaimer</h1>
+    <p class="updated">Effective date: July 15, 2026 &nbsp;&middot;&nbsp; Version 1.0</p>
+    <p class="preamble">This Disclaimer forms an integral part of the Terms of Service. Read it carefully. It describes fundamental limitations of the Service that are essential to your safety and to your understanding of what Man Down is and is not.</p>
+
+    <h2><span class="num">1.</span>No Professional Services; No Clinical Relationship</h2>
+    <p>Jordan and Luna are artificial-intelligence software programs. They are not licensed therapists, psychologists, psychiatrists, counselors, social workers, physicians, nurses, occupational therapists, or any other regulated health or mental health professional. Man Down is not a regulated healthcare provider, healthcare facility, or mental health service in any jurisdiction.</p>
+    <p>Your use of the Service does not create and is not intended to create: (a) a therapeutic relationship; (b) a counseling relationship; (c) a physician-patient or healthcare provider relationship; (d) a confidential professional relationship of any regulated kind; (e) a duty of care on the part of any professional toward you; or (f) any relationship governed by professional standards of care, licensing requirements, or malpractice liability frameworks applicable to health professionals.</p>
+    <p>Nothing communicated by Jordan or Luna in any session constitutes therapy, psychotherapy, cognitive-behavioral therapy, counseling, clinical assessment, diagnosis, prognosis, prescription, treatment, or professional mental health advice of any kind. No statement by Jordan or Luna should be interpreted as a clinical opinion, a professional recommendation, or a substitute for the advice of a qualified professional.</p>
+
+    <h2><span class="num">2.</span>No Diagnosis; No Clinical Assessment</h2>
+    <p>Jordan and Luna are expressly prohibited by their design from diagnosing any mental health condition, personality disorder, neurodevelopmental condition, or medical condition of any kind. The Service is technically configured to refuse diagnostic statements and has been designed not to apply clinical labels to users&rsquo; mental states. Despite these safeguards, AI systems can be imperfect and may occasionally produce outputs that resemble diagnostic statements. Any such output should be disregarded entirely and does not constitute a clinical assessment.</p>
+    <p>If you believe you are experiencing symptoms of a mental health condition, consult a qualified mental health professional. Do not use any output of the Service as the basis for making decisions about your health, medication, or treatment.</p>
+
+    <h2><span class="num">3.</span>No Medication Advice</h2>
+    <p>Jordan and Luna will not recommend, endorse, suggest, or discuss the use of any prescription medication, over-the-counter medication, supplement, substance, or medical intervention for mental health or any other purpose. If questions about medication arise in your conversation, you will be directed to speak with a qualified physician or pharmacist. No output of the Service should be interpreted as medication guidance.</p>
+
+    <h2><span class="num">4.</span>Limitations of Artificial Intelligence in Emotional Contexts</h2>
+    <p>You acknowledge and understand that AI systems have significant limitations in the context of emotional support and mental health:</p>
+    <ul>
+      <li>AI cannot fully understand human emotion, context, subtext, or the complexity of individual lived experience;</li>
+      <li>AI responses are generated by statistical pattern-matching and may be contextually incorrect, emotionally inappropriate, or harmful in ways that neither you nor we can fully anticipate;</li>
+      <li>AI may fail to recognize the seriousness of your situation, including suicidal ideation, self-harm intent, psychotic episodes, or acute mental health crises;</li>
+      <li>AI may respond to expressions of distress in ways that are unhelpful, invalidating, or counterproductive;</li>
+      <li>AI does not retain information between sessions unless specifically designed to do so, and even memory features may be incomplete or inaccurate;</li>
+      <li>the appearance of empathy or understanding in AI responses is a product of language modeling, not genuine emotional comprehension.</li>
+    </ul>
+
+    <h2><span class="num">5.</span>Emergencies and Crisis Situations</h2>
+    <div class="box warn">
+      <p><strong>The Service is not a crisis service and is not equipped to respond to mental health emergencies.</strong></p>
+      <p>If you are experiencing any of the following, stop using the Service immediately and contact emergency services or a crisis line:</p>
+      <ul>
+        <li>thoughts of suicide or self-harm, with or without a plan;</li>
+        <li>intent or urge to harm another person;</li>
+        <li>active psychosis, dissociation, or loss of contact with reality;</li>
+        <li>a mental health crisis requiring immediate intervention;</li>
+        <li>any situation that poses immediate risk to your life or safety or the life or safety of others.</li>
+      </ul>
+    </div>
+    <div class="crisis">
+      <p><strong>Canada:</strong> 1-833-456-4566 (Talk Suicide Canada, 24/7) &nbsp;&middot;&nbsp; 911</p>
+      <p><strong>United States:</strong> 988 (Suicide &amp; Crisis Lifeline, call or text) &nbsp;&middot;&nbsp; 911</p>
+      <p><strong>United Kingdom:</strong> 116 123 (Samaritans, 24/7) &nbsp;&middot;&nbsp; 999</p>
+      <p><strong>Australia:</strong> 13 11 14 (Lifeline, 24/7) &nbsp;&middot;&nbsp; 000</p>
+      <p><strong>India:</strong> 9152987821 (iCall) &nbsp;&middot;&nbsp; 112</p>
+      <p><strong>International:</strong> <a href="https://findahelpline.com" target="_blank" rel="noopener">findahelpline.com</a></p>
+    </div>
+    <p>While Jordan and Luna are designed to recognize certain crisis signals and to provide crisis resources when they do, this is not guaranteed. The absence of a crisis referral in any given conversation does not indicate that your situation is not a crisis. You are responsible for assessing your own safety.</p>
+
+    <h2><span class="num">6.</span>Not a Substitute for Professional Care</h2>
+    <p>The Service is designed to complement, not replace, professional mental health care, human relationships, and community support. Man Down explicitly encourages users to maintain relationships with qualified mental health professionals and to seek professional help when needed. If you are currently receiving mental health treatment, this Service is not intended to replace or reduce that treatment. If you are not receiving treatment and believe you may benefit from it, we encourage you to seek a qualified professional.</p>
+    <p>The Service is not appropriate for persons who: are experiencing active suicidal ideation with a plan or intent; have been recently discharged from psychiatric hospitalization; are experiencing active psychosis or severe dissociation; require medication management; or require court-ordered mental health treatment.</p>
+
+    <h2><span class="num">7.</span>Not a Regulated Healthcare Service; No HIPAA or Health Privacy Law Coverage</h2>
+    <p>The Service is not subject to the Health Insurance Portability and Accountability Act (HIPAA) in the United States, the Personal Health Information Protection Act (PHIPA) in Ontario, or any other health information privacy legislation, because Man Down is not a covered entity, business associate, or regulated health information custodian under any such legislation. Your Conversation Content is protected by our Privacy Policy and applicable general privacy legislation, but not by healthcare-specific privacy regimes. Do not use this Service as a repository for clinical health information that requires healthcare-regulated protection.</p>
+
+    <h2><span class="num">8.</span>Regulatory Status</h2>
+    <p>The Service is not approved, cleared, or authorized by Health Canada, the U.S. Food and Drug Administration, or any other regulatory body as a medical device, digital therapeutic, clinical decision support tool, or any other regulated health product or service. It has not been evaluated for clinical efficacy or safety by any regulatory authority. The Service makes no therapeutic claims.</p>
+
+    <h2><span class="num">9.</span>Your Acknowledgement</h2>
+    <p>By using the Service, you expressly acknowledge that: (a) you have read and understood this Disclaimer; (b) you understand the fundamental limitations of AI-based emotional support; (c) you will not use the Service as a substitute for emergency services, professional mental health care, or medication; (d) you assume all risks described in this Disclaimer and in the Terms of Service; and (e) you are responsible for your own safety and the safety of others.</p>
+
+    <div class="contact-note">Questions about this Disclaimer? Contact us at <a href="mailto:hello@trymandown.com">hello@trymandown.com</a>.</div>
+  </div>
 
   <footer>
-    <p>&copy; 2026 Man Down &middot; <a href="mailto:hello@trymandown.com">hello@trymandown.com</a></p>
-    <p>Jordan and Luna are AI companions, not licensed therapists or crisis services.</p>
+    <div>&copy; 2026 Man Down &middot; <a href="mailto:hello@trymandown.com">hello@trymandown.com</a></div>
+    <div><a href="#privacy">Privacy Policy</a> &middot; <a href="#terms">Terms of Service</a> &middot; <a href="#disclaimer">Mental Health Disclaimer</a></div>
+    <div style="margin-top:8px;color:var(--dim)">Jordan and Luna are AI companions, not licensed therapists or crisis services. If you are in crisis, contact emergency services.</div>
   </footer>
 
 </div>
