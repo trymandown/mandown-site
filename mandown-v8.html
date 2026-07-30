@@ -7,11 +7,11 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
-   MAN DOWN — app design system, rebuilt from zero.
+   MAN DOWN : app design system, rebuilt from zero.
    One language with the landing page: DM Serif Display for the
    moments that matter, DM Sans for the room, JetBrains Mono for
    the companion's voice. Night navy, firelight gold, Luna's
-   moon-gold. No glass, no gradients-as-decoration — surfaces,
+   moon-gold. No glass, no gradients-as-decoration : surfaces,
    light, and type.
    ============================================================ */
 :root{
@@ -60,7 +60,7 @@ body::before{
 input,textarea{ -webkit-user-select:text!important; user-select:text!important;
   touch-action:auto!important; pointer-events:all!important; position:relative; z-index:100; }
 
-/* paper grain over everything — the physical world */
+/* paper grain over everything : the physical world */
 body::after{ content:''; position:fixed; inset:0; z-index:60; pointer-events:none; opacity:.035;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E"); }
 
@@ -70,7 +70,7 @@ body::after{ content:''; position:fixed; inset:0; z-index:60; pointer-events:non
   transition:opacity .55s ease; overflow-y:auto; overflow-x:hidden; }
 .screen.active{ opacity:1; pointer-events:all; }
 
-/* ambient: two still pools of light, one warm one deep — a lit room, not a lava lamp */
+/* ambient: two still pools of light, one warm one deep : a lit room, not a lava lamp */
 #amb{ position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
 .orb{ position:absolute; border-radius:50%; filter:blur(90px); }
 #o1{ width:700px; height:700px; top:-260px; right:-220px;
@@ -106,7 +106,7 @@ body::after{ content:''; position:fixed; inset:0; z-index:60; pointer-events:non
 .fi::placeholder{ color:var(--muted); }
 .gfield:focus-within{ border-color:var(--gold); }
 
-/* the entrance screens stagger in — arrival, not a popup */
+/* the entrance screens stagger in : arrival, not a popup */
 .screen.active .auth-wrap > *{ animation:rise .6s cubic-bezier(.16,1,.3,1) both; }
 .screen.active .auth-wrap > *:nth-child(2){ animation-delay:.08s; }
 .screen.active .auth-wrap > *:nth-child(3){ animation-delay:.16s; }
@@ -157,6 +157,14 @@ body::after{ content:''; position:fixed; inset:0; z-index:60; pointer-events:non
 
 .screen.active .vcard{ animation:card-in .6s cubic-bezier(.16,1,.3,1) both; }
 .screen.active .vcard:nth-child(2){ animation-delay:.12s; }
+
+/* spotlight: soft glow that follows the cursor inside a selection card */
+.spot-glow{ position:relative; overflow:hidden; }
+.spot-glow::after{ content:''; position:absolute; inset:0; pointer-events:none; z-index:0;
+  opacity:0; transition:opacity .35s ease;
+  background:radial-gradient(220px circle at var(--sx,50%) var(--sy,50%), rgba(200,148,58,.16), transparent 70%); }
+.spot-glow:hover::after{ opacity:1; }
+.vcard > *, .mcard > *{ position:relative; z-index:1; }
 .screen.active .mp{ animation:pill-in .45s cubic-bezier(.16,1,.3,1) both; }
 .screen.active .mp:nth-child(2){ animation-delay:.03s; } .screen.active .mp:nth-child(3){ animation-delay:.06s; }
 .screen.active .mp:nth-child(4){ animation-delay:.09s; } .screen.active .mp:nth-child(5){ animation-delay:.12s; }
@@ -225,7 +233,8 @@ body::after{ content:''; position:fixed; inset:0; z-index:60; pointer-events:non
 /* ---------- chat: the room ---------- */
 #chat{ padding:0; justify-content:flex-start; align-items:stretch; }
 .chat-hdr{ display:flex; align-items:center; gap:12px; padding:14px 16px;
-  background:var(--bg); border-bottom:1px solid var(--hairline);
+  background:rgba(7,9,15,.28); backdrop-filter:blur(24px) saturate(1.1); -webkit-backdrop-filter:blur(24px) saturate(1.1);
+  border:none; box-shadow:inset 0 1px 0 rgba(232,234,240,.06);
   flex-shrink:0; z-index:10; position:relative; }
 .hback{ font-size:24px; color:var(--gold); cursor:pointer; opacity:.6; transition:opacity .2s;
   font-weight:300; padding-right:4px; }
@@ -240,10 +249,10 @@ body::after{ content:''; position:fixed; inset:0; z-index:60; pointer-events:non
 .hdot{ width:5px; height:5px; background:var(--gold); border-radius:50%;
   box-shadow:0 0 6px rgba(200,148,58,0.6); animation:blink 3.5s ease infinite; }
 @keyframes blink{ 0%,100%{ opacity:1; } 50%{ opacity:.35; } }
-.mtog{ display:flex; background:var(--surface); border:1px solid var(--dim);
-  border-radius:24px; padding:3px; gap:2px; }
+.mtog{ display:flex; background:transparent; border:none; padding:0; gap:4px; }
 .tog{ padding:6px 14px; border-radius:20px; font-size:12px; font-weight:500; cursor:pointer;
   transition:all .2s; color:var(--muted); font-family:var(--sans); border:none; background:transparent; }
+.tog:hover{ color:var(--ink); }
 .tog.on{ background:var(--gold); color:#1a1206; }
 
 .chat-msgs{ flex:1; overflow-y:auto; padding:26px 18px 10px; display:flex; flex-direction:column;
@@ -253,7 +262,7 @@ body::after{ content:''; position:fixed; inset:0; z-index:60; pointer-events:non
 .msg{ max-width:78%; padding:14px 18px; font-size:15.5px; line-height:1.75;
   animation:mpop .3s cubic-bezier(.16,1,.3,1) both; transition:transform .25s ease; will-change:transform; }
 @keyframes mpop{ from{ opacity:0; transform:translateY(16px) scale(.98); } to{ opacity:1; transform:none; } }
-/* the companion speaks in mono — a machine with a soul, honest about both */
+/* the companion speaks in mono : a machine with a soul, honest about both */
 .msg.bot{ background:var(--raised); color:var(--ink); align-self:flex-start;
   border-radius:16px 16px 16px 4px; font-family:var(--sans); font-size:15px; line-height:1.75; font-weight:300; }
 .msg.user{ background:var(--gold); color:#1a1206; align-self:flex-end;
@@ -266,6 +275,9 @@ body::after{ content:''; position:fixed; inset:0; z-index:60; pointer-events:non
 .msg.typing-dots span:nth-child(2){ animation-delay:.2s; }
 .msg.typing-dots span:nth-child(3){ animation-delay:.4s; }
 @keyframes md-typing{ 0%,60%,100%{ opacity:.4; transform:translateY(0); } 30%{ opacity:1; transform:translateY(-3px); } }
+.stream-cursor{ display:inline-block; width:2px; height:14px; margin-left:2px;
+  background:var(--gold); vertical-align:-2px; animation:stream-blink .8s step-end infinite; }
+@keyframes stream-blink{ 0%,100%{ opacity:1; } 50%{ opacity:0; } }
 .crisis-bar{ display:none; margin:0 auto 6px; max-width:760px; width:calc(100% - 32px);
   padding:11px 15px; background:rgba(248,113,113,0.07); border:1px solid rgba(248,113,113,0.18);
   border-radius:10px; font-size:12.5px; color:#fca5a5; line-height:1.7; }
@@ -310,11 +322,18 @@ body::after{ content:''; position:fixed; inset:0; z-index:60; pointer-events:non
   width:100%; cursor:pointer; -webkit-tap-highlight-color:transparent; }
 .vhalo{ position:relative; width:300px; height:300px; display:flex;
   align-items:center; justify-content:center; }
-.vaura{ position:absolute; border-radius:50%; animation:vbreath 7s ease-in-out infinite; }
+.vaura{ position:absolute; animation:vbreath 7s ease-in-out infinite, blob-morph 11s ease-in-out infinite; }
 .vaura.a1{ width:300px; height:300px;
   background:radial-gradient(circle, rgba(200,148,58,0.12), transparent 60%); }
 .vaura.a2{ width:212px; height:212px;
-  background:radial-gradient(circle, rgba(224,176,96,0.18), transparent 64%); }
+  background:radial-gradient(circle, rgba(224,176,96,0.18), transparent 64%);
+  animation-direction:reverse; animation-duration:7s, 8.5s; }
+@keyframes blob-morph{
+  0%,100%{ border-radius:42% 58% 63% 37% / 41% 44% 56% 59%; }
+  25%{ border-radius:58% 42% 39% 61% / 62% 51% 49% 38%; }
+  50%{ border-radius:50% 50% 68% 32% / 35% 63% 37% 65%; }
+  75%{ border-radius:36% 64% 45% 55% / 54% 40% 60% 46%; }
+}
 .vface{ position:relative; width:170px; height:170px; border-radius:50%; overflow:hidden;
   animation:vbreath 7s ease-in-out infinite;
   box-shadow:0 0 0 1px rgba(200,148,58,0.35), 0 0 55px 6px rgba(200,148,58,0.28);
@@ -340,14 +359,131 @@ body::after{ content:''; position:fixed; inset:0; z-index:60; pointer-events:non
 .voice-ui.live .vhint{ display:none; }
 @keyframes vbreath{ 0%,100%{ transform:scale(0.96); opacity:.9; } 50%{ transform:scale(1.05); opacity:1; } }
 @keyframes vbreathtext{ 0%,100%{ opacity:.5; } 50%{ opacity:.9; } }
-.voice-ui.live .vaura, .voice-ui.live .vface{ animation:none; }
-.voice-ui.live .vaura.a1{ transform:scale(calc(0.96 + var(--vlevel,0) * 0.16));
-  opacity:calc(0.85 + var(--vlevel,0) * 0.15); }
-.voice-ui.live .vaura.a2{ transform:scale(calc(0.98 + var(--vlevel,0) * 0.12));
-  opacity:calc(0.85 + var(--vlevel,0) * 0.15); }
-.voice-ui.live .vface{ transform:scale(calc(1 + var(--vlevel,0) * 0.05));
-  box-shadow:0 0 0 1px rgba(200,148,58,calc(0.35 + var(--vlevel,0) * 0.4)),
-             0 0 55px 6px rgba(200,148,58,calc(0.28 + var(--vlevel,0) * 0.4)); }
+.voice-ui.live .vface{ animation:none; }
+/* ── VOICE STATE VISUALS ────────────────────────────── */
+/* --vstate: floor level injected by JS (0=quiet/listening, 0.5=thinking, 0.7=speaking) */
+.voice-ui{ --vstate:0.15; }
+.voice-ui.v-speaking{ --vstate:0.72; }
+.voice-ui.v-listening{ --vstate:0; }
+.voice-ui.v-thinking{ --vstate:0.35; }
+
+/* Action label below name */
+.vaction{
+  font-family:var(--sans);font-size:10.5px;font-weight:400;
+  letter-spacing:.2em;text-transform:uppercase;
+  margin-top:6px;min-height:18px;
+  transition:opacity .5s ease,color .5s ease;
+  opacity:0;
+}
+
+/* ── PERIPHERAL VISION INDICATORS ──────────────────────── */
+/* Edge vignette: glows at screen borders so peripheral
+   vision catches it 3-4 feet away without looking directly */
+#edge-glow{
+  position:fixed;inset:0;pointer-events:none;z-index:500;
+  opacity:0;transition:opacity .6s ease;
+  border-radius:0;
+}
+/* Speaking state: warm amber edges */
+#edge-glow.speaking{
+  opacity:1;
+  box-shadow:
+    inset 0 0 60px 12px rgba(200,148,58,0),
+    inset 0 0 0 4px rgba(200,148,58,0);
+  background:
+    radial-gradient(ellipse 100% 28% at 50% 0%,   rgba(200,148,58,.18) 0%,transparent 100%),
+    radial-gradient(ellipse 100% 28% at 50% 100%, rgba(200,148,58,.18) 0%,transparent 100%),
+    radial-gradient(ellipse 18% 100% at 0% 50%,   rgba(200,148,58,.14) 0%,transparent 100%),
+    radial-gradient(ellipse 18% 100% at 100% 50%, rgba(200,148,58,.14) 0%,transparent 100%);
+  animation:edge-pulse-speak 2.2s ease-in-out infinite;
+}
+/* Listening state: soft green edges */
+#edge-glow.listening{
+  opacity:1;
+  background:
+    radial-gradient(ellipse 100% 28% at 50% 0%,   rgba(80,200,120,.1) 0%,transparent 100%),
+    radial-gradient(ellipse 100% 28% at 50% 100%, rgba(80,200,120,.1) 0%,transparent 100%),
+    radial-gradient(ellipse 18% 100% at 0% 50%,   rgba(80,200,120,.08) 0%,transparent 100%),
+    radial-gradient(ellipse 18% 100% at 100% 50%, rgba(80,200,120,.08) 0%,transparent 100%);
+  animation:edge-pulse-listen 1.8s ease-in-out infinite;
+}
+@keyframes edge-pulse-speak{
+  0%,100%{opacity:.75} 50%{opacity:1}
+}
+@keyframes edge-pulse-listen{
+  0%,100%{opacity:.6} 50%{opacity:1}
+}
+/* Screen luminance: subtle background brighten when speaking */
+#screen-luminance{
+  position:fixed;inset:0;pointer-events:none;z-index:499;
+  background:rgba(200,148,58,0);
+  transition:background .5s ease;
+}
+#screen-luminance.speaking{
+  background:rgba(200,148,58,.028);
+}
+@media(prefers-reduced-motion:reduce){
+  #edge-glow{display:none}
+  #screen-luminance{display:none}
+}
+.vaction.show{opacity:1}
+.vaction.speaking{color:rgba(200,148,58,.85)}
+.vaction.listening{color:rgba(100,220,130,.7)}
+
+/* Pulse rings — expand outward when Jordan/Luna speaks */
+.vpulse{
+  position:absolute;width:170px;height:170px;border-radius:50%;
+  border:1.5px solid rgba(200,148,58,0.45);
+  opacity:0;pointer-events:none;
+}
+.vpulse.p1{animation:pulse-ring 2.2s ease-out infinite}
+.vpulse.p2{animation:pulse-ring 2.2s ease-out infinite .8s}
+.vpulse.p3{animation:pulse-ring 2.2s ease-out infinite 1.6s}
+@keyframes pulse-ring{
+  0%{transform:scale(1);opacity:0.55;}
+  100%{transform:scale(2.8);opacity:0;}
+}
+/* Pulse rings only active when speaking */
+.voice-ui:not(.v-speaking) .vpulse{animation-play-state:paused;opacity:0}
+.voice-ui.v-speaking .vpulse{animation-play-state:running}
+
+/* Mic glow ring — subtle green ring when it's the user's turn */
+.vface::before{
+  content:'';position:absolute;inset:-5px;border-radius:50%;
+  border:2px solid transparent;z-index:2;
+  transition:border-color .6s ease,box-shadow .6s ease;
+}
+.voice-ui.v-listening .vface::before{
+  border-color:rgba(100,220,130,.5);
+  box-shadow:0 0 18px 2px rgba(100,220,130,.2);
+  animation:mic-ring 1.9s ease-in-out infinite;
+}
+@keyframes mic-ring{
+  0%,100%{opacity:.55;border-color:rgba(100,220,130,.35)}
+  50%{opacity:1;border-color:rgba(100,220,130,.75)}
+}
+
+/* Live aura — fully dynamic, driven by --vlevel (audio) + --vstate (mode floor) */
+.voice-ui.live .vaura.a1{ animation:blob-morph 11s ease-in-out infinite; }
+.voice-ui.live .vaura.a2{ animation:blob-morph 8.5s ease-in-out infinite reverse; }
+.voice-ui.live .vaura.a1{
+  transform:scale(calc(1 + var(--vstate,0.15) * 0.35 + var(--vlevel,0) * 0.32));
+  opacity:calc(0.55 + var(--vstate,0.15) * 0.45 + var(--vlevel,0) * 0.22);
+  transition:opacity .5s ease;
+}
+.voice-ui.live .vaura.a2{
+  transform:scale(calc(1 + var(--vstate,0.15) * 0.28 + var(--vlevel,0) * 0.25));
+  opacity:calc(0.55 + var(--vstate,0.15) * 0.38 + var(--vlevel,0) * 0.18);
+  transition:opacity .5s ease;
+}
+/* Face — meaningfully bigger when speaking, step back when listening */
+.voice-ui.live .vface{
+  transform:scale(calc(1 + var(--vstate,0.15) * 0.18 + var(--vlevel,0) * 0.12));
+  box-shadow:
+    0 0 0 1px rgba(200,148,58,calc(0.3 + var(--vstate,0.15)*0.5 + var(--vlevel,0)*0.35)),
+    0 0 60px 8px rgba(200,148,58,calc(0.22 + var(--vstate,0.15)*0.42 + var(--vlevel,0)*0.38));
+  transition:transform .65s ease, box-shadow .65s ease;
+}
 
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion: reduce){
@@ -355,6 +491,7 @@ body::after{ content:''; position:fixed; inset:0; z-index:60; pointer-events:non
   .screen.active .vcard, .screen.active .mcard, .screen.active .mp,
   .screen.active .auth-wrap > *, .micon svg{ animation:none !important; opacity:1; transform:none; }
   .word{ opacity:1; transform:none; }
+  .voice-ui.live .vaura.a1, .voice-ui.live .vaura.a2{ animation:none; }
 }
 
 </style>
@@ -399,7 +536,17 @@ body::after{ content:''; position:fixed; inset:0; z-index:60; pointer-events:non
       <input type="checkbox" id="age-check" style="margin-top:3px;width:16px;height:16px;accent-color:var(--gold);flex-shrink:0"/>
       <span>I'm 18 or older, and I understand Jordan and Luna are AI, not a substitute for professional help.</span>
     </label>
-    <button class="gbtn" id="entry-continue-btn" disabled style="width:100%;justify-content:center;background:linear-gradient(135deg,var(--gold),var(--gold-l));color:#07090F;border:none;opacity:0.4;pointer-events:none;transition:opacity .2s">I understand, let's go &rarr;</button>
+
+    <!-- EMERGENCY CONTACT (optional) -->
+    <div id="ec-section" style="border:1px solid rgba(200,148,58,0.2);border-radius:14px;padding:16px;margin:0 0 18px;background:rgba(200,148,58,0.04)">
+      <p style="font-family:var(--serif);font-size:15px;color:var(--ink);margin:0 0 6px">Emergency contact <span style="font-family:var(--sans);font-size:11px;color:var(--muted);font-weight:300;letter-spacing:.06em">(optional)</span></p>
+      <p style="font-size:12px;color:var(--muted);line-height:1.6;margin:0 0 14px">If we detect you&rsquo;re in real crisis, we&rsquo;ll send them a quiet check-in. No details. No drama. Just someone who cares getting a nudge.</p>
+      <input id="ec-name" type="text" placeholder="Their name" autocomplete="off" style="width:100%;padding:11px 14px;background:var(--raised);border:1px solid var(--hairline);border-radius:10px;color:var(--ink);font-family:var(--sans);font-size:14px;margin-bottom:8px;box-sizing:border-box;outline:none">
+      <input id="ec-email" type="email" placeholder="Their email" autocomplete="off" inputmode="email" style="width:100%;padding:11px 14px;background:var(--raised);border:1px solid var(--hairline);border-radius:10px;color:var(--ink);font-family:var(--sans);font-size:14px;box-sizing:border-box;outline:none">
+      <p id="ec-skip" style="font-size:12px;color:var(--muted);margin:10px 0 0;cursor:pointer;text-align:right;text-decoration:underline;text-underline-offset:2px">Skip this &rarr;</p>
+    </div>
+
+    <button class="gbtn" id="entry-continue-btn" disabled style="width:100%;justify-content:center;background:linear-gradient(135deg,var(--gold),var(--gold-l));color:#07090F;border:none;opacity:0.4;pointer-events:none;transition:opacity .2s">I understand, let&rsquo;s go &rarr;</button>
   </div>
 </div>
 <!-- LANDING -->
@@ -442,12 +589,12 @@ body::after{ content:''; position:fixed; inset:0; z-index:60; pointer-events:non
       </div>
     </div>
     <div class="vcards">
-      <div class="vcard" id="jcard">
+      <div class="vcard spot-glow" id="jcard">
         <div class="vphoto"><img id="jimg" src="" alt="Jordan"/></div>
         <div class="vinfo"><div class="vname">Jordan</div><div class="vsub">says the thing you already know but can't say yet</div></div>
         <div class="varr">&#8250;</div>
       </div>
-      <div class="vcard" id="lcard">
+      <div class="vcard spot-glow" id="lcard">
         <div class="vphoto"><img id="limg" src="" alt="Luna"/></div>
         <div class="vinfo"><div class="vname">Luna</div><div class="vsub">the person you can fall apart in front of</div></div>
         <div class="varr">&#8250;</div>
@@ -460,11 +607,11 @@ body::after{ content:''; position:fixed; inset:0; z-index:60; pointer-events:non
   <div class="mode-inner">
     <div class="mode-q">How do you want to<br><b>talk today?</b></div>
     <div class="mcards">
-      <div class="mcard" id="chatmode-btn">
+      <div class="mcard spot-glow" id="chatmode-btn">
         <div class="micon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg></div>
         <div><div class="mtitle">Chat</div><div class="msub">Type your thoughts. At your own pace.</div></div>
       </div>
-      <div class="mcard" id="voicemode-btn">
+      <div class="mcard spot-glow" id="voicemode-btn">
         <div class="micon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><line x1="4" y1="10" x2="4" y2="14"></line><line x1="8" y1="7" x2="8" y2="17"></line><line x1="12" y1="4" x2="12" y2="20"></line><line x1="16" y1="7" x2="16" y2="17"></line><line x1="20" y1="10" x2="20" y2="14"></line></svg></div>
         <div><div class="mtitle">Voice</div><div class="msub">Talk like a phone call. Just tap once.</div></div>
       </div>
@@ -511,10 +658,14 @@ body::after{ content:''; position:fixed; inset:0; z-index:60; pointer-events:non
       <div class="vhalo">
         <div class="vaura a1"></div>
         <div class="vaura a2"></div>
+        <div class="vpulse p1"></div>
+        <div class="vpulse p2"></div>
+        <div class="vpulse p3"></div>
         <div class="vface" id="vface"><img id="vimg" src="" alt=""/></div>
       </div>
       <div class="vpname" id="vpname">Jordan</div>
       <div class="vstate" id="vstatus">tap to start talking</div>
+      <div class="vaction" id="vaction"></div>
       <div class="vlive" id="vtxt"></div>
     </div>
     <div class="vhint" id="vhint">tap the light to begin</div>
@@ -522,12 +673,20 @@ body::after{ content:''; position:fixed; inset:0; z-index:60; pointer-events:non
   </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://browser.sentry-cdn.com/7.120.3/bundle.min.js" crossorigin="anonymous"></script>
+<script>
+  Sentry.init({
+    dsn: "https://5b761127564bc78bbd0d12f3431063a6@o4511804992126976.ingest.us.sentry.io/4511807368790017",
+    tracesSampleRate: 1.0,
+    environment: "production"
+  });
+</script>
 <script type="module">
 import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm";
 const SUPABASE_URL = "https://tlnsetydewnmpdvsqqhn.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_LeqSIE5pXadPDLcqZQAfug_MDygUrcR";
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-/* The access code arrives in the URL from the landing page — storage is only
+/* The access code arrives in the URL from the landing page : storage is only
    a cache. This is what makes the landing → app handoff work on the first
    visit, in private windows, and anywhere storage doesn't carry over. */
 var AUTH_CODE = "";
@@ -554,7 +713,7 @@ function generateSessionId() {
   return "sess_" + Date.now() + "_" + Math.random().toString(36).substr(2, 9);
 }
 /* The signed-in session token rides on every request so the server can verify
-   who is asking — the server refuses a userId that contradicts the token. */
+   who is asking : the server refuses a userId that contradicts the token. */
 function hdrs() {
   var h = {"Content-Type":"application/json"};
   if (ACCESS_TOKEN) h["Authorization"] = "Bearer " + ACCESS_TOKEN;
@@ -637,7 +796,7 @@ supabase.auth.onAuthStateChange(async function(event, session) {
       authReady = true;
       await afterAuth();
     } else {
-      /* token refresh — just update token, don't re-route */
+      /* token refresh : just update token, don't re-route */
       ACCESS_TOKEN = session.access_token || null;
     }
   } else {
@@ -669,6 +828,17 @@ function showLandingScreen() {
 }
 var ageCheck = document.getElementById("age-check");
 var entryContinueBtn = document.getElementById("entry-continue-btn");
+/* EC skip button */
+var ecSkip = document.getElementById("ec-skip");
+if (ecSkip) {
+  ecSkip.addEventListener("click", function() {
+    document.getElementById("ec-name").value = "";
+    document.getElementById("ec-email").value = "";
+    document.getElementById("ec-section").style.opacity = "0.4";
+    document.getElementById("ec-section").style.pointerEvents = "none";
+    ecSkip.textContent = "Skipped";
+  });
+}
 ageCheck.addEventListener("change", function() {
   if (ageCheck.checked) {
     entryContinueBtn.disabled = false;
@@ -682,6 +852,29 @@ ageCheck.addEventListener("change", function() {
 });
 entryContinueBtn.addEventListener("click", function() {
   try { localStorage.setItem("md_entry_ok", "1"); } catch(e) {}
+  /* save emergency contact if provided */
+  var ecName = (document.getElementById("ec-name") || {}).value || "";
+  var ecEmail = (document.getElementById("ec-email") || {}).value || "";
+  if (ecName.trim() && ecEmail.trim()) {
+    try {
+      localStorage.setItem("md_ec_name", ecName.trim());
+      localStorage.setItem("md_ec_email", ecEmail.trim());
+    } catch(e) {}
+    /* persist to backend */
+    if (USER_ID) {
+      fetch(SUPABASE_CHAT_URL, {
+        method: "POST",
+        headers: hdrs(),
+        body: JSON.stringify({
+          action: "save_emergency_contact",
+          userId: USER_ID,
+          authCode: AUTH_CODE,
+          ecName: ecName.trim(),
+          ecEmail: ecEmail.trim()
+        })
+      }).catch(function(){});
+    }
+  }
   showLandingScreen();
 });
 document.getElementById("code-submit-btn").addEventListener("click", function() {
@@ -708,7 +901,15 @@ document.getElementById("code-submit-btn").addEventListener("click", function() 
   }
   err.textContent = "";
   AUTH_CODE = code;
-  try { localStorage.setItem("md_auth_code", code); } catch(e) {}
+  try {
+    /* If using a different code than last time, reset the entry confirmation
+       so new testers always see the age gate and disclaimer */
+    var prevCode = localStorage.getItem("md_auth_code");
+    if (prevCode && prevCode !== code) {
+      localStorage.removeItem("md_entry_ok");
+    }
+    localStorage.setItem("md_auth_code", code);
+  } catch(e) {}
   goToLanding();
 });
 document.getElementById("access-code-input").addEventListener("keydown", function(e) {
@@ -731,7 +932,7 @@ document.getElementById("mpills").addEventListener("click", function(e) {
     if (pendingVoice) { show("modescreen"); pendingVoice = null; }
   }
 });
-/* cards tilt faintly toward the pointer — held objects, not flat buttons */
+/* cards tilt faintly toward the pointer : held objects, not flat buttons */
 (function(){
   var fine = window.matchMedia && window.matchMedia("(hover: hover) and (pointer: fine)").matches;
   var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -742,6 +943,8 @@ document.getElementById("mpills").addEventListener("click", function(e) {
       var rx = ((e.clientY - r.top) / r.height - 0.5) * -3.5;
       var ry = ((e.clientX - r.left) / r.width - 0.5) * 3.5;
       c.style.transform = "perspective(700px) rotateX(" + rx.toFixed(2) + "deg) rotateY(" + ry.toFixed(2) + "deg) translateY(-3px)";
+      c.style.setProperty("--sx", (e.clientX - r.left) + "px");
+      c.style.setProperty("--sy", (e.clientY - r.top) + "px");
     });
     c.addEventListener("pointerleave", function(){ c.style.transform = ""; });
   });
@@ -764,8 +967,14 @@ function pickVoice(name) {
 document.getElementById("chatmode-btn").addEventListener("click", function() { openChat("chat"); });
 document.getElementById("voicemode-btn").addEventListener("click", function() { openChat("voice"); });
 document.getElementById("menu-contact-row").addEventListener("click", function() {
-  window.open("mailto:hello@trymandown.com", "_blank");
   document.getElementById("accountmenu").classList.remove("show");
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText("hello@trymandown.com").then(function() {
+      var row = document.getElementById("menu-contact-row");
+      row.innerHTML = "Copied: hello@trymandown.com \u2713";
+      setTimeout(function(){ row.innerHTML = "Contact Us <span class=\"chev\">&rsaquo;</span>"; }, 2500);
+    }).catch(function(){ window.location.href = "mailto:hello@trymandown.com"; });
+  } else { window.location.href = "mailto:hello@trymandown.com"; }
 });
 function renderAvatar() {
   var letterEl = document.getElementById("avatar-letter");
@@ -832,17 +1041,24 @@ document.getElementById("signoutbtn").addEventListener("click", async function()
 });
 document.getElementById("deletebtn").addEventListener("click", function() {
   if (!USER_ID) { alert("Guest sessions have nothing stored to delete."); return; }
-  if (!confirm("This will permanently delete all your messages and data. Are you sure?")) return;
-  fetch(SUPABASE_CHAT_URL, {
-    method: "POST",
-    headers: hdrs(),
-    body: JSON.stringify({action:"delete_data", userId:USER_ID, authCode:AUTH_CODE})
-  }).then(function() {
-    localStorage.clear();
-    location.reload();
-  }).catch(function() {
-    alert("Something went wrong. Please try again.");
-  });
+  var modal = document.getElementById("deleteModal");
+  modal.style.display = "flex";
+  document.getElementById("deleteCancelBtn").onclick = function() {
+    modal.style.display = "none";
+  };
+  document.getElementById("deleteConfirmBtn").onclick = function() {
+    modal.style.display = "none";
+    fetch(SUPABASE_CHAT_URL, {
+      method: "POST",
+      headers: hdrs(),
+      body: JSON.stringify({action:"delete_data", userId:USER_ID, authCode:AUTH_CODE})
+    }).then(function() {
+      localStorage.clear();
+      location.reload();
+    }).catch(function() {
+      document.getElementById("deleteConfirmBtn").textContent = "Something went wrong. Try again.";
+    });
+  };
 });
 async function loadPreviousMessages() {
   if (!USER_ID) return false;
@@ -932,6 +1148,18 @@ document.getElementById("backbtn").addEventListener("click", function() {
 });
 document.getElementById("tc").addEventListener("click", function() { switchMode("chat"); });
 document.getElementById("tv").addEventListener("click", function() { switchMode("voice"); });
+function renderHistory() {
+  /* when switching from voice to chat, replay all messages so nothing is lost */
+  var c = document.getElementById("msgs");
+  c.innerHTML = "";
+  for (var i = 0; i < HISTORY.length; i++) {
+    var d = document.createElement("div");
+    d.className = "msg " + (HISTORY[i].role === "user" ? "user" : "bot");
+    d.innerText = HISTORY[i].content;
+    c.appendChild(d);
+  }
+  c.scrollTop = c.scrollHeight;
+}
 function switchMode(m) {
   if (m === "chat") endConvo();
   MODE = m;
@@ -939,14 +1167,35 @@ function switchMode(m) {
   document.getElementById("tv").classList.toggle("on", m === "voice");
   document.getElementById("chat-mode").style.display = m === "chat" ? "flex" : "none";
   document.getElementById("voice-mode").classList.toggle("show", m === "voice");
+  if (m === "chat" && HISTORY.length > 0) renderHistory();
   if (m === "voice") initVoiceScreen();
 }
 function addMsg(t, type) {
   var c = document.getElementById("msgs");
   var d = document.createElement("div");
   d.className = "msg " + type;
-  d.innerText = t;
   c.appendChild(d);
+  var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (type === "bot" && !reduced) {
+    /* the reply streams in word by word instead of landing all at once,
+       so it reads as being composed for you right now, not pasted in */
+    var words = t.split(" ");
+    var i = 0;
+    var span = document.createElement("span");
+    var cursor = document.createElement("span");
+    cursor.className = "stream-cursor";
+    d.appendChild(span);
+    d.appendChild(cursor);
+    (function reveal() {
+      span.textContent = words.slice(0, i + 1).join(" ");
+      c.scrollTop = c.scrollHeight;
+      i++;
+      if (i < words.length) { setTimeout(reveal, 32 + Math.random() * 45); }
+      else { cursor.remove(); }
+    })();
+  } else {
+    d.innerText = t;
+  }
   c.scrollTop = c.scrollHeight;
   return d;
 }
@@ -973,17 +1222,26 @@ function sendMsg() {
   msgCount++;
   freshSessionMsgCount++;
   /* Crisis language pins the resources bar but the message still goes to the
-     companion — the brain is built to stay present through this, and a canned
+     companion : the brain is built to stay present through this, and a canned
      card that blocks it would be the one thing it must never do: hand over a
      number and disappear. */
   if (isCrisis(text)) {
     document.getElementById("crisisbar").classList.add("show");
+    /* silently notify emergency contact if set */
+    if (USER_ID && !sessionStorage.getItem("md_alerted")) {
+      sessionStorage.setItem("md_alerted", "1");
+      fetch(SUPABASE_CHAT_URL, {
+        method:"POST", headers:hdrs(),
+        body:JSON.stringify({action:"emergency_alert", userId:USER_ID, authCode:AUTH_CODE})
+      }).catch(function(){});
+    }
   }
   var typing = addTypingDots();
   fetch(SUPABASE_CHAT_URL, {
     method: "POST",
     headers: hdrs(),
-    body: JSON.stringify({voice:VOICE, mood:MOOD, messages:HISTORY, authCode:AUTH_CODE, userId:USER_ID, sessionId:SESSION_ID, tzOffset: new Date().getTimezoneOffset()})
+    body: JSON.stringify({voice:VOICE, mood:MOOD, messages:HISTORY, authCode:AUTH_CODE, userId:USER_ID, sessionId:SESSION_ID, tzOffset: new Date().getTimezoneOffset(),
+      currentDatetime: (function(){ var d=new Date(); return d.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'})+' at '+d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}); })()})
   }).then(function(res) {
     if (!res.ok) return res.json().then(function(e) { throw new Error(e.error ? (e.error.message || e.error) : "API error"); });
     return res.json();
@@ -1020,7 +1278,12 @@ function speak(text, onDone) {
     var url = URL.createObjectURL(blob);
     currentAudio = new Audio(url);
     hookPlaybackViz(currentAudio);
-    currentAudio.onended = function() { URL.revokeObjectURL(url); currentAudio = null; if (onDone) onDone(); };
+    setVoiceMode("speaking");
+    currentAudio.onended = function() {
+      URL.revokeObjectURL(url); currentAudio = null;
+      if (convoActive) setVoiceMode("listening");
+      if (onDone) onDone();
+    };
     currentAudio.play().catch(function() { if (onDone) onDone(); });
   }).catch(function() { if (onDone) onDone(); });
 }
@@ -1053,7 +1316,7 @@ document.getElementById("micbtn").addEventListener("click", function() {
 /* ================= VOICE: the face, held in breathing warmth =================
    Calm on purpose. Idle: two warm auras and the portrait breathe at ~7s (a
    slow, settling breath rate). Live: the warmth is driven by voice through
-   one CSS variable (--vlevel) — his speech lifts it, her reply holds it
+   one CSS variable (--vlevel) : his speech lifts it, her reply holds it
    bright. Tap the light to begin, tap again to end. The mic is owned only by
    the speech recognizer, so the browser asks for it once. */
 var convoActive = false;
@@ -1063,8 +1326,8 @@ var silenceTimer = null;
 var voiceFails = 0;
 var vLoopRunning = false;
 var vLevel = 0;          // smoothed 0..1 warmth, written to CSS --vlevel
-var speechEnergy = 0;    // "he's talking" — from transcription, not a 2nd mic
-var playLevel = 0;       // "she's talking" — from the reply audio analyser
+var speechEnergy = 0;    // "he's talking" : from transcription, not a 2nd mic
+var playLevel = 0;       // "she's talking" : from the reply audio analyser
 var playCtx = null, playAnalyser = null, playData = null;
 
 function setVState(t) {
@@ -1081,6 +1344,9 @@ function startVoiceLoop() {
   if (vLoopRunning) return;
   vLoopRunning = true;
   var ui = document.getElementById("voice-mode");
+  var auraA = document.querySelector(".vaura.a1");
+  var auraB = document.querySelector(".vaura.a2");
+  var reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   (function frame() {
     if (playAnalyser && currentAudio) {
       playAnalyser.getByteTimeDomainData(playData);
@@ -1090,9 +1356,21 @@ function startVoiceLoop() {
     } else { playLevel *= 0.92; }
     var micTarget = (convoActive && !awaitingReply && !currentAudio) ? speechEnergy : 0;
     speechEnergy *= 0.9;
-    var target = Math.max(playLevel, micTarget);
+    /* --vstate: floor based on voice mode (injected into CSS for dynamic calc) */
+    var stateFloor = awaitingReply ? 0.35 : (currentAudio ? 0.7 : (convoActive && !awaitingReply && !currentAudio ? 0 : 0.15));
+    var target = Math.max(playLevel, micTarget, stateFloor);
     vLevel += (target - vLevel) * 0.15;
     ui.style.setProperty("--vlevel", vLevel.toFixed(3));
+    /* separate --vstate drives base scale & opacity in CSS */
+    ui.style.setProperty("--vstate", stateFloor.toFixed(2));
+    /* the aura's liquid morph speeds up with real vocal energy instead of
+       just glowing brighter: it visibly shifts shape while a voice is
+       actually moving through it, not on a fixed idle loop */
+    if (!reducedMotion){
+      var morphSpeed = 11 - vLevel * 8.5; // 11s idle down to ~2.5s at full energy
+      if (auraA) auraA.style.animationDuration = morphSpeed.toFixed(1) + 's';
+      if (auraB) auraB.style.animationDuration = (morphSpeed * 0.77).toFixed(1) + 's';
+    }
     requestAnimationFrame(frame);
   })();
 }
@@ -1118,7 +1396,7 @@ function initVoiceScreen() {
     wrap.addEventListener("click", function() {
       if (!convoActive) { startConvo(); return; }
       // in a call: tapping while they're speaking cuts them off and hands the
-      // floor back to him — nobody should have to wait out a reply they're
+      // floor back to him : nobody should have to wait out a reply they're
       // done with. tapping while already listening does nothing jarring.
       if (currentAudio) { interrupt(); }
     });
@@ -1130,11 +1408,38 @@ function initVoiceScreen() {
   }
 }
 /* barge-in: stop the reply mid-sentence and start listening again */
+function setVoiceMode(state) {
+  /* state: "idle" | "listening" | "thinking" | "speaking" */
+  var ui = document.getElementById("voice-mode");
+  var action = document.getElementById("vaction");
+  var edgeGlow = document.getElementById("edge-glow");
+  var screenLum = document.getElementById("screen-luminance");
+  if (!ui || !action) return;
+  ui.classList.remove("v-speaking", "v-listening");
+  if (edgeGlow) edgeGlow.className = "";
+  if (screenLum) screenLum.className = "";
+  if (state === "speaking") {
+    ui.classList.add("v-speaking");
+    action.textContent = "Tap to interrupt";
+    action.className = "vaction show speaking";
+    if (edgeGlow) edgeGlow.className = "speaking";
+    if (screenLum) screenLum.className = "speaking";
+  } else if (state === "listening") {
+    ui.classList.add("v-listening");
+    action.textContent = "Speak now";
+    action.className = "vaction show listening";
+    if (edgeGlow) edgeGlow.className = "listening";
+  } else {
+    action.textContent = "";
+    action.className = "vaction";
+  }
+}
 function interrupt() {
   if (currentAudio) { try { currentAudio.pause(); } catch (e) {} currentAudio = null; }
   awaitingReply = false;
   playLevel = 0;
-  setVState("go ahead, i'm listening.");
+  setVoiceMode("listening");
+  setVState("go ahead, i’m listening.");
   if (convoActive) listen();
 }
 function startConvo() {
@@ -1143,6 +1448,7 @@ function startConvo() {
   awaitingReply = false;
   setLive(true);
   listen();
+  setVoiceMode("listening");
   setVState("listening. take your time.");
 }
 function endConvo() {
@@ -1153,6 +1459,7 @@ function endConvo() {
   if (currentAudio) { currentAudio.pause(); currentAudio = null; }
   document.getElementById("vtxt").textContent = "";
   setLive(false);
+  setVoiceMode("idle");
   setVState("tap to start talking");
 }
 function listen() {
@@ -1162,24 +1469,34 @@ function listen() {
   vRec.continuous = true;
   vRec.interimResults = true;
   vRec.lang = "en-US";
+  vRec.maxAlternatives = 1;
   var finalText = "";
   vRec.onresult = function(e) {
     var interim = "";
     finalText = "";
     for (var i = 0; i < e.results.length; i++) {
-      if (e.results[i].isFinal) finalText += e.results[i][0].transcript;
-      else interim += e.results[i][0].transcript;
+      if (e.results[i].isFinal) {
+        /* only accept final results with reasonable confidence */
+        var conf = e.results[i][0].confidence;
+        if (!conf || conf > 0.35) finalText += e.results[i][0].transcript;
+      } else {
+        interim += e.results[i][0].transcript;
+      }
     }
-    var shown = (finalText + " " + interim).trim();
-    document.getElementById("vtxt").textContent = shown;
-    // each new word pushes ripples outward — his voice crossing the water,
-    // without opening a second microphone
-    speechEnergy = Math.min(1, 0.5 + shown.length % 7 * 0.07);
+    var vtxt = document.getElementById("vtxt");
+    /* show final text solid, interim text visually muted so user knows 
+       it's still being processed — not garbled output */
+    if (finalText) {
+      vtxt.innerHTML = finalText + (interim ? " <span style=\"opacity:.4;font-style:italic\">" + interim + "</span>" : "");
+    } else {
+      vtxt.innerHTML = interim ? "<span style=\"opacity:.4;font-style:italic\">" + interim + "</span>" : "";
+    }
+    speechEnergy = Math.min(1, 0.5 + (finalText + interim).length % 7 * 0.07);
     clearTimeout(silenceTimer);
-    // a natural pause ends the turn — nobody should have to press anything
+    /* extended pause window: 1800ms gives more time for natural speech rhythm */
     silenceTimer = setTimeout(function() {
       try { vRec.stop(); } catch (err) {}
-    }, 1150);
+    }, 1800);
   };
   vRec.onend = function() {
     clearTimeout(silenceTimer);
@@ -1208,15 +1525,17 @@ function sendVoiceTurn(text) {
   HISTORY.push({role:"user", content:text});
   msgCount++;
   freshSessionMsgCount++;
+  setVoiceMode("thinking");
   setVState(VOICE + " is with you...");
   if (isCrisis(text)) {
-    // resources spoken AND the companion still responds — never a hand-off
+    // resources spoken AND the companion still responds : never a hand-off
     document.getElementById("crisisbar").classList.add("show");
   }
   fetch(SUPABASE_CHAT_URL, {
     method: "POST",
     headers: hdrs(),
-    body: JSON.stringify({voice:VOICE, mood:MOOD, messages:HISTORY, authCode:AUTH_CODE, userId:USER_ID, sessionId:SESSION_ID, tzOffset: new Date().getTimezoneOffset()})
+    body: JSON.stringify({voice:VOICE, mood:MOOD, messages:HISTORY, authCode:AUTH_CODE, userId:USER_ID, sessionId:SESSION_ID, tzOffset: new Date().getTimezoneOffset(),
+      currentDatetime: (function(){ var d=new Date(); return d.toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'})+' at '+d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}); })()})
   }).then(function(res) { if (!res.ok) throw new Error("error"); return res.json(); })
   .then(function(data) {
     voiceFails = 0;
@@ -1228,6 +1547,7 @@ function sendVoiceTurn(text) {
     speak(reply, function() {
       awaitingReply = false;
       if (convoActive) {
+        setVoiceMode("listening");
         setVState("listening. take your time.");
         listen();
       }
@@ -1236,7 +1556,7 @@ function sendVoiceTurn(text) {
     awaitingReply = false;
     HISTORY.pop();
     voiceFails++;
-    /* two failures in a row means the connection is down — stop the call
+    /* two failures in a row means the connection is down : stop the call
        cleanly instead of looping the microphone forever */
     if (voiceFails >= 2) {
       endConvo();
@@ -1248,8 +1568,10 @@ function sendVoiceTurn(text) {
   });
 }
 </script>
-<footer id="legal-footer" style="position:fixed;bottom:0;left:0;right:0;padding:16px 24px;text-align:center;background:linear-gradient(transparent,var(--bg));z-index:20;pointer-events:none"><a href="https://trymandown.com/legal.html" style="font-size:11px;color:#354458;text-decoration:none;letter-spacing:0.1em;pointer-events:all">Privacy · Terms · Disclaimer</a><br><span style="font-size:10px;color:#2a3a50;letter-spacing:0.05em;">Jordan and Luna are AI, not licensed therapists or crisis services.</span></footer>
+<footer id="legal-footer" style="position:fixed;bottom:0;left:0;right:0;padding:16px 24px;text-align:center;background:linear-gradient(transparent,var(--bg));z-index:20;pointer-events:none"><a href="https://trymandown.com/legal.html" style="font-size:11px;color:rgba(232,234,240,.42);text-decoration:none;letter-spacing:0.1em;pointer-events:all">Privacy · Terms · Disclaimer</a><br><span style="font-size:10px;color:rgba(232,234,240,.5);letter-spacing:0.05em;">Jordan and Luna are AI, not licensed therapists or crisis services.</span></footer>
 <canvas id="dust" style="position:fixed;inset:0;z-index:2;pointer-events:none" aria-hidden="true"></canvas>
+<div id="screen-luminance" aria-hidden="true"></div>
+<div id="edge-glow" aria-hidden="true"></div>
 <div id="cursorGlow" style="position:fixed;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(200,148,58,.06) 0%,transparent 70%);pointer-events:none;z-index:3;transform:translate(-50%,-50%);transition:opacity .4s;opacity:0;top:0;left:0" aria-hidden="true"></div>
 <script>
 (function(){
@@ -1263,8 +1585,10 @@ function sendVoiceTurn(text) {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
     renderer.setSize(W, H);
     renderer.setClearColor(0x000000, 0);
-    cv.style.position='fixed'; cv.style.top='0'; cv.style.left='0';
-    cv.style.width='100vw'; cv.style.height='100vh';
+    /* the canvas already has position:fixed;inset:0 inline in the markup,
+       which safely fills the real viewport. Re-setting width/height in
+       vw/vh here made it wider than the visible area on browsers that
+       reserve scrollbar space, bleeding a colored strip past the edge. */
     var scene = new THREE.Scene();
     var camera = new THREE.PerspectiveCamera(60, W/H, 0.1, 200);
     camera.position.z = 40;
@@ -1330,5 +1654,17 @@ function sendVoiceTurn(text) {
   })();
 })();
 </script>
+
+<!-- CUSTOM DELETE CONFIRMATION MODAL -->
+<div id="deleteModal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.75);backdrop-filter:blur(6px);align-items:center;justify-content:center">
+  <div style="background:var(--surface);border:1px solid var(--hairline);border-radius:20px;padding:32px 28px;max-width:360px;width:90%;margin:0 auto;box-shadow:0 40px 80px rgba(0,0,0,0.6)">
+    <div style="font-family:var(--serif);font-size:22px;font-weight:400;color:var(--ink);margin-bottom:12px">Delete your data</div>
+    <p style="font-family:var(--sans);font-size:14px;font-weight:300;color:var(--muted);line-height:1.7;margin-bottom:28px">This permanently deletes all your conversations, memories, and account. It cannot be undone.</p>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <button id="deleteConfirmBtn" style="width:100%;padding:14px;border-radius:12px;border:none;background:#991b1b;color:#fca5a5;font-family:var(--sans);font-size:14px;font-weight:500;cursor:pointer;transition:background .2s">Delete everything</button>
+      <button id="deleteCancelBtn" style="width:100%;padding:14px;border-radius:12px;border:1px solid var(--hairline);background:transparent;color:var(--muted);font-family:var(--sans);font-size:14px;cursor:pointer">Cancel</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
