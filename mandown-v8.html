@@ -672,8 +672,12 @@ body::after{ content:''; position:fixed; inset:0; z-index:60; pointer-events:non
     <div class="vend"><button id="vendbtn">End</button></div>
   </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://browser.sentry-cdn.com/7.120.3/bundle.min.js" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
+        integrity="sha384-CI3ELBVUz9XQO+97x6nwMDPosPR5XvsxW2ua7N1Xeygeh1IxtgqtCkGfQY9WWdHu"
+        crossorigin="anonymous"></script>
+<script src="https://browser.sentry-cdn.com/7.120.3/bundle.min.js"
+        integrity="sha384-QhNWP5Exx8ZPPgZF2s+nKw/cl8cah1/6MVdZfR8a22f2KO0OsBNonujHvYJlrWIP"
+        crossorigin="anonymous"></script>
 <script>
   Sentry.init({
     dsn: "https://5b761127564bc78bbd0d12f3431063a6@o4511804992126976.ingest.us.sentry.io/4511807368790017",
@@ -1528,11 +1532,17 @@ function listen() {
     }
     var vtxt = document.getElementById("vtxt");
     /* show final text solid, interim text visually muted so user knows 
-       it's still being processed — not garbled output */
-    if (finalText) {
-      vtxt.innerHTML = finalText + (interim ? " <span style=\"opacity:.4;font-style:italic\">" + interim + "</span>" : "");
-    } else {
-      vtxt.innerHTML = interim ? "<span style=\"opacity:.4;font-style:italic\">" + interim + "</span>" : "";
+       it's still being processed — not garbled output.
+       Built with real DOM nodes (not innerHTML) so transcribed text is
+       always treated as plain text, never parsed as markup. */
+    while (vtxt.firstChild) vtxt.removeChild(vtxt.firstChild);
+    if (finalText) vtxt.appendChild(document.createTextNode(finalText));
+    if (interim) {
+      var interimSpan = document.createElement("span");
+      interimSpan.style.opacity = ".4";
+      interimSpan.style.fontStyle = "italic";
+      interimSpan.textContent = (finalText ? " " : "") + interim;
+      vtxt.appendChild(interimSpan);
     }
     speechEnergy = Math.min(1, 0.5 + (finalText + interim).length % 7 * 0.07);
     clearTimeout(silenceTimer);
