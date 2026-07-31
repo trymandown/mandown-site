@@ -992,14 +992,22 @@ function pickVoice(name) {
 document.getElementById("chatmode-btn").addEventListener("click", function() { openChat("chat"); });
 document.getElementById("voicemode-btn").addEventListener("click", function() { openChat("voice"); });
 document.getElementById("menu-contact-row").addEventListener("click", function() {
-  document.getElementById("accountmenu").classList.remove("show");
+  var row = document.getElementById("menu-contact-row");
   if (navigator.clipboard) {
     navigator.clipboard.writeText("hello@trymandown.com").then(function() {
-      var row = document.getElementById("menu-contact-row");
-      row.innerHTML = "Copied: hello@trymandown.com \u2713";
-      setTimeout(function(){ row.innerHTML = "Contact Us <span class=\"chev\">&rsaquo;</span>"; }, 2500);
-    }).catch(function(){ window.location.href = "mailto:hello@trymandown.com"; });
-  } else { window.location.href = "mailto:hello@trymandown.com"; }
+      row.innerHTML = "Copied \u2713  hello@trymandown.com";
+      setTimeout(function(){
+        row.innerHTML = "Contact Us <span class=\"chev\">&rsaquo;</span>";
+        document.getElementById("accountmenu").classList.remove("show");
+      }, 2000);
+    }).catch(function(){
+      document.getElementById("accountmenu").classList.remove("show");
+      window.location.href = "mailto:hello@trymandown.com";
+    });
+  } else {
+    document.getElementById("accountmenu").classList.remove("show");
+    window.location.href = "mailto:hello@trymandown.com";
+  }
 });
 function renderAvatar() {
   var letterEl = document.getElementById("avatar-letter");
