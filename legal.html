@@ -21,11 +21,29 @@
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{background:var(--bg);scroll-behavior:smooth}
-  body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:300;font-size:15px;line-height:1.85;-webkit-font-smoothing:antialiased}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:300;font-size:15px;line-height:1.85;-webkit-font-smoothing:antialiased;position:relative}
   ::selection{background:var(--gold);color:var(--bg)}
   a{color:var(--gold);text-decoration:none}
   a:hover{text-decoration:underline}
-  .wrap{max-width:780px;margin:0 auto;padding:clamp(28px,5vh,56px) clamp(24px,6vw,48px) 100px}
+  /* Same ambient background as index.html / mandown-v8.html: warm aurora glow + fine grain overlay */
+  body::before{
+    content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:
+      radial-gradient(ellipse 900px 700px at 18% 25%,rgba(200,148,58,.085) 0%,transparent 65%),
+      radial-gradient(ellipse 600px 500px at 78% 65%,rgba(180,90,20,.045) 0%,transparent 65%);
+    animation:aurora-legal 22s ease-in-out infinite alternate;
+  }
+  @keyframes aurora-legal{
+    0%{transform:translate(0,0) scale(1)}
+    100%{transform:translate(30px,-20px) scale(1.04)}
+  }
+  body::after{content:'';position:fixed;inset:0;z-index:60;pointer-events:none;opacity:.035;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  @media (prefers-reduced-motion: reduce){
+    body::before{animation:none}
+  }
+  .wrap{max-width:780px;margin:0 auto;padding:clamp(28px,5vh,56px) clamp(24px,6vw,48px) 100px;position:relative;z-index:1}
   .wordmark{font-family:var(--serif);font-size:clamp(22px,2.6vw,28px);font-weight:400;color:var(--ink)}
   .wordmark .dot{color:var(--gold)}
   .wordmark a{color:inherit}
@@ -52,6 +70,16 @@
   .box p{margin-top:6px}
   .box p:first-child{margin-top:0}
 
+  /* ── PARTICLE FIELD + CURSOR GLOW (same as index.html / mandown-v8.html) ── */
+  #dust{position:fixed;inset:0;z-index:0;pointer-events:none}
+  #cursorGlow{
+    position:fixed;width:480px;height:480px;border-radius:50%;
+    background:radial-gradient(circle,rgba(200,148,58,.07) 0%,transparent 70%);
+    pointer-events:none;z-index:1;transform:translate(-50%,-50%);
+    transition:opacity .4s;opacity:0;top:0;left:0;
+  }
+  @media(prefers-reduced-motion:reduce){#dust{display:none}}
+
   .crisis{margin-top:16px;border-left:2px solid var(--gold);padding-left:18px}
   .crisis p{color:var(--ink)}
 
@@ -66,6 +94,8 @@
 </style>
 </head>
 <body>
+<canvas id="dust" aria-hidden="true"></canvas>
+<div id="cursorGlow" aria-hidden="true"></div>
 <div class="wrap">
 
   <div class="wordmark"><a href="/">Man Down<span class="dot">.</span></a></div>
@@ -130,7 +160,7 @@
     <p>For users in the European Economic Area or the United Kingdom, our legal bases for processing are: (a) performance of our contract with you (Article 6(1)(b) GDPR) in respect of account data and Conversation Content required to provide the Service; and (b) your explicit consent (Article 9(2)(a) GDPR) in respect of any special-category data (including health-related data) inferable from your Conversation Content. You may withdraw consent at any time by deleting your data; withdrawal does not affect the lawfulness of processing conducted prior to withdrawal.</p>
 
     <h2><span class="num">8.</span>Retention</h2>
-    <p>Conversation Content and Personalization Records are retained for the duration of your account. Upon deletion, data is removed from production systems within 72 hours and purged from encrypted backups within 35 days through routine backup rotation. IP addresses are retained for no longer than 30 days. Waitlist email addresses are retained until the earlier of one year following the launch notification or receipt of an unsubscribe request. Service metadata is retained in aggregate, non-identifying form indefinitely for service improvement purposes.</p>
+    <p>Conversation Content and Personalization Records are retained for the duration of your account. Deletion is available directly within the Service and takes effect in production systems within 72 hours of your request. IP addresses are retained for no longer than 30 days. Waitlist email addresses are retained until the earlier of one year following the launch notification or receipt of an unsubscribe request. Service metadata is retained in aggregate, non-identifying form indefinitely for service improvement purposes.</p>
 
     <h2><span class="num">9.</span>Disclosure in Exceptional Circumstances</h2>
     <p>We will not disclose your Personal Information to law enforcement or regulatory authorities except: (a) where required to do so by a valid court order, subpoena, or other lawful process; (b) where we reasonably believe disclosure is necessary to prevent imminent risk of serious physical harm to you or to an identifiable third party; or (c) where necessary to detect, prevent, or investigate fraud or security incidents affecting the Service. Where legally permitted, we will notify you of any such disclosure request before complying. We will not disclose the existence of a sealed court order to the extent prohibited by law. We do not currently receive national-security process, and we will update this Policy with a canary statement if that changes and we are legally permitted to do so.</p>
@@ -359,5 +389,83 @@
   </footer>
 
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
+        integrity="sha384-CI3ELBVUz9XQO+97x6nwMDPosPR5XvsxW2ua7N1Xeygeh1IxtgqtCkGfQY9WWdHu"
+        crossorigin="anonymous"></script>
+<script>
+(function(){
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  if (reduced) return;
+
+  /* ═══ THREE.JS PARTICLE FIELD ═══
+     Same ambient field as index.html / mandown-v8.html, minus the
+     scroll-tied "clears as you scroll" beat -- that's a homepage
+     storytelling effect and doesn't belong on a document meant to be
+     read carefully top to bottom. Here it just sits still and breathes. */
+  (function(){
+    var cv = document.getElementById('dust');
+    if (!window.THREE || !cv) return;
+    var W = window.innerWidth, H = window.innerHeight;
+    var renderer = new THREE.WebGLRenderer({canvas:cv, alpha:true, antialias:false});
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    renderer.setSize(W, H);
+    renderer.setClearColor(0x000000, 0);
+
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(60, W/H, 0.1, 200);
+    camera.position.z = 40;
+
+    function makePoints(count, color, size, spread){
+      var geo = new THREE.BufferGeometry();
+      var pos = new Float32Array(count * 3);
+      for (var i=0;i<count;i++){
+        pos[i*3]   = (Math.random()-.5)*spread;
+        pos[i*3+1] = (Math.random()-.5)*spread*.7;
+        pos[i*3+2] = (Math.random()-.5)*spread*.5;
+      }
+      geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+      var mat = new THREE.PointsMaterial({color:color, size:size, transparent:true, opacity:.5, sizeAttenuation:true});
+      return new THREE.Points(geo, mat);
+    }
+    var dust = makePoints(700, 0xE8EAF0, 0.06, 110);
+    var gold = makePoints(120, 0xC8943A, 0.12, 90);
+    scene.add(dust); scene.add(gold);
+
+    var mx=0, my=0, tx=0, ty=0;
+    if (fine) window.addEventListener('pointermove', function(e){
+      tx = (e.clientX/window.innerWidth -.5)*12;
+      ty = (e.clientY/window.innerHeight-.5)*8;
+    },{passive:true});
+
+    window.addEventListener('resize', function(){
+      W=window.innerWidth; H=window.innerHeight;
+      camera.aspect = W/H; camera.updateProjectionMatrix();
+      renderer.setSize(W, H);
+    });
+
+    (function tick(){
+      requestAnimationFrame(tick);
+      mx += (tx-mx)*.03; my += (ty-my)*.03;
+      dust.rotation.y += .0003; dust.rotation.x += .00015;
+      gold.rotation.y -= .0004; gold.rotation.x += .0002;
+      camera.position.x += (mx - camera.position.x)*.04;
+      camera.position.y += (-my - camera.position.y)*.04;
+      renderer.render(scene, camera);
+    })();
+  })();
+
+  /* ═══ CURSOR GLOW ═══ */
+  var glow = document.getElementById('cursorGlow');
+  if (glow && fine){
+    window.addEventListener('pointermove', function(e){
+      glow.style.left = e.clientX+'px';
+      glow.style.top = e.clientY+'px';
+      glow.style.opacity = '1';
+    },{passive:true});
+    window.addEventListener('pointerleave', function(){glow.style.opacity='0'});
+  }
+})();
+</script>
 </body>
 </html>
