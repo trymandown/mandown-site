@@ -686,6 +686,7 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 const SUPABASE_URL = "https://tlnsetydewnmpdvsqqhn.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_LeqSIE5pXadPDLcqZQAfug_MDygUrcR";
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+window._supabase = supabase; /* expose for cross-script access */
 /* The access code arrives in the URL from the landing page : storage is only
    a cache. This is what makes the landing → app handoff work on the first
    visit, in private windows, and anywhere storage doesn't carry over. */
@@ -693,8 +694,25 @@ var AUTH_CODE = "";
 try {
   var urlCode = new URLSearchParams(location.search).get("code") || "";
   if (urlCode) {
-    AUTH_CODE = urlCode.toUpperCase().trim();
+    var newCode = urlCode.toUpperCase().trim();
+    var prevCode = "";
+    try { prevCode = localStorage.getItem("md_auth_code") || ""; } catch(e) {}
+    /* if different code: clear entry confirmation so disclaimer shows again,
+       and clear session so old chats from previous code don't appear */
+    if (prevCode && prevCode !== newCode) {
+      try {
+        localStorage.removeItem("md_entry_ok");
+        localStorage.removeItem("md_auth_code");
+        /* sign out so a fresh anonymous session is created with new user_id */
+        if (window._supabase) window._supabase.auth.signOut();
+      } catch(e) {}
+    }
+    AUTH_CODE = newCode;
     try { localStorage.setItem("md_auth_code", AUTH_CODE); } catch (e) {}
+    /* remove code from URL immediately */
+    if (window.history && window.history.replaceState) {
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
   }
 } catch (e) {}
 if (!AUTH_CODE) AUTH_CODE = localStorage.getItem("md_auth_code") || "";
@@ -900,16 +918,23 @@ document.getElementById("code-submit-btn").addEventListener("click", function() 
     return;
   }
   err.textContent = "";
+  var prevStoredCode = "";
+  try { prevStoredCode = localStorage.getItem("md_auth_code") || ""; } catch(e) {}
   AUTH_CODE = code;
-  try {
-    /* If using a different code than last time, reset the entry confirmation
-       so new testers always see the age gate and disclaimer */
-    var prevCode = localStorage.getItem("md_auth_code");
-    if (prevCode && prevCode !== code) {
+  if (prevStoredCode && prevStoredCode !== code) {
+    /* different code: clear disclaimer + sign out for fresh session */
+    try {
       localStorage.removeItem("md_entry_ok");
-    }
-    localStorage.setItem("md_auth_code", code);
-  } catch(e) {}
+      localStorage.setItem("md_auth_code", code);
+      if (window._supabase) {
+        window._supabase.auth.signOut().then(function() {
+          goToLanding();
+        });
+        return; /* goToLanding called in signOut callback */
+      }
+    } catch(e) {}
+  }
+  try { localStorage.setItem("md_auth_code", code); } catch(e) {}
   goToLanding();
 });
 document.getElementById("access-code-input").addEventListener("keydown", function(e) {
@@ -1072,22 +1097,32 @@ async function loadPreviousMessages() {
     var data = await res.json();
     var msgs = (data && data.messages) ? data.messages : [];
     if (msgs.length === 0) return false;
+    /* deduplicate: skip messages already in HISTORY from previous load */
+    var seen = new Set();
+    HISTORY.forEach(function(h) { seen.add(h.role + ':' + h.content); });
     msgs.forEach(function(m) {
-      var type = (m.role === "user") ? "user" : "bot";
-      addMsg(m.content, type);
-      HISTORY.push({role: m.role, content: m.content});
+      var key = m.role + ':' + m.content;
+      if (!seen.has(key)) {
+        seen.add(key);
+        var type = (m.role === "user") ? "user" : "bot";
+        addMsg(m.content, type);
+        HISTORY.push({role: m.role, content: m.content});
+      }
     });
+    SESSION_START_MSG_COUNT = HISTORY.length; /* only save messages AFTER this point */
     return true;
   } catch (e) {
     return false;
   }
 }
+var SESSION_START_MSG_COUNT = 0; /* set after loading history from DB */
 function saveSession() {
-  if (HISTORY.length >= 4 && USER_ID && SESSION_ID) {
+  var freshMsgs = HISTORY.slice(SESSION_START_MSG_COUNT);
+  if (freshMsgs.length >= 2 && USER_ID && SESSION_ID) {
     fetch(SUPABASE_CHAT_URL, {
       method: "POST",
       headers: hdrs(),
-      body: JSON.stringify({action:"save_session", voice:VOICE, messages:HISTORY, authCode:AUTH_CODE, userId:USER_ID, sessionId:SESSION_ID})
+      body: JSON.stringify({action:"save_session", voice:VOICE, messages:freshMsgs, authCode:AUTH_CODE, userId:USER_ID, sessionId:SESSION_ID})
     }).catch(function() {});
   }
 }
