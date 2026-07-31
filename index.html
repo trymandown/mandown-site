@@ -333,6 +333,30 @@ body::before{
   background:linear-gradient(var(--gold-l),var(--gold));border-radius:2px}
 @media(max-width:900px){.scroll-progress{display:none}}
 @media(prefers-reduced-motion:reduce){.scroll-progress-fill{transition:none}}
+
+/* ── DESKTOP TYPE SCALE ──────────────────────────────────────
+   Headlines already scale up via clamp()+vw. Body copy, labels, and
+   nav text were fixed px sizes that never grew, so on a large monitor
+   viewed from further away they read as noticeably small even though
+   nothing is technically broken. This ramps up reading text on wider
+   viewports without touching layout, spacing, or the headline sizes. */
+@media(min-width:1024px){
+  body{font-size:18px}
+  .hero-sub{font-size:19px}
+  .door-card .lead{font-size:15.5px}
+  .door-success .small{font-size:15.5px}
+  .m-copy .bio{font-size:17px}
+  .waitlist-inner .lead{font-size:16px}
+  .story-text{font-size:20px}
+  .capture-note{font-size:13.5px}
+  footer{font-size:14px}
+}
+@media(min-width:1440px){
+  body{font-size:19px}
+  .hero-sub{font-size:20.5px}
+  .m-copy .bio{font-size:18px}
+  .story-text{font-size:21.5px}
+}
 </style>
 </head>
 <body>
