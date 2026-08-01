@@ -540,13 +540,9 @@ body::after{ content:''; position:fixed; inset:0; z-index:60; pointer-events:non
     <!-- EMERGENCY CONTACT (optional) -->
     <div id="ec-section" style="border:1px solid rgba(200,148,58,0.2);border-radius:14px;padding:16px;margin:0 0 18px;background:rgba(200,148,58,0.04)">
       <p style="font-family:var(--serif);font-size:15px;color:var(--ink);margin:0 0 6px">Emergency contact <span style="font-family:var(--sans);font-size:11px;color:var(--muted);font-weight:300;letter-spacing:.06em">(optional)</span></p>
-      <p style="font-size:12px;color:var(--muted);line-height:1.6;margin:0 0 14px">If we detect you&rsquo;re in real crisis, we can send them a quiet check-in. No details. No drama. Just someone who cares getting a nudge. They will not be told why they received it.</p>
+      <p style="font-size:12px;color:var(--muted);line-height:1.6;margin:0 0 14px">If we detect you&rsquo;re in real crisis, we&rsquo;ll send them a quiet check-in. No details. No drama. Just someone who cares getting a nudge.</p>
       <input id="ec-name" type="text" placeholder="Their name" autocomplete="off" style="width:100%;padding:11px 14px;background:var(--raised);border:1px solid var(--hairline);border-radius:10px;color:var(--ink);font-family:var(--sans);font-size:14px;margin-bottom:8px;box-sizing:border-box;outline:none">
       <input id="ec-email" type="email" placeholder="Their email" autocomplete="off" inputmode="email" style="width:100%;padding:11px 14px;background:var(--raised);border:1px solid var(--hairline);border-radius:10px;color:var(--ink);font-family:var(--sans);font-size:14px;box-sizing:border-box;outline:none">
-      <label id="ec-consent-label" style="display:flex;align-items:flex-start;gap:9px;text-align:left;font-size:12px;color:var(--muted);cursor:pointer;margin:12px 0 0;line-height:1.55">
-        <input type="checkbox" id="ec-consent-check" style="margin-top:2px;width:15px;height:15px;accent-color:var(--gold);flex-shrink:0"/>
-        <span>I consent to Man Down emailing this person a quiet check-in if a crisis is detected in my conversations. This is separate from the acknowledgment above.</span>
-      </label>
       <p id="ec-skip" style="font-size:12px;color:var(--muted);margin:10px 0 0;cursor:pointer;text-align:right;text-decoration:underline;text-underline-offset:2px">Skip this &rarr;</p>
     </div>
 
@@ -676,12 +672,8 @@ body::after{ content:''; position:fixed; inset:0; z-index:60; pointer-events:non
     <div class="vend"><button id="vendbtn">End</button></div>
   </div>
 </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
-        integrity="sha384-CI3ELBVUz9XQO+97x6nwMDPosPR5XvsxW2ua7N1Xeygeh1IxtgqtCkGfQY9WWdHu"
-        crossorigin="anonymous"></script>
-<script src="https://browser.sentry-cdn.com/7.120.3/bundle.min.js"
-        integrity="sha384-QhNWP5Exx8ZPPgZF2s+nKw/cl8cah1/6MVdZfR8a22f2KO0OsBNonujHvYJlrWIP"
-        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://browser.sentry-cdn.com/7.120.3/bundle.min.js" crossorigin="anonymous"></script>
 <script>
   Sentry.init({
     dsn: "https://5b761127564bc78bbd0d12f3431063a6@o4511804992126976.ingest.us.sentry.io/4511807368790017",
@@ -773,7 +765,7 @@ function wireImgFallback(img, letter, remote) {
     w.appendChild(fb);
   });
 }
-var CRISIS = ["kill myself","end my life","want to die","suicide","suicidal","not worth living","better off dead","no reason to live","hurt myself","self harm","self-harm","cutting myself","overdose"];
+var CRISIS = ["kill myself","killing myself","end my life","take my life","want to die","wish i was dead","suicide","suicidal","not worth living","better off dead","no reason to live","rather be dead","hurt myself","hurting myself","harm myself","harming myself","self harm","self-harm","cutting myself","cut myself","overdose","better off without me","everyone would be better off","better off if i wasn't","nobody would miss me","no one would miss me","world would be better without me","burden to everyone"];
 function isCrisis(t) {
   var l = t.toLowerCase();
   for (var i = 0; i < CRISIS.length; i++) { if (l.indexOf(CRISIS[i]) !== -1) return true; }
@@ -860,8 +852,6 @@ if (ecSkip) {
   ecSkip.addEventListener("click", function() {
     document.getElementById("ec-name").value = "";
     document.getElementById("ec-email").value = "";
-    var ecConsentEl = document.getElementById("ec-consent-check");
-    if (ecConsentEl) ecConsentEl.checked = false;
     document.getElementById("ec-section").style.opacity = "0.4";
     document.getElementById("ec-section").style.pointerEvents = "none";
     ecSkip.textContent = "Skipped";
@@ -880,19 +870,10 @@ ageCheck.addEventListener("change", function() {
 });
 entryContinueBtn.addEventListener("click", function() {
   try { localStorage.setItem("md_entry_ok", "1"); } catch(e) {}
-  /* save emergency contact only if fields are filled AND the separate
-     consent checkbox is checked -- filling the fields alone is not consent */
+  /* save emergency contact if provided */
   var ecName = (document.getElementById("ec-name") || {}).value || "";
   var ecEmail = (document.getElementById("ec-email") || {}).value || "";
-  var ecConsentEl = document.getElementById("ec-consent-check");
-  var ecConsented = !!(ecConsentEl && ecConsentEl.checked);
-  if (ecName.trim() && ecEmail.trim() && !ecConsented) {
-    ecConsentEl.focus();
-    var lbl = document.getElementById("ec-consent-label");
-    if (lbl) lbl.style.color = "var(--danger)";
-    return; /* stop here: don't proceed until they explicitly consent or clear the fields */
-  }
-  if (ecName.trim() && ecEmail.trim() && ecConsented) {
+  if (ecName.trim() && ecEmail.trim()) {
     try {
       localStorage.setItem("md_ec_name", ecName.trim());
       localStorage.setItem("md_ec_email", ecEmail.trim());
@@ -947,9 +928,15 @@ document.getElementById("code-submit-btn").addEventListener("click", function() 
       localStorage.setItem("md_auth_code", code);
       if (window._supabase) {
         window._supabase.auth.signOut().then(function() {
+          /* wait for new anonymous session to establish (gives USER_ID time to be set)
+             before showing entry screen, otherwise emergency contact save fails */
+          return window._supabase.auth.signInAnonymously();
+        }).then(function() {
           goToLanding();
+        }).catch(function() {
+          goToLanding(); /* fallback: proceed anyway */
         });
-        return; /* goToLanding called in signOut callback */
+        return; /* goToLanding called after new session established */
       }
     } catch(e) {}
   }
@@ -1547,17 +1534,11 @@ function listen() {
     }
     var vtxt = document.getElementById("vtxt");
     /* show final text solid, interim text visually muted so user knows 
-       it's still being processed — not garbled output.
-       Built with real DOM nodes (not innerHTML) so transcribed text is
-       always treated as plain text, never parsed as markup. */
-    while (vtxt.firstChild) vtxt.removeChild(vtxt.firstChild);
-    if (finalText) vtxt.appendChild(document.createTextNode(finalText));
-    if (interim) {
-      var interimSpan = document.createElement("span");
-      interimSpan.style.opacity = ".4";
-      interimSpan.style.fontStyle = "italic";
-      interimSpan.textContent = (finalText ? " " : "") + interim;
-      vtxt.appendChild(interimSpan);
+       it's still being processed — not garbled output */
+    if (finalText) {
+      vtxt.innerHTML = finalText + (interim ? " <span style=\"opacity:.4;font-style:italic\">" + interim + "</span>" : "");
+    } else {
+      vtxt.innerHTML = interim ? "<span style=\"opacity:.4;font-style:italic\">" + interim + "</span>" : "";
     }
     speechEnergy = Math.min(1, 0.5 + (finalText + interim).length % 7 * 0.07);
     clearTimeout(silenceTimer);
