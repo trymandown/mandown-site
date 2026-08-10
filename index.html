@@ -110,7 +110,12 @@ main{position:relative;z-index:1}
 .door-div{height:1px;background:var(--hairline);margin:24px 0 18px}
 .code-row .code-lab{font-family:var(--sans);font-size:13px;font-weight:400;letter-spacing:0;text-transform:none;color:var(--muted);margin-bottom:12px}
 .code-toggle{display:none}
-.code-form{display:flex;gap:10px}
+.code-form{display:none;gap:10px}
+.code-form.show{display:flex}
+.code-lab{cursor:pointer;user-select:none;transition:color .2s}
+.code-lab:hover{color:var(--gold-l)}
+.code-lab::after{content:' \2192';display:inline-block;transition:transform .2s;opacity:.6}
+.code-lab.open::after{transform:rotate(90deg)}
 .code-form input{flex:1;min-width:0;background:var(--bg);border:1px solid var(--hairline);border-radius:12px;color:var(--ink);padding:12px 16px;font-family:var(--sans);font-size:15px;font-weight:400;letter-spacing:0;text-transform:none;outline:none;transition:border-color .25s}
 .code-form input:focus{border-color:rgba(200,148,58,.55)}
 .code-form input::placeholder{color:var(--muted);font-weight:300}
@@ -383,8 +388,8 @@ body::before{
       <p class="capture-note">One email when we&rsquo;re ready. That&rsquo;s it.<br>Can&rsquo;t find it? Check your spam folder.</p>
       <div class="door-div"></div>
       <div class="code-row">
-        <p class="code-lab">Have an access code?</p>
-        <form class="code-form show" id="codeForm">
+        <p class="code-lab" id="codeLab">Have an access code?</p>
+        <form class="code-form" id="codeForm">
           <input type="text" id="codeInput" placeholder="Early access code" autocomplete="off" aria-label="Early access code">
           <button type="button" id="codeBtn">Enter &rarr;</button>
         </form>
@@ -826,7 +831,12 @@ document.addEventListener('DOMContentLoaded', function(){
   function showError(m){errEl.textContent=m;errEl.classList.add('show');}
 
   /* ═══ ACCESS CODE FORM ═══════════════════════════════════════════════════ */
-  var codeForm=document.getElementById('codeForm'),codeBtn=document.getElementById('codeBtn'),codeErr=document.getElementById('codeError');
+  var codeForm=document.getElementById('codeForm'),codeBtn=document.getElementById('codeBtn'),codeErr=document.getElementById('codeError'),codeLab=document.getElementById('codeLab'),codeInput=document.getElementById('codeInput');
+  if (codeLab) codeLab.addEventListener('click',function(){
+    var isOpen=codeForm.classList.toggle('show');
+    codeLab.classList.toggle('open',isOpen);
+    if (isOpen && codeInput) setTimeout(function(){codeInput.focus();},50);
+  });
   if (codeForm) codeForm.addEventListener('submit',function(ev){ev.preventDefault();handleCode();});
   if (codeBtn) codeBtn.addEventListener('click',handleCode);
   function handleCode(){
