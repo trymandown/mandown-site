@@ -494,6 +494,29 @@ body::after{ content:''; position:fixed; inset:0; z-index:60; pointer-events:non
   .voice-ui.live .vaura.a1, .voice-ui.live .vaura.a2{ animation:none; }
 }
 
+/* ── DESKTOP TYPE SCALE ──────────────────────────────────────
+   Same issue as index.html: headline sizes (.wt, .mode-q) already
+   scale via clamp()+vw, but card/label text was fixed px and never
+   grew on large viewports -- reads as noticeably small on a MacBook
+   even though nothing is technically broken. */
+@media(min-width:1024px){
+  .auth-sub{font-size:16px}
+  .vname{font-size:29px}
+  .vsub{font-size:15px}
+  .mtitle{font-size:25px}
+  .msub{font-size:15px}
+  .mlabel{font-size:17px}
+  .hname{font-size:20px}
+  .hstatus{font-size:12.5px}
+}
+@media(min-width:1440px){
+  .auth-sub{font-size:17px}
+  .vname{font-size:31px}
+  .vsub{font-size:16px}
+  .mtitle{font-size:26.5px}
+  .msub{font-size:16px}
+}
+
 </style>
 </head>
 <body>
