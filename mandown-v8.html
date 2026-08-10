@@ -1380,7 +1380,12 @@ document.getElementById("micbtn").addEventListener("click", function() {
   recog = new SR();
   recog.continuous = false; recog.interimResults = false; recog.lang = "en-US";
   recog.onstart = function() { isRec = true; var b = document.getElementById("micbtn"); b.classList.add("rec"); };
-  recog.onresult = function(e) { document.getElementById("cta").value = e.results[0][0].transcript; growTA(document.getElementById("cta")); };
+  recog.onresult = function(e) {
+    var text = "";
+    for (var i = 0; i < e.results.length; i++) { text += e.results[i][0].transcript; }
+    document.getElementById("cta").value = text;
+    growTA(document.getElementById("cta"));
+  };
   recog.onend = function() { isRec = false; var b = document.getElementById("micbtn"); b.classList.remove("rec"); };
   recog.onerror = function() { isRec = false; var b = document.getElementById("micbtn"); b.classList.remove("rec"); };
   recog.start();
@@ -1522,7 +1527,7 @@ function startConvo() {
   setLive(true);
   listen();
   setVoiceMode("listening");
-  setVState("listening. take your time.");
+  setVState("");
 }
 function endConvo() {
   convoActive = false;
@@ -1557,12 +1562,17 @@ function listen() {
       }
     }
     var vtxt = document.getElementById("vtxt");
-    /* show final text solid, interim text visually muted so user knows 
-       it's still being processed — not garbled output */
-    if (finalText) {
-      vtxt.innerHTML = finalText + (interim ? " <span style=\"opacity:.4;font-style:italic\">" + interim + "</span>" : "");
-    } else {
-      vtxt.innerHTML = interim ? "<span style=\"opacity:.4;font-style:italic\">" + interim + "</span>" : "";
+    /* show final text solid, interim text visually muted so user knows
+       it's still being processed. Built with real DOM nodes (not
+       innerHTML) so transcribed text is always treated as plain text. */
+    while (vtxt.firstChild) vtxt.removeChild(vtxt.firstChild);
+    if (finalText) vtxt.appendChild(document.createTextNode(finalText));
+    if (interim) {
+      var interimSpan = document.createElement("span");
+      interimSpan.style.opacity = ".4";
+      interimSpan.style.fontStyle = "italic";
+      interimSpan.textContent = (finalText ? " " : "") + interim;
+      vtxt.appendChild(interimSpan);
     }
     speechEnergy = Math.min(1, 0.5 + (finalText + interim).length % 7 * 0.07);
     clearTimeout(silenceTimer);
@@ -1599,7 +1609,7 @@ function sendVoiceTurn(text) {
   msgCount++;
   freshSessionMsgCount++;
   setVoiceMode("thinking");
-  setVState(VOICE + " is with you...");
+  setVState("");
   if (isCrisis(text)) {
     // resources spoken AND the companion still responds : never a hand-off
     document.getElementById("crisisbar").classList.add("show");
@@ -1621,7 +1631,7 @@ function sendVoiceTurn(text) {
       awaitingReply = false;
       if (convoActive) {
         setVoiceMode("listening");
-        setVState("listening. take your time.");
+        setVState("");
         listen();
       }
     });
