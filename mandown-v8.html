@@ -1154,16 +1154,28 @@ async function loadPreviousMessages() {
   }
 }
 var SESSION_START_MSG_COUNT = 0; /* set after loading history from DB */
-function saveSession() {
+function saveSession(reliable) {
   var freshMsgs = HISTORY.slice(SESSION_START_MSG_COUNT);
   if (freshMsgs.length >= 2 && USER_ID && SESSION_ID) {
-    fetch(SUPABASE_CHAT_URL, {
+    var opts = {
       method: "POST",
       headers: hdrs(),
       body: JSON.stringify({action:"save_session", voice:VOICE, messages:freshMsgs, authCode:AUTH_CODE, userId:USER_ID, sessionId:SESSION_ID})
-    }).catch(function() {});
+    };
+    /* keepalive lets this request finish even as the tab is closing --
+       a normal fetch() gets cancelled the instant the page unloads,
+       this one is allowed to outlive it */
+    if (reliable) opts.keepalive = true;
+    fetch(SUPABASE_CHAT_URL, opts).catch(function() {});
   }
 }
+/* SAFETY NET: if someone just closes the tab or switches away instead of
+   clicking back, still catch whatever hasn't been saved yet. Without this,
+   anything said since the last every-4-messages save was silently lost. */
+document.addEventListener("visibilitychange", function() {
+  if (document.visibilityState === "hidden") saveSession(true);
+});
+window.addEventListener("pagehide", function() { saveSession(true); });
 function openChat(mode) {
   var savedCode = AUTH_CODE || localStorage.getItem("md_auth_code");
   if (!savedCode) { show("codescreen"); return; }
