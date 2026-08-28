@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<link rel="canonical" href="https://trymandown.com/mandown-v8.html">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2307090F'/%3E%3Ctext x='32' y='45' font-family='Georgia,serif' font-size='36' font-weight='700' fill='%23C8943A' text-anchor='middle'%3EM%3C/text%3E%3C/svg%3E">
+<meta name="description" content="Talk to Jordan or Luna, private companions built for men who'd never open a therapy app. Text or voice, no judgment, no one else ever finds out.">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Man Down</title>
@@ -555,9 +558,13 @@ body::after{ content:''; position:fixed; inset:0; z-index:60; pointer-events:non
       <p style="margin:0 0 14px">Jordan and Luna are AI. Not real people, not therapists, not a crisis service. They're here to listen and to sit with you, and they're good at it. But they can't replace a doctor, a therapist, or a real person in your life.</p>
       <p style="margin:0 0 14px">If you're having thoughts about self harm, help is one search away: <a href="https://findahelpline.com" target="_blank" rel="noopener" style="color:var(--gold)">findahelpline.com</a></p>
     </div>
-    <label id="age-check-label" style="display:flex;align-items:flex-start;gap:10px;text-align:left;font-size:13px;color:var(--text2);cursor:pointer;margin:8px 0 18px;line-height:1.5">
+    <label id="age-check-label" style="display:flex;align-items:flex-start;gap:10px;text-align:left;font-size:13px;color:var(--text2);cursor:pointer;margin:8px 0 14px;line-height:1.5">
       <input type="checkbox" id="age-check" style="margin-top:3px;width:16px;height:16px;accent-color:var(--gold);flex-shrink:0"/>
       <span>I'm 18 or older, and I understand Jordan and Luna are AI, not a substitute for professional help.</span>
+    </label>
+    <label id="sensitive-check-label" style="display:flex;align-items:flex-start;gap:10px;text-align:left;font-size:13px;color:var(--text2);cursor:pointer;margin:0 0 18px;line-height:1.5">
+      <input type="checkbox" id="sensitive-check" style="margin-top:3px;width:16px;height:16px;accent-color:var(--gold);flex-shrink:0"/>
+      <span>I understand this may involve sharing sensitive personal information, including about my mental health, and I consent to Man Down collecting and processing it as described in the <a href="legal.html#privacy" target="_blank" rel="noopener" style="color:var(--gold)">Privacy Policy</a>.</span>
     </label>
 
     <!-- EMERGENCY CONTACT (optional) -->
@@ -868,6 +875,7 @@ function showLandingScreen() {
   setTimeout(animQ, 400);
 }
 var ageCheck = document.getElementById("age-check");
+var sensitiveCheck = document.getElementById("sensitive-check");
 var entryContinueBtn = document.getElementById("entry-continue-btn");
 /* EC skip button */
 var ecSkip = document.getElementById("ec-skip");
@@ -880,8 +888,8 @@ if (ecSkip) {
     ecSkip.textContent = "Skipped";
   });
 }
-ageCheck.addEventListener("change", function() {
-  if (ageCheck.checked) {
+function updateEntryContinueBtn() {
+  if (ageCheck.checked && sensitiveCheck.checked) {
     entryContinueBtn.disabled = false;
     entryContinueBtn.style.opacity = "1";
     entryContinueBtn.style.pointerEvents = "auto";
@@ -890,7 +898,9 @@ ageCheck.addEventListener("change", function() {
     entryContinueBtn.style.opacity = "0.4";
     entryContinueBtn.style.pointerEvents = "none";
   }
-});
+}
+ageCheck.addEventListener("change", updateEntryContinueBtn);
+sensitiveCheck.addEventListener("change", updateEntryContinueBtn);
 entryContinueBtn.addEventListener("click", function() {
   try { localStorage.setItem("md_entry_ok", "1"); } catch(e) {}
   /* save emergency contact if provided */
